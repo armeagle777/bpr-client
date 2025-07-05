@@ -1,0 +1,30 @@
+{
+  "FILTER_ROW": {
+    "TYPE_PLACEHOLDER": "Ընտրեք հաշվետվության տեսակը",
+    "YEARS_PLACEHOLDER": "Ընտրեք տարեթիվը",
+    "PERIODS_PLACEHOLDER": "Ընտրեք ժ/հատվածը",
+    "MONTHS_PLACEHOLDER": "Ընտրեք ամիսը",
+    "BORDERCROSS_TYPES_PLACEHOLDER": "Ընտրեք սահմանահատման տեսակը",
+    "CLAIM_TYPES_PLACEHOLDER": "Ընտրեք դիմումի տեսակը",
+    "FILTER_BTN_TITLE": "Ֆիլտրել",
+    "EXPORT_BTN_TITLE": "Արտահանել",
+    "RESET_BTN_TITLE": "Մաքրել",
+    "MULTY_YEARS_PLACEHOLDER": "Ընտրեք տարեթիվը",
+    "MULTY_PERIODS_PLACEHOLDER": "Ընտրեք ժ/հատվածը",
+    "MULTY_TYPES_PLACEHOLDER": "Ընտրեք տեսակը",
+    "MULTY_POINTS_PLACEHOLDER": "Ընտրեք կետը",
+    "MULTY_COUNTRIES_PLACEHOLDER": "Ընտրեք երկիրը",
+    "MULTY_DECTYPES_PLACEHOLDER": "Ընտրեք որոշման տեսակը"
+  },
+  "FILES": {
+    "EXCEL_UPLOAD_SUCCESS": "Նիշքը հաջողությամբ բեռնվել է",
+    "EXCEL_EXPORT_BTN_TEXT": "EXPORT"
+  },
+  "PAGE_TITLES": {
+    "EATM_FAMS": "ԵԱՏՄ ընտանիքներից ստացված դիմումների վիճակագրություն",
+    "EATM_PERSONS": "ԵԱՏՄ քաղաքացիներից ստացված դիմումների վիճակագրություն",
+    "JKK": "Օտարեկրացիներից ստացված դիմումների վիճակագրություն",
+    "VOLUNTEER": "Կամավորների դիմումների վիճակագրություն"
+  },
+  "TABLE_COLUMNS": {}
+}
