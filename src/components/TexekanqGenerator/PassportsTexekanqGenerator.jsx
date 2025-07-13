@@ -1,11 +1,7 @@
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useTexekanqData } from "../../hooks/useTexekanqData";
 import { bprDocumentTypes } from "../../utils/constants";
 
 const PassportsTexekanqGenerator = ({ data, fileName, user }) => {
-  const { onCreateTexekanq, texekanqData, texekanqIsLoading } =
-    useTexekanqData();
-
   const { pashton } = user;
 
   if (!pashton) {

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getCompanyByHvhh, getCompanyForPersonByHvhh } from "../api/personsApi";
+import { getCompanyForPersonByHvhh } from "../api/personsApi";
 
 const useFetchBusiness = (tax_id) => {
   const { isFetching, isError, error, data } = useQuery(

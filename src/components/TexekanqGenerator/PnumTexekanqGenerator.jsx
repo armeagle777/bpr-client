@@ -1,10 +1,6 @@
 import LoadingButton from "@mui/lab/LoadingButton";
-import { useTexekanqData } from "../../hooks/useTexekanqData";
 
 const PnumTexekanqGenerator = ({ data, fileName, user }) => {
-  const { onCreateTexekanq, texekanqData, texekanqIsLoading } =
-    useTexekanqData();
-
   const { firstName, lastName, pashton } = user;
 
   if (!pashton) {

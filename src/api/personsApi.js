@@ -13,9 +13,8 @@ const personsApi = axios.create({
 export const checkMyIp = async () => {
   const internalUrl = import.meta.env.VITE_SERVER_URL;
   const ovirNetworkUrl = import.meta.env.VITE_SERVER_OUT_URL;
-  const policeNetworkUrl = import.meta.env.VITE_SERVER_POLICE_NETWORK_URL;
 
-  const urls = [internalUrl, ovirNetworkUrl, policeNetworkUrl];
+  const urls = [internalUrl, ovirNetworkUrl];
 
   const requests = urls.map((url) =>
     axios
@@ -25,15 +24,6 @@ export const checkMyIp = async () => {
   );
   const result = await Promise.any(requests);
   return result.url;
-};
-
-const getCoordsWithAddress = async (address) => {
-  const response = await axios.get(
-    `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-      address
-    )}&key=${import.meta.env.VITE_GOOGLE_MAP_KEY}`
-  );
-  return response.data;
 };
 
 personsApi.interceptors.request.use((config) => {
@@ -106,39 +96,6 @@ export const getWpPersonFullData = async (props) => {
   return response.data;
 };
 
-export const getStatisticsData = async (filterObj, url) => {
-  const response = await personsApi.post(`/statistics${url}`, filterObj);
-  return response.data;
-};
-
-export const getStatisticsFile = async (filters, fileType) => {
-  const mimeType =
-    fileType === DOWNLOAD_FILE_TYPES.PDF
-      ? FILE_MIME_TYPES.PDF
-      : FILE_MIME_TYPES.EXCEL;
-
-  const fileUrl = `/statistics/export/${fileType}`;
-
-  const config = {
-    responseType: "blob",
-  };
-
-  const { data } = await personsApi.post(fileUrl, { filters }, config);
-
-  const blob = new Blob([data], {
-    type: mimeType,
-  });
-
-  return blob;
-};
-
-export const getStatisticsPeriodsData = async (statisticsType) => {
-  const response = await personsApi.get(
-    `/statistics/periods/${statisticsType}`
-  );
-  return response.data;
-};
-
 // Auth endpoints
 export const login = async (credentials) => {
   const response = await personsApi.post("/users/login", credentials);
@@ -160,11 +117,6 @@ export const getRoles = async () => {
   return response.data;
 };
 
-export const getReportTypes = async () => {
-  const response = await personsApi.get("/texekanq/types");
-  return response.data;
-};
-
 export const getPermissions = async () => {
   const response = await personsApi.get("/permissions");
   return response.data;
@@ -177,28 +129,6 @@ export const getLightUsers = async () => {
 
 export const createUser = async (data) => {
   const response = await personsApi.post(`/users/registration`, data);
-  return response.data;
-};
-
-export const createTexekanq = async (data) => {
-  const response = await personsApi.post(`/texekanq`, data);
-  return response.data;
-};
-
-export const getTexekanqs = async ({ filters, pagination }) => {
-  const queryParams = new URLSearchParams({
-    search: filters.search,
-    types: filters.types.join(","),
-    page: pagination.page,
-    pageSize: pagination.pageSize,
-  }).toString();
-
-  const response = await personsApi.get(`/texekanq?${queryParams}`);
-  return response.data;
-};
-
-export const getTexekanqBase64 = async (fileName) => {
-  const response = await personsApi.get(`/texekanq/pdf/${fileName}`);
   return response.data;
 };
 
@@ -254,19 +184,6 @@ export const removeShare = async ({ id, data }) => {
 
 export const toggleLike = async ({ uid, text }) => {
   const response = await personsApi.post(`/likes/like/${uid}`, { text });
-  return response.data;
-};
-
-export const getSpheres = async (url) => {
-  const response = await personsApi.get("/sphere");
-  return response.data;
-};
-
-export const getFileBySsn = async (url, personInfo) => {
-  const response = await personsApi.post(url, {
-    data: personInfo,
-    responseType: "blob",
-  });
   return response.data;
 };
 
@@ -350,23 +267,6 @@ export const getCompaniesBySsn = async (ssn) => {
 export const getPoliceByPnum = async (pnum) => {
   const response = await personsApi.get(`/persons/${pnum}/police`);
   return response.data;
-};
-
-export const getFile = async ({ filterData }) => {
-  const config = {
-    responseType: "blob",
-  };
-
-  const { data } = await personsApi.post(
-    "/export/excel",
-    { data: filterData },
-    config
-  );
-
-  const blob = new Blob([data], {
-    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-  });
-  return blob;
 };
 
 export default personsApi;
