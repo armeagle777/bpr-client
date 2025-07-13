@@ -1,236 +1,186 @@
+import React, { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+import RequireAuth from "@auth-kit/react-router/RequireAuth";
 
 import Layout from "./components/layout/Layout";
-import Home from "./pages/Home.page";
-import NotFound from "./pages/NotFound.page";
-import PersonPage from "./pages/Person.page";
-import Search from "./pages/Search.page";
-import Register from "./pages/Register.page";
-import Pdf from "./pages/Pdf.page";
-import { Login } from "./pages/Login";
-
-import RequireAuth from "@auth-kit/react-router/RequireAuth";
-import Profile from "./pages/Profile/Profile";
-import Users from "./pages/Users/Users";
-import Likes from "./pages/Likes/Likes";
-import Reports from "./pages/Reports/Reports";
-import Shares from "./pages/Shares/Shares";
-import Roles from "./pages/Roles/Roles";
-import RequirePermission from "./components/requirePermission/RequirePermission";
 import { permissionsMap } from "./utils/constants";
-import KadastrCertificate from "./pages/KadastrCertificate/KadastrCertificate.page";
-import { Statistics } from "./pages/Statistics";
-import {
-  ApastanApplications,
-  ApastanDecisions,
-  ApastanTotal,
-  ApastanYears,
-  AsylumReports,
-  Deals,
-  StatisticsCitizenship,
-  StatisticsCountryBordercross,
-  StatisticsPeriodBordercross,
-  StatisticsProfile,
-  StatisticsTotalBordercross,
-  WorkPermitStats,
-  WpOfficial,
-  WpReports,
-} from "./pages/Statistics/pages";
-import VehicleSearch from "./pages/VehicleSearch/VehicleSearch.page.jsx";
-import Sahmanahatum from "./pages/Sahmanahatum/Sahmanahatum.jsx";
-import WpPersonSearch from "./pages/WpPersonSearch/WpPersonSearch.jsx";
+import RequirePermission from "./components/requirePermission/RequirePermission";
+
+import Home from "./pages/Home.page";
+const LazyLogin = lazy(() => import("./pages/Login/Login"));
+const LazyRegister = lazy(() => import("./pages/Register.page"));
+const LazyRoles = lazy(() => import("./pages/Roles/Roles"));
+const LazyShares = lazy(() => import("./pages/Shares/Shares"));
+const LazyPdf = lazy(() => import("./pages/Pdf.page"));
+const LazyProfile = lazy(() => import("./pages/Profile/Profile"));
+const LazyLikes = lazy(() => import("./pages/Likes/Likes"));
+const LazyUsers = lazy(() => import("./pages/Users/Users"));
+const LazyNotFound = lazy(() => import("./pages/NotFound.page"));
+const LazyWpPersonSearch = lazy(() =>
+  import("./pages/WpPersonSearch/WpPersonSearch")
+);
+const LazySearch = lazy(() => import("./pages/Search.page"));
+const LazyPersonPage = lazy(() => import("./pages/Person.page"));
+const LazySahmanahatum = lazy(() =>
+  import("./pages/Sahmanahatum/Sahmanahatum")
+);
+const LazyKadastrCertificate = lazy(() =>
+  import("./pages/KadastrCertificate/KadastrCertificate")
+);
+const LazyVehicleSearch = lazy(() =>
+  import("./pages/VehicleSearch/VehicleSearch")
+);
 
 function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route
-        path="/"
-        element={
-          <RequireAuth fallbackPath={"/login"}>
-            <Layout />
-          </RequireAuth>
-        }
-      >
-        <Route path="pdf" element={<Pdf />} />
-        {/* <Route index element={<Home />} /> */}
+    <Suspense fallback={<div>Loading...</div>}>
+      <Routes>
+        <Route path="/login" element={<LazyLogin />} />
         <Route
-          index
+          path="/"
           element={
-            <RequirePermission
-              permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}
-            >
-              <Search />
-            </RequirePermission>
-          }
-        />
-        <Route
-          path="bpr/:ssn"
-          element={
-            <RequirePermission
-              permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}
-            >
-              <PersonPage />
-            </RequirePermission>
-          }
-        />
-        <Route
-          path="statistics"
-          element={
-            <RequirePermission
-              permissions={[
-                permissionsMap.STATISTICS.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
-            >
-              <Statistics />
-            </RequirePermission>
+            <RequireAuth fallbackPath={"/login"}>
+              <Layout />
+            </RequireAuth>
           }
         >
-          <Route path="work-permit" element={<WorkPermitStats />} />
-          <Route path="deals" element={<Deals />} />
-          <Route path="upload" element={<StatisticsProfile />} />
+          <Route path="pdf" element={<LazyPdf />} />
+          {/* <Route index element={<Home />} /> */}
           <Route
-            path="country-bordercross"
-            element={<StatisticsCountryBordercross />}
+            index
+            element={
+              <RequirePermission
+                permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}
+              >
+                <LazySearch />
+              </RequirePermission>
+            }
           />
           <Route
-            path="total-bordercross"
-            element={<StatisticsTotalBordercross />}
+            path="bpr/:ssn"
+            element={
+              <RequirePermission
+                permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}
+              >
+                <LazyPersonPage />
+              </RequirePermission>
+            }
+          />
+
+          <Route
+            path="register"
+            element={
+              <RequirePermission
+                permissions={[
+                  permissionsMap.PETREGISTER.uid,
+                  permissionsMap.ADMIN.uid,
+                ]}
+              >
+                <LazyRegister />
+              </RequirePermission>
+            }
           />
           <Route
-            path="period-bordercross"
-            element={<StatisticsPeriodBordercross />}
+            path="kadastr-certificates"
+            element={
+              <RequirePermission
+                permissions={[
+                  permissionsMap.KADASTR_CERTIFICATE.uid,
+                  permissionsMap.ADMIN.uid,
+                ]}
+              >
+                <LazyKadastrCertificate />
+              </RequirePermission>
+            }
           />
-          <Route path="citizenship" element={<StatisticsCitizenship />} />
-          <Route path="wp-reports" element={<WpReports />} />
-          <Route path="asylum-reports" element={<AsylumReports />} />
-          <Route path="apastan-total" element={<ApastanTotal />} />
           <Route
-            path="apastan-applications"
-            element={<ApastanApplications />}
+            path="vehicle-search"
+            element={
+              <RequirePermission
+                permissions={[
+                  permissionsMap.ROADPOLICE_FULL_SEARCH.uid,
+                  permissionsMap.ADMIN.uid,
+                ]}
+              >
+                <LazyVehicleSearch />
+              </RequirePermission>
+            }
           />
-          <Route path="apastan-decisions" element={<ApastanDecisions />} />
-          <Route path="apastan-years" element={<ApastanYears />} />
-          <Route path="work-permit-official" element={<WpOfficial />} />
+          <Route
+            path="bordercross"
+            element={
+              <RequirePermission
+                permissions={[
+                  permissionsMap.BORDERCROSS.uid,
+                  permissionsMap.ADMIN.uid,
+                ]}
+              >
+                <LazySahmanahatum />
+              </RequirePermission>
+            }
+          />
+          <Route
+            path="vehicle-search"
+            element={
+              <RequirePermission
+                permissions={[
+                  permissionsMap.ROADPOLICE.uid,
+                  permissionsMap.ADMIN.uid,
+                ]}
+              >
+                <LazyVehicleSearch />
+              </RequirePermission>
+            }
+          />
+          <Route
+            path="register/:taxId"
+            element={
+              <RequirePermission
+                permissions={[
+                  permissionsMap.PETREGISTER.uid,
+                  permissionsMap.ADMIN.uid,
+                ]}
+              >
+                <Register />
+              </RequirePermission>
+            }
+          />
+          <Route
+            path="wp-person-search"
+            element={
+              <RequirePermission
+                permissions={[
+                  permissionsMap.WP_PERSON_SEARCH.uid,
+                  permissionsMap.ADMIN.uid,
+                ]}
+              >
+                <LazyWpPersonSearch />
+              </RequirePermission>
+            }
+          />
+          <Route path="profile" element={<LazyProfile />} />
+          <Route path="likes" element={<LazyLikes />} />
+          <Route path="shares" element={<LazyShares />} />
+          <Route
+            path="users"
+            element={
+              <RequirePermission permissions={[permissionsMap.ADMIN.uid]}>
+                <LazyUsers />
+              </RequirePermission>
+            }
+          />
+          <Route
+            path="roles"
+            element={
+              <RequirePermission permissions={[permissionsMap.ADMIN.uid]}>
+                <LazyRoles />
+              </RequirePermission>
+            }
+          />
+          <Route path="/*" element={<LazyNotFound />} />
         </Route>
-        {/* <Route path="workpermit" element={<WorkPermit />}>
-          <Route path="ssns-fromfile" element={<FileUpload />} />
-        </Route> */}
-        <Route
-          path="register"
-          element={
-            <RequirePermission
-              permissions={[
-                permissionsMap.PETREGISTER.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
-            >
-              <Register />
-            </RequirePermission>
-          }
-        />
-        <Route
-          path="kadastr-certificates"
-          element={
-            <RequirePermission
-              permissions={[
-                permissionsMap.KADASTR_CERTIFICATE.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
-            >
-              <KadastrCertificate />
-            </RequirePermission>
-          }
-        />
-        <Route
-          path="vehicle-search"
-          element={
-            <RequirePermission
-              permissions={[
-                permissionsMap.ROADPOLICE_FULL_SEARCH.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
-            >
-              <VehicleSearch />
-            </RequirePermission>
-          }
-        />
-        <Route
-          path="bordercross"
-          element={
-            <RequirePermission
-              permissions={[
-                permissionsMap.BORDERCROSS.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
-            >
-              <Sahmanahatum />
-            </RequirePermission>
-          }
-        />
-        <Route
-          path="vehicle-search"
-          element={
-            <RequirePermission
-              permissions={[
-                permissionsMap.ROADPOLICE.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
-            >
-              <VehicleSearch />
-            </RequirePermission>
-          }
-        />
-        <Route
-          path="register/:taxId"
-          element={
-            <RequirePermission
-              permissions={[
-                permissionsMap.PETREGISTER.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
-            >
-              <Register />
-            </RequirePermission>
-          }
-        />
-        <Route
-          path="wp-person-search"
-          element={
-            <RequirePermission
-              permissions={[
-                permissionsMap.WP_PERSON_SEARCH.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
-            >
-              <WpPersonSearch />
-            </RequirePermission>
-          }
-        />
-        <Route path="profile" element={<Profile />} />
-        <Route path="likes" element={<Likes />} />
-        <Route path="reports" element={<Reports />} />
-        <Route path="shares" element={<Shares />} />
-        <Route
-          path="users"
-          element={
-            <RequirePermission permissions={[permissionsMap.ADMIN.uid]}>
-              <Users />
-            </RequirePermission>
-          }
-        />
-        <Route
-          path="roles"
-          element={
-            <RequirePermission permissions={[permissionsMap.ADMIN.uid]}>
-              <Roles />
-            </RequirePermission>
-          }
-        />
-        <Route path="/*" element={<NotFound />} />
-      </Route>
-    </Routes>
+      </Routes>
+    </Suspense>
   );
 }
 

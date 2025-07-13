@@ -1,9 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DeleteOutlined } from "@ant-design/icons";
-import { getLikes, toggleLike } from "../api/personsApi";
-import { toast } from "react-toastify";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Button, Form, Popconfirm, message } from "antd";
 import { Link } from "react-router-dom";
-import { Button, Form, Popconfirm, Typography, message } from "antd";
+import { getLikes, toggleLike } from "../api/personsApi";
 import { formatDate } from "../components/pdf-templates/templates.helpers";
 
 const useLikesData = () => {

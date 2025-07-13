@@ -126,27 +126,6 @@ const Header = () => {
               </Button>
             )}
             {userHasPermission(
-              [
-                permissionsMap.CITIZENSHIP_REPORT.uid,
-                permissionsMap.PASSPORTS_REPORT.uid,
-                permissionsMap.PNUM_REPORT.uid,
-                permissionsMap.ADMIN.uid,
-              ],
-              user.permissions
-            ) && (
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
-                <Link to="reports">Տեղեկանքներ</Link>
-              </Button>
-            )}
-            {userHasPermission(
-              [permissionsMap.STATISTICS.uid, permissionsMap.ADMIN.uid],
-              user.permissions
-            ) && (
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
-                <Link to="statistics">Վիճակագրություն</Link>
-              </Button>
-            )}
-            {userHasPermission(
               [permissionsMap.WP_PERSON_SEARCH.uid, permissionsMap.ADMIN.uid],
               user.permissions
             ) && (
@@ -226,14 +205,6 @@ const Header = () => {
                       <Group fontSize="small" />
                     </ListItemIcon>
                     Օգտատերեր
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => onUserMenuClick("/statistics/upload")}
-                  >
-                    <ListItemIcon>
-                      <Group fontSize="small" />
-                    </ListItemIcon>
-                    Սահմանահատման xlsx
                   </MenuItem>
                   <MenuItem onClick={() => onUserMenuClick("/roles")}>
                     <ListItemIcon>

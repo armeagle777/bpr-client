@@ -20,7 +20,7 @@ const MedRow = ({ med }) => {
     <ListItemButton sx={{ pl: 4 }}>
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
-          <Avatar alt="Med" src="../src/assets/red-cross.png" />
+          <Avatar alt="Med" src="/red-cross.png" />
         </ListItemAvatar>
         <ListItemText
           primary={institution_name || ""}

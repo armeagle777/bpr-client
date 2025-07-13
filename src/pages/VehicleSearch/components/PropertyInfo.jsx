@@ -1,15 +1,7 @@
+import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import PictureAsPdfOutlinedIcon from "@mui/icons-material/PictureAsPdfOutlined";
-import {
-  Box,
-  Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Stack,
-} from "@mui/material";
+import { Divider, Stack } from "@mui/material";
+import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -17,25 +9,15 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import Collapse from "@mui/material/Collapse";
+import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
+import Slide from "@mui/material/Slide";
+import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
-import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Fade from "@mui/material/Fade";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import Dialog from "@mui/material/Dialog";
 import React, { useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Slide from "@mui/material/Slide";
-import Toolbar from "@mui/material/Toolbar";
-import CloseIcon from "@mui/icons-material/Close";
-import { v4 } from "uuid";
 
-import OwnerRow from "./OwnerRow";
 import RightsRow from "./RightsRow";
 
 const ExpandMore = styled((props) => {

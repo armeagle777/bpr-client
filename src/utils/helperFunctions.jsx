@@ -2,17 +2,6 @@ import { v4 } from "uuid";
 import StyledTableCell from "../components/finances/StyledTableCell";
 import ThCell from "../components/finances/ThCell";
 import TdCell from "../components/finances/TdCell";
-import fileDownload from "js-file-download";
-import { getFileBySsn } from "../api/personsApi";
-
-export const downloadPdf = async (url, fileName, personInfo) => {
-  try {
-    const file = await getFileBySsn(url, personInfo);
-    fileDownload(file, fileName);
-  } catch (error) {
-    console.log("error:::::: ", error);
-  }
-};
 
 export const formatCountryName = (countryName) => {
   const countryNameArray = countryName.split(" ");
@@ -259,29 +248,6 @@ export const formatedData = (periods) => {
       workinghours: [<ThCell title="Աշխատաժամեր" key={v4()} />],
     }
   );
-};
-
-export const addTotals = (arr) => {
-  if (!arr?.length) return arr;
-
-  const totals = Object.keys(arr[0]).reduce((acc, key) => {
-    if (typeof arr[0][key] === "number") {
-      acc[key] = 0;
-    } else {
-      acc[key] = key === "key" ? "total" : "Ընդամենը";
-    }
-    return acc;
-  }, {});
-
-  arr.forEach((obj) => {
-    for (const key in totals) {
-      if (typeof obj[key] === "number") {
-        totals[key] += obj[key];
-      }
-    }
-  });
-
-  return [totals, ...arr];
 };
 
 export const userHasPermission = (allowedPermissions, userPermissions) => {

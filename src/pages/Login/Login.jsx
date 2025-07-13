@@ -1,25 +1,22 @@
+import LoadingButton from "@mui/lab/LoadingButton";
 import {
+  Avatar,
   Box,
+  CssBaseline,
   Grid,
   Paper,
-  Avatar,
-  Switch,
   TextField,
   Typography,
-  CssBaseline,
-  FormControlLabel,
 } from "@mui/material";
-import LoadingButton from "@mui/lab/LoadingButton";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import useAuthData from "../../hooks/useAuthData";
-import LoginBg from "../../assets/login_bg.jpg";
 import Alert from "@mui/material/Alert";
-import Copyright from "./Copyright";
-import { useNavigate } from "react-router-dom";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo.png";
+import useAuthData from "../../hooks/useAuthData";
+import Copyright from "./Copyright";
 
 const defaultTheme = createTheme();
 
@@ -63,7 +60,7 @@ function Login() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: `url(${LoginBg})`,
+            backgroundImage: "url(/login_bg.jpg)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"

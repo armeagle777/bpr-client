@@ -15,7 +15,6 @@ import { useState } from "react";
 import { userHasPermission } from "../../utils/helperFunctions";
 import { permissionsMap } from "../../utils/constants";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
-import { useTexekanqData } from "../../hooks/useTexekanqData";
 import { LoadingButton } from "@mui/lab";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -23,8 +22,6 @@ import dayjs from "dayjs";
 
 const PersonNotFound = ({ filterProps }) => {
   const user = useAuthUser();
-  const { onCreateTexekanq, texekanqData, texekanqIsLoading } =
-    useTexekanqData();
 
   const [texekanqFields, setTexekanqFields] = useState({
     firstName: filterProps.firstName,

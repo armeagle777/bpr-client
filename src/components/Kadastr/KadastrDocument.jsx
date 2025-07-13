@@ -128,7 +128,6 @@ const KadastrDocument = ({ property, isLoading }) => {
             }}
           ></span>
         </Typography>
-        {/* <GoogleMap latitude={40.1792} longitude={44.4991} /> */}
       </CardContent>
       <CardActions>
         {/* <Button

@@ -9,13 +9,10 @@ import {
   DialogActions,
 } from "@mui/material";
 import { useState } from "react";
-import { useTexekanqData } from "../../hooks/useTexekanqData";
 import CzOrderDocsDropdown from "./CzOrderDocsDropdown";
 import { getAllowedDocuments } from "./helpers";
 
 const CityzenshipTexekanqGenerator = ({ disabled, data, fileName, user }) => {
-  const { onCreateTexekanq, texekanqData, texekanqIsLoading } =
-    useTexekanqData();
   const { PNum, documents } = data;
   const allowedDocuments = getAllowedDocuments(documents);
 
