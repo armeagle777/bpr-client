@@ -22,6 +22,7 @@ const SearchRow = ({ personInfo }) => {
     DeathDate,
     Citizenship_StoppedDate,
   } = personInfo;
+  const sanitizedPNum = PNum?.replace(/\//g, "*");
   const navigate = useNavigate();
 
   const addressLine = formatAddressString(addresses);
@@ -42,7 +43,7 @@ const SearchRow = ({ personInfo }) => {
   const noImageSrc =
     gender === "M" ? "./src/assets/male.png" : "./src/assets/female.png";
   const infoClickHandler = () => {
-    navigate(`/bpr/${PNum}`);
+    navigate(`/bpr/${sanitizedPNum}`);
   };
 
   const isJpk = isPersonJpk(documents);
