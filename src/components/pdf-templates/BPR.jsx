@@ -109,12 +109,6 @@ const BPR = ({ data, userFullName }) => {
             </View>
           </View>
         </View>
-        <View style={styles.footer}>
-          <Text>
-            Տեղեկանքը գեներացվել է ՄՔԾ ներքին որոնման համակարգում {userFullName}{" "}
-            օգտատիրոջ կողմից {currentDate}
-          </Text>
-        </View>
       </Page>
     </Document>
   );
