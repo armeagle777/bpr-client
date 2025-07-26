@@ -5,9 +5,11 @@ import RequireAuth from "@auth-kit/react-router/RequireAuth";
 import Layout from "./components/layout/Layout";
 import { permissionsMap } from "./utils/constants";
 import RequirePermission from "./components/requirePermission/RequirePermission";
+import PageLoader from "./components/PageLoader/PageLoader";
 
 import Home from "./pages/Home.page";
-const LazyLogin = lazy(() => import("./pages/Login/Login"));
+import Login from "./pages/Login/Login";
+import NotFound from "./pages/NotFound.page";
 const LazyRegister = lazy(() => import("./pages/Register.page"));
 const LazyRoles = lazy(() => import("./pages/Roles/Roles"));
 const LazyShares = lazy(() => import("./pages/Shares/Shares"));
@@ -15,7 +17,6 @@ const LazyPdf = lazy(() => import("./pages/Pdf.page"));
 const LazyProfile = lazy(() => import("./pages/Profile/Profile"));
 const LazyLikes = lazy(() => import("./pages/Likes/Likes"));
 const LazyUsers = lazy(() => import("./pages/Users/Users"));
-const LazyNotFound = lazy(() => import("./pages/NotFound.page"));
 const LazyWpPersonSearch = lazy(() =>
   import("./pages/WpPersonSearch/WpPersonSearch")
 );
@@ -33,154 +34,201 @@ const LazyVehicleSearch = lazy(() =>
 
 function App() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Routes>
-        <Route path="/login" element={<LazyLogin />} />
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/"
+        element={
+          <RequireAuth fallbackPath={"/login"}>
+            <Layout />
+          </RequireAuth>
+        }
+      >
         <Route
-          path="/"
+          path="pdf"
           element={
-            <RequireAuth fallbackPath={"/login"}>
-              <Layout />
-            </RequireAuth>
+            <Suspense fallback={<PageLoader />}>
+              <LazyPdf />
+            </Suspense>
           }
-        >
-          <Route path="pdf" element={<LazyPdf />} />
-          {/* <Route index element={<Home />} /> */}
-          <Route
-            index
-            element={
-              <RequirePermission
-                permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}
-              >
+        />
+        <Route
+          index
+          element={
+            <RequirePermission
+              permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}
+            >
+              <Suspense fallback={<PageLoader />}>
                 <LazySearch />
-              </RequirePermission>
-            }
-          />
-          <Route
-            path="bpr/:ssn"
-            element={
-              <RequirePermission
-                permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}
-              >
+              </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="bpr/:ssn"
+          element={
+            <RequirePermission
+              permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}
+            >
+              <Suspense fallback={<PageLoader />}>
                 <LazyPersonPage />
-              </RequirePermission>
-            }
-          />
+              </Suspense>
+            </RequirePermission>
+          }
+        />
 
-          <Route
-            path="register"
-            element={
-              <RequirePermission
-                permissions={[
-                  permissionsMap.PETREGISTER.uid,
-                  permissionsMap.ADMIN.uid,
-                ]}
-              >
+        <Route
+          path="register"
+          element={
+            <RequirePermission
+              permissions={[
+                permissionsMap.PETREGISTER.uid,
+                permissionsMap.ADMIN.uid,
+              ]}
+            >
+              <Suspense fallback={<PageLoader />}>
                 <LazyRegister />
-              </RequirePermission>
-            }
-          />
-          <Route
-            path="kadastr-certificates"
-            element={
-              <RequirePermission
-                permissions={[
-                  permissionsMap.KADASTR_CERTIFICATE.uid,
-                  permissionsMap.ADMIN.uid,
-                ]}
-              >
+              </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="kadastr-certificates"
+          element={
+            <RequirePermission
+              permissions={[
+                permissionsMap.KADASTR_CERTIFICATE.uid,
+                permissionsMap.ADMIN.uid,
+              ]}
+            >
+              <Suspense fallback={<PageLoader />}>
                 <LazyKadastrCertificate />
-              </RequirePermission>
-            }
-          />
-          <Route
-            path="vehicle-search"
-            element={
-              <RequirePermission
-                permissions={[
-                  permissionsMap.ROADPOLICE_FULL_SEARCH.uid,
-                  permissionsMap.ADMIN.uid,
-                ]}
-              >
+              </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="vehicle-search"
+          element={
+            <RequirePermission
+              permissions={[
+                permissionsMap.ROADPOLICE_FULL_SEARCH.uid,
+                permissionsMap.ADMIN.uid,
+              ]}
+            >
+              <Suspense fallback={<PageLoader />}>
                 <LazyVehicleSearch />
-              </RequirePermission>
-            }
-          />
-          <Route
-            path="bordercross"
-            element={
-              <RequirePermission
-                permissions={[
-                  permissionsMap.BORDERCROSS.uid,
-                  permissionsMap.ADMIN.uid,
-                ]}
-              >
+              </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="bordercross"
+          element={
+            <RequirePermission
+              permissions={[
+                permissionsMap.BORDERCROSS.uid,
+                permissionsMap.ADMIN.uid,
+              ]}
+            >
+              <Suspense fallback={<PageLoader />}>
                 <LazySahmanahatum />
-              </RequirePermission>
-            }
-          />
-          <Route
-            path="vehicle-search"
-            element={
-              <RequirePermission
-                permissions={[
-                  permissionsMap.ROADPOLICE.uid,
-                  permissionsMap.ADMIN.uid,
-                ]}
-              >
+              </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="vehicle-search"
+          element={
+            <RequirePermission
+              permissions={[
+                permissionsMap.ROADPOLICE.uid,
+                permissionsMap.ADMIN.uid,
+              ]}
+            >
+              <Suspense fallback={<PageLoader />}>
                 <LazyVehicleSearch />
-              </RequirePermission>
-            }
-          />
-          <Route
-            path="register/:taxId"
-            element={
-              <RequirePermission
-                permissions={[
-                  permissionsMap.PETREGISTER.uid,
-                  permissionsMap.ADMIN.uid,
-                ]}
-              >
-                <Register />
-              </RequirePermission>
-            }
-          />
-          <Route
-            path="wp-person-search"
-            element={
-              <RequirePermission
-                permissions={[
-                  permissionsMap.WP_PERSON_SEARCH.uid,
-                  permissionsMap.ADMIN.uid,
-                ]}
-              >
+              </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="register/:taxId"
+          element={
+            <RequirePermission
+              permissions={[
+                permissionsMap.PETREGISTER.uid,
+                permissionsMap.ADMIN.uid,
+              ]}
+            >
+              <Suspense fallback={<PageLoader />}>
+                <LazyRegister />
+              </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="wp-person-search"
+          element={
+            <RequirePermission
+              permissions={[
+                permissionsMap.WP_PERSON_SEARCH.uid,
+                permissionsMap.ADMIN.uid,
+              ]}
+            >
+              <Suspense fallback={<PageLoader />}>
                 <LazyWpPersonSearch />
-              </RequirePermission>
-            }
-          />
-          <Route path="profile" element={<LazyProfile />} />
-          <Route path="likes" element={<LazyLikes />} />
-          <Route path="shares" element={<LazyShares />} />
-          <Route
-            path="users"
-            element={
-              <RequirePermission permissions={[permissionsMap.ADMIN.uid]}>
+              </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="profile"
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <LazyProfile />
+            </Suspense>
+          }
+        />
+        <Route
+          path="likes"
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <LazyLikes />
+            </Suspense>
+          }
+        />
+        <Route
+          path="shares"
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <LazyShares />
+            </Suspense>
+          }
+        />
+        <Route
+          path="users"
+          element={
+            <RequirePermission permissions={[permissionsMap.ADMIN.uid]}>
+              <Suspense fallback={<PageLoader />}>
                 <LazyUsers />
-              </RequirePermission>
-            }
-          />
-          <Route
-            path="roles"
-            element={
-              <RequirePermission permissions={[permissionsMap.ADMIN.uid]}>
+              </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="roles"
+          element={
+            <RequirePermission permissions={[permissionsMap.ADMIN.uid]}>
+              <Suspense fallback={<PageLoader />}>
                 <LazyRoles />
-              </RequirePermission>
-            }
-          />
-          <Route path="/*" element={<LazyNotFound />} />
-        </Route>
-      </Routes>
-    </Suspense>
+              </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route path="/*" element={<NotFound />} />
+      </Route>
+    </Routes>
   );
 }
 

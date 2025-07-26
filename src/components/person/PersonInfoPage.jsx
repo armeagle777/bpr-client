@@ -112,6 +112,7 @@ const PersonInfoPage = ({ personInfo }) => {
     addresses,
     documents,
   } = formatPersonData(personInfo);
+  const sanitizedPNum = PNum?.replace(/\//g, "*");
 
   const user = useAuthUser();
 
@@ -161,7 +162,7 @@ const PersonInfoPage = ({ personInfo }) => {
     isLoading: displacementDataLoading,
     isError,
     error,
-  } = useFetchArtsakh(PNum);
+  } = useFetchArtsakh(sanitizedPNum);
   if (data?.certificates) {
     personInfo.certificates = data.certificates;
   }
@@ -247,7 +248,7 @@ const PersonInfoPage = ({ personInfo }) => {
                     <PersonalInfoRow
                       width={35}
                       label="ՀԾՀ"
-                      text={PNum || Certificate_Number || ""}
+                      text={sanitizedPNum || Certificate_Number || ""}
                     />
                     <PersonalInfoRow
                       width={35}
@@ -363,7 +364,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 user.permissions
               ) && (
                 <TabPanel value={value} index={index++}>
-                  <Finances ssn={PNum || Certificate_Number} />
+                  <Finances ssn={sanitizedPNum || Certificate_Number} />
                 </TabPanel>
               )}
               {userHasPermission(
@@ -372,7 +373,7 @@ const PersonInfoPage = ({ personInfo }) => {
               ) && (
                 <TabPanel value={value} index={index++}>
                   <Family
-                    ssn={PNum || Certificate_Number}
+                    ssn={sanitizedPNum || Certificate_Number}
                     firstName={firstName}
                     lastName={lastName}
                   />
@@ -383,7 +384,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 user.permissions
               ) && (
                 <TabPanel value={value} index={index++}>
-                  <BusinessTab ssn={PNum || Certificate_Number} />
+                  <BusinessTab ssn={sanitizedPNum || Certificate_Number} />
                 </TabPanel>
               )}
               {userHasPermission(
@@ -391,7 +392,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 user.permissions
               ) && (
                 <TabPanel value={value} index={index++}>
-                  <Kadastr ssn={PNum || Certificate_Number} />
+                  <Kadastr ssn={sanitizedPNum || Certificate_Number} />
                 </TabPanel>
               )}
               {userHasPermission(
@@ -399,7 +400,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 user.permissions
               ) && (
                 <TabPanel value={value} index={index++}>
-                  <PoliceTab pnum={PNum} />
+                  <PoliceTab pnum={sanitizedPNum} />
                 </TabPanel>
               )}
               {userHasPermission(
@@ -407,7 +408,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 user.permissions
               ) && (
                 <TabPanel value={value} index={index++}>
-                  <DisplacementsTab pnum={PNum} />
+                  <DisplacementsTab pnum={sanitizedPNum} />
                 </TabPanel>
               )}
               {userHasPermission(
@@ -415,7 +416,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 user.permissions
               ) && (
                 <TabPanel value={value} index={index++}>
-                  <WpTab pnum={PNum} />
+                  <WpTab pnum={sanitizedPNum} />
                 </TabPanel>
               )}
               {userHasPermission(
@@ -431,7 +432,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 user.permissions
               ) && (
                 <TabPanel value={value} index={index++}>
-                  <RoadPoliceTab pnum={PNum} />
+                  <RoadPoliceTab pnum={sanitizedPNum} />
                 </TabPanel>
               )}
             </Box>
