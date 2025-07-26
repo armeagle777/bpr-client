@@ -187,11 +187,6 @@ export const permissionsMap = {
     name: "ՔԿԱԳ",
     description: "ՔԿԱԳ Որոնում",
   },
-  STATISTICS: {
-    uid: "6000",
-    name: "Վիճակագրություն",
-    description: "Վիճակագրական տվյալներ",
-  },
   KADASTR: {
     uid: "7000",
     name: "Կադաստր",
@@ -211,27 +206,6 @@ export const permissionsMap = {
     uid: "9000",
     name: "Աշխատանքի թույլտվություն",
     description: "Արցախի տեղահանության տեղեկատվություն",
-  },
-  CITIZENSHIP_REPORT: {
-    uid: "10001",
-    name: "Քաղաքացիության տեղեկանք",
-    description: "Տեղեկանք անձի քաղաքացիության վերաբերյալ(Ձև 3)",
-  },
-  PASSPORTS_REPORT: {
-    uid: "10002",
-    name: "Անձնագրերի տեղեկանք",
-    description: "Տեղեկանք անձի անձնագրերի վերաբերյալ",
-  },
-  PNUM_REPORT: {
-    uid: "10003",
-    name: "ՀԾՀ տեղեկանք",
-    description: "Տեղեկանք անձի ՀԾՀ վերաբերյալ",
-  },
-  BORDERCROSS: {
-    uid: "20000",
-    name: "Սահմանահատումներ",
-    description:
-      "Տեղեկատվություն անձի սահմանահատումների, վիզաների և կացության քարտերի վերաբերյալ",
   },
   ROADPOLICE: {
     uid: "30000",

@@ -1,15 +1,5 @@
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import CoPresentIcon from "@mui/icons-material/CoPresent";
-import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
-import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import BusinessIcon from "@mui/icons-material/Business";
-import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
-import PersonSearchIcon from "@mui/icons-material/PersonSearch";
-import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
-import CastleIcon from "@mui/icons-material/Castle";
-import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
 import { Box, Button, Chip, Container, Grid, Stack } from "@mui/material";
 import Tab from "@mui/material/Tab";
@@ -17,18 +7,22 @@ import Tabs from "@mui/material/Tabs";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Kadastr from "../Kadastr/Kadastr";
 import PDFGenerator from "../PDFGenerator/PDFGenerator";
-import BPR from "../pdf-templates/BPR";
+import BusinessTab from "../businessTab/BusinessTab";
 import Documents from "../documents/Documents";
 import Family from "../family/Family";
-import Kadastr from "../Kadastr/Kadastr";
-import BusinessTab from "../businessTab/BusinessTab";
 import Finances from "../finances/Finances";
+import BPR from "../pdf-templates/BPR";
 import PhotoSlider from "../photoSlider/PhotoSlider";
 import SpeedDialButton from "../speedDial/SpeedDial";
 import TabPanel from "../tabPanel/TabPanel";
 import PersonalInfoRow from "./PersonalInfoRow";
 
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import useFetchArtsakh from "../../hooks/useFetchArtsakh";
+import useLikesData from "../../hooks/useLikesData";
+import { permissionsMap } from "../../utils/constants";
 import {
   filterImageSrcs,
   formatCountryName,
@@ -36,16 +30,11 @@ import {
   isPersonJpk,
   userHasPermission,
 } from "../../utils/helperFunctions";
-import PoliceTab from "../policeTab/PoliceTab";
-import useAuthUser from "react-auth-kit/hooks/useAuthUser";
-import useLikesData from "../../hooks/useLikesData";
-import { permissionsMap } from "../../utils/constants";
-import DisplacementsTab from "../DisplacementsTab/DisplacementsTab";
-import WpTab from "../WpTab/WpTab";
 import BordercrossTab from "../BordercrossTab/BordercrossTab";
+import DisplacementsTab from "../DisplacementsTab/DisplacementsTab";
 import RoadPoliceTab from "../RoadPoliceTab/RoadPoliceTab";
-import DropdownWithCheckboxes from "../DropdownCheckbox/DropdownCheckbox";
-import useFetchArtsakh from "../../hooks/useFetchArtsakh";
+import WpTab from "../WpTab/WpTab";
+import PoliceTab from "../policeTab/PoliceTab";
 
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
@@ -107,22 +96,9 @@ const PersonInfoPage = ({ personInfo }) => {
   const handleReceiverChange = (value) => {
     console.log(`selected ${value}`);
   };
+
   let index = 0;
   const isJpk = isPersonJpk(documents);
-
-  const checkIsCitizen = ({ documents, Citizenship_StoppedDate }) => {
-    const hasArmenianCitizenship = documents.some((doc) =>
-      doc.Person?.Citizenship?.Citizenship?.some(
-        (country) => country.CountryCode === "051"
-      )
-    );
-
-    return !!hasArmenianCitizenship && !Citizenship_StoppedDate;
-  };
-  const isPersonCityzen = checkIsCitizen({
-    documents,
-    Citizenship_StoppedDate,
-  });
 
   const {
     data,
@@ -155,19 +131,24 @@ const PersonInfoPage = ({ personInfo }) => {
                   Վերադառնալ
                 </Button>
                 {userHasPermission(
-                  [
-                    permissionsMap.CITIZENSHIP_REPORT.uid,
-                    permissionsMap.PASSPORTS_REPORT.uid,
-                    permissionsMap.PNUM_REPORT.uid,
-                    permissionsMap.ADMIN.uid,
-                  ],
+                  [permissionsMap.BPR.uid, permissionsMap.ADMIN.uid],
                   user.permissions
                 ) && (
-                  <DropdownWithCheckboxes
-                    firstName={firstName}
-                    lastName={lastName}
-                    personInfo={personInfo}
-                    reportNotAllowed={isJpk || !isPersonCityzen}
+                  <PDFGenerator
+                    PDFTemplate={BPR}
+                    fileName={`bpr_${firstName}_${lastName}.pdf`}
+                    buttonText="Արտահանել"
+                    variant="outlined"
+                    Icon={PictureAsPdfIcon}
+                    data={{
+                      addresses,
+                      documents,
+                      PNum,
+                      IsDead,
+                      DeathDate,
+                      Citizenship_StoppedDate,
+                    }}
+                    userFullName={`${user.firstName} ${user.lastName}`}
                   />
                 )}
               </Stack>
@@ -404,17 +385,15 @@ const PersonInfoPage = ({ personInfo }) => {
               )}
             </Box>
 
-            {!drawerOpen && (
-              <SpeedDialButton
-                onLikeToggle={onLikeToggle}
-                uid={PNum}
-                text={likeToggleText}
-                fileName={`bpr_${firstName}_${lastName}.pdf`}
-                PDFTemplate={BPR}
-                data={personInfo}
-                userFullName={`${user.firstName} ${user.lastName}`}
-              />
-            )}
+            <SpeedDialButton
+              onLikeToggle={onLikeToggle}
+              uid={PNum}
+              text={likeToggleText}
+              fileName={`bpr_${firstName}_${lastName}.pdf`}
+              PDFTemplate={BPR}
+              data={personInfo}
+              userFullName={`${user.firstName} ${user.lastName}`}
+            />
           </Container>
         </Grid>
         <Grid item xs={2}>
