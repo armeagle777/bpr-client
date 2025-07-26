@@ -12,7 +12,6 @@ import Login from "./pages/Login/Login";
 import NotFound from "./pages/NotFound.page";
 const LazyRegister = lazy(() => import("./pages/Register.page"));
 const LazyRoles = lazy(() => import("./pages/Roles/Roles"));
-const LazyShares = lazy(() => import("./pages/Shares/Shares"));
 const LazyPdf = lazy(() => import("./pages/Pdf.page"));
 const LazyProfile = lazy(() => import("./pages/Profile/Profile"));
 const LazyLikes = lazy(() => import("./pages/Likes/Likes"));
@@ -195,14 +194,6 @@ function App() {
           element={
             <Suspense fallback={<PageLoader />}>
               <LazyLikes />
-            </Suspense>
-          }
-        />
-        <Route
-          path="shares"
-          element={
-            <Suspense fallback={<PageLoader />}>
-              <LazyShares />
             </Suspense>
           }
         />
