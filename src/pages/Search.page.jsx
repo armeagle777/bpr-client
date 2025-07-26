@@ -77,7 +77,7 @@ const Search = () => {
         />
       </Stack>
       {!persons ? null : persons?.length === 0 ? (
-        <PersonNotFound filterProps={filterProps} />
+        <PersonNotFound />
       ) : (
         <SearchBody
           persons={persons}
