@@ -368,14 +368,6 @@ const PersonInfoPage = ({ personInfo }) => {
                 </TabPanel>
               )}
               {userHasPermission(
-                [permissionsMap.BORDERCROSS.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                <TabPanel value={value} index={index++}>
-                  <BordercrossTab documents={documents} />
-                </TabPanel>
-              )}
-              {userHasPermission(
                 [permissionsMap.ROADPOLICE.uid, permissionsMap.ADMIN.uid],
                 user.permissions
               ) && (
@@ -494,18 +486,6 @@ const PersonInfoPage = ({ personInfo }) => {
                   label="Աշխատանքի թույլտվության տվյալներ"
                   aria-label="family"
                 />
-              )}
-              {userHasPermission(
-                [permissionsMap.BORDERCROSS.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                // <Tooltip title="Սահմանահատումներ">
-                //   <Tab
-                //     icon={<AirplanemodeActiveIcon />}
-                //     aria-label="bordercross"
-                //   />
-                // </Tooltip>
-                <Tab label="Սահմանահատումներ" aria-label="family" />
               )}
               {userHasPermission(
                 [permissionsMap.ROADPOLICE.uid, permissionsMap.ADMIN.uid],

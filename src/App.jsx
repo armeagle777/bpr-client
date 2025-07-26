@@ -21,9 +21,7 @@ const LazyWpPersonSearch = lazy(() =>
 );
 const LazySearch = lazy(() => import("./pages/Search.page"));
 const LazyPersonPage = lazy(() => import("./pages/Person.page"));
-const LazySahmanahatum = lazy(() =>
-  import("./pages/Sahmanahatum/Sahmanahatum")
-);
+
 const LazyKadastrCertificate = lazy(() =>
   import("./pages/KadastrCertificate/KadastrCertificate")
 );
@@ -117,21 +115,6 @@ function App() {
             >
               <Suspense fallback={<PageLoader />}>
                 <LazyVehicleSearch />
-              </Suspense>
-            </RequirePermission>
-          }
-        />
-        <Route
-          path="bordercross"
-          element={
-            <RequirePermission
-              permissions={[
-                permissionsMap.BORDERCROSS.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
-            >
-              <Suspense fallback={<PageLoader />}>
-                <LazySahmanahatum />
               </Suspense>
             </RequirePermission>
           }
