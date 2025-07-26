@@ -11,19 +11,10 @@ import AirplanemodeActiveIcon from "@mui/icons-material/AirplanemodeActive";
 import CastleIcon from "@mui/icons-material/Castle";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Chip,
-  Container,
-  Grid,
-  Stack,
-  Tooltip,
-} from "@mui/material";
+import { Box, Button, Chip, Container, Grid, Stack } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import PDFGenerator from "../PDFGenerator/PDFGenerator";
@@ -48,9 +39,6 @@ import {
 import PoliceTab from "../policeTab/PoliceTab";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import useLikesData from "../../hooks/useLikesData";
-import Drawer from "../Drawer/Drawer";
-import { Form, Input, Select, Button as AntButton } from "antd";
-import useShareData from "../../hooks/useShareData";
 import { permissionsMap } from "../../utils/constants";
 import DisplacementsTab from "../DisplacementsTab/DisplacementsTab";
 import WpTab from "../WpTab/WpTab";
@@ -62,18 +50,6 @@ import useFetchArtsakh from "../../hooks/useFetchArtsakh";
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
   const { onLikeToggle } = useLikesData();
-  const [open, setOpen] = useState(false);
-  const anchorRef = useRef(null);
-  const [selectedIndex, setSelectedIndex] = useState(1);
-
-  const {
-    onShareSubmit,
-    shareForm,
-    getUsersLodaing,
-    usersOptions,
-    drawerOpen,
-    setDrawerOpen,
-  } = useShareData();
 
   const {
     titlePerson: {
@@ -127,15 +103,6 @@ const PersonInfoPage = ({ personInfo }) => {
   const likeToggleText = middleName
     ? `${firstName} ${lastName} ${middleName}`
     : `${firstName} ${lastName}`;
-
-  const onDrawerClose = () => {
-    setDrawerOpen(false);
-    shareForm.resetFields();
-  };
-
-  const onDrawerOpen = () => {
-    setDrawerOpen(true);
-  };
 
   const handleReceiverChange = (value) => {
     console.log(`selected ${value}`);
@@ -440,7 +407,6 @@ const PersonInfoPage = ({ personInfo }) => {
             {!drawerOpen && (
               <SpeedDialButton
                 onLikeToggle={onLikeToggle}
-                onShareClick={onDrawerOpen}
                 uid={PNum}
                 text={likeToggleText}
                 fileName={`bpr_${firstName}_${lastName}.pdf`}
@@ -575,79 +541,6 @@ const PersonInfoPage = ({ personInfo }) => {
           </Box>
         </Grid>
       </Grid>
-      <Drawer
-        open={drawerOpen}
-        title={<p>Կիսվել այլոց հետ</p>}
-        onClose={onDrawerClose}
-        loading={getUsersLodaing}
-      >
-        <Form layout="vertical" form={shareForm} onFinish={onShareSubmit}>
-          <Form.Item
-            name="uid"
-            label="ՀԾՀ"
-            rules={[{ required: true, message: "Տվյալ դաշտը պարտադիր է" }]}
-            initialValue={PNum}
-          >
-            <Input readOnly />
-          </Form.Item>
-          <Form.Item
-            name="text"
-            label="ԱԱՀ"
-            rules={[{ required: true, message: "Տվյալ դաշտը պարտադիր է" }]}
-            initialValue={likeToggleText}
-          >
-            <Input readOnly />
-          </Form.Item>
-          <Form.Item
-            name="receivers"
-            label="Հասցեատեր"
-            rules={[{ required: true, message: "Տվյալ դաշտը պարտադիր է" }]}
-          >
-            <Select
-              mode="multiple"
-              style={{
-                width: "100%",
-              }}
-              placeholder="Ընտրեք ստացողներին"
-              onChange={handleReceiverChange}
-              options={usersOptions}
-            />
-          </Form.Item>
-          <Form.Item name="comment" label="Հաղորդագրություն">
-            <Input.TextArea
-              rows={4}
-              placeholder="Մուտքագրել հաղորդագրություն"
-            />
-          </Form.Item>
-          <Form.Item shouldUpdate>
-            {() => (
-              <>
-                <AntButton
-                  color="secondary"
-                  variant="outlined"
-                  onClick={onDrawerClose}
-                >
-                  Չեղարկել
-                </AntButton>
-                <AntButton
-                  style={{ marginLeft: "10px" }}
-                  variant="outlined"
-                  htmlType="submit"
-                  // loading={getUsersLodaing}
-                  disabled={
-                    !shareForm.isFieldsTouched(false) ||
-                    !!shareForm
-                      .getFieldsError()
-                      .filter(({ errors }) => errors.length).length
-                  }
-                >
-                  Կիսվել
-                </AntButton>
-              </>
-            )}
-          </Form.Item>
-        </Form>
-      </Drawer>
     </>
   );
 };
