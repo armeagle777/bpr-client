@@ -215,12 +215,6 @@ const Header = () => {
                 </div>
               )}
 
-              <MenuItem onClick={() => onUserMenuClick("/shares")}>
-                <ListItemIcon>
-                  <Share fontSize="small" />
-                </ListItemIcon>
-                Նամականի
-              </MenuItem>
               <MenuItem onClick={() => onUserMenuClick("/likes")}>
                 <ListItemIcon>
                   <Save fontSize="small" />
