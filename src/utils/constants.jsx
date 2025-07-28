@@ -229,6 +229,11 @@ export const permissionsMap = {
     name: "Ադմինիստրատոր",
     description: "Ադմինիստրատոր",
   },
+  HR: {
+    uid: "8888",
+    name: "HR",
+    description: "ՄՌԿ",
+  },
 };
 
 export const documentStatusesMap = {
