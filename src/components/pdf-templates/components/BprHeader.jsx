@@ -1,17 +1,14 @@
-import { Image, Text, View } from "@react-pdf/renderer";
-import Logo from "../../../assets/logo.png";
+import { Text, View } from "@react-pdf/renderer";
 import { styles } from "../templates.constants";
 
 const BprHeader = () => {
   return (
     <View style={styles.header}>
       <View style={styles.logoContainer}>
-        <Image src={Logo} style={styles.logo} />
+        {/* <Image src={Logo} style={styles.logo} /> */}
       </View>
       <View style={styles.company}>
-        <Text style={styles.companyText}>
-          Միգրացիայի ԵՎ Քաղաքացիության ծառայության ներքին որոնման համակարգ
-        </Text>
+        <Text style={styles.companyText}>Ներքին որոնման համակարգ</Text>
       </View>
     </View>
   );

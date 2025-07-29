@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { CardMedia } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -12,7 +11,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { Divider, ListItemIcon } from "@mui/material";
-import { PersonAdd, Save, Logout, Share, Group } from "@mui/icons-material";
+import { PersonAdd, Save, Logout, Group } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthData from "../../hooks/useAuthData";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
@@ -50,12 +49,6 @@ const Header = () => {
     <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <CardMedia
-            component="img"
-            sx={{ width: 50 }}
-            image="/logo.png"
-            alt="logo"
-          />
           <Typography
             variant="h6"
             noWrap
