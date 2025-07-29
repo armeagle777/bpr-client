@@ -64,12 +64,13 @@ const Header = () => {
               textDecoration: "none",
             }}
           >
-            ՀՀ ՆԳՆ ՄՔԾ
+            Համակարգ
           </Typography>
           <Box
             sx={{
               flexGrow: 1,
               display: { xs: "flex", md: "flex" },
+              justifyContent: "center",
             }}
           >
             {userHasPermission(

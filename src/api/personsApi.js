@@ -12,9 +12,8 @@ const personsApi = axios.create({
 
 export const checkMyIp = async () => {
   const internalUrl = import.meta.env.VITE_SERVER_URL;
-  const ovirNetworkUrl = import.meta.env.VITE_SERVER_OUT_URL;
 
-  const urls = [internalUrl, ovirNetworkUrl];
+  const urls = [internalUrl];
 
   const requests = urls.map((url) =>
     axios
