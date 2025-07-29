@@ -8,9 +8,7 @@ import { checkMyIp, login, logOut } from "../api/personsApi";
 
 const useAuthData = () => {
   const [checkErrors, setCheckErrors] = useState(false);
-  // const [outerNetwork, setOuterNetwork] = useState(() => {
-  //   return localStorage.getItem("serverSwitch") === "true";
-  // });
+
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -83,12 +81,6 @@ const useAuthData = () => {
     logoutMutation.mutate();
   };
 
-  // const switchServers = () => {
-  //   const newValue = !outerNetwork;
-  //   setOuterNetwork((oldNetwork) => !oldNetwork);
-  //   localStorage.setItem("serverSwitch", newValue);
-  // };
-
   return {
     error,
     isError,
@@ -96,8 +88,6 @@ const useAuthData = () => {
     isLoading,
     identifier,
     setPassword,
-    // switchServers,
-    // outerNetwork,
     checkErrors,
     setIdentifier,
     onLogout,
