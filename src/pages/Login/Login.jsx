@@ -14,7 +14,6 @@ import Alert from "@mui/material/Alert";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../assets/logo.png";
 import useAuthData from "../../hooks/useAuthData";
 import Copyright from "./Copyright";
 
@@ -80,7 +79,7 @@ function Login() {
               alignItems: "center",
             }}
           >
-            <Avatar
+            {/* <Avatar
               sx={{
                 m: 1,
                 width: 40,
@@ -90,7 +89,7 @@ function Login() {
                 backgroundColor: "transparent",
               }}
               src={Logo}
-            />
+            /> */}
             <Typography component="h1" variant="h5">
               Ներքին Որոնման Համակարգ
             </Typography>
