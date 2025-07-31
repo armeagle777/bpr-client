@@ -14,7 +14,11 @@ const Kadastr = ({ ssn }) => {
   }
 
   if (isError) {
-    return <MuiAlert severity="error">{error.message}</MuiAlert>;
+    return (
+      <MuiAlert severity="error">
+        {error.response?.data?.message || error.message}
+      </MuiAlert>
+    );
   }
   const sortedData = data?.sort((a, b) => {
     // First, sort by cad_is_terminate (0 before 1)
