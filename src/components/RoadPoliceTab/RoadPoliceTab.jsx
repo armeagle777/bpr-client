@@ -14,7 +14,11 @@ const RoadPoliceTab = ({ pnum }) => {
   }
 
   if (isError) {
-    return <MuiAlert severity="error">{error.message}</MuiAlert>;
+    return (
+      <MuiAlert severity="error">
+        {error.response?.data?.message || error.message}
+      </MuiAlert>
+    );
   }
 
   const { license, vehicles } = data;
