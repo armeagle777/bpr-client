@@ -79,7 +79,7 @@ export const getCountriesData = async () => {
 };
 
 export const getWpPersonData = async (filters, page) => {
-  const response = await personsApi.post(`/wp/person/filter`, {
+  const response = await personsApi.post(`/wp/filter/wp-data`, {
     filters,
     page,
   });
@@ -205,7 +205,7 @@ export const getQkagDocsBySsn = async (ssn, firstName, lastName) => {
 };
 
 export const getPropertiesBySsn = async (ssn) => {
-  const response = await personsApi.get(`/kadastr/${ssn}/person`);
+  const response = await personsApi.get(`/persons/${ssn}/document`);
   return response.data;
 };
 
@@ -215,12 +215,7 @@ export const getDisplacementsBySsn = async (ssn) => {
 };
 
 export const getWpDataBySsn = async (ssn) => {
-  const response = await personsApi.get(`/wp/${ssn}`);
-  return response.data;
-};
-
-export const getBordercrossDataBySsn = async (data) => {
-  const response = await personsApi.post(`/persons/bordercross`, data);
+  const response = await personsApi.get(`/persons/${ssn}/wp`);
   return response.data;
 };
 
@@ -259,7 +254,7 @@ export const getKadastrCertByNumber = async (q, searchBase) => {
 };
 
 export const getCompaniesBySsn = async (ssn) => {
-  const response = await personsApi.get(`/petregistr/${ssn}/person`);
+  const response = await personsApi.get(`/petregistr/${ssn}/petregistr`);
   return response.data;
 };
 
