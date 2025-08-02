@@ -20,7 +20,6 @@ import TabPanel from "../tabPanel/TabPanel";
 import PersonalInfoRow from "./PersonalInfoRow";
 
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
-import useFetchArtsakh from "../../hooks/useFetchArtsakh";
 import useLikesData from "../../hooks/useLikesData";
 import { permissionsMap } from "../../utils/constants";
 import {
@@ -30,8 +29,6 @@ import {
   isPersonJpk,
   userHasPermission,
 } from "../../utils/helperFunctions";
-import BordercrossTab from "../BordercrossTab/BordercrossTab";
-import DisplacementsTab from "../DisplacementsTab/DisplacementsTab";
 import RoadPoliceTab from "../RoadPoliceTab/RoadPoliceTab";
 import WpTab from "../WpTab/WpTab";
 import PoliceTab from "../policeTab/PoliceTab";
@@ -100,15 +97,6 @@ const PersonInfoPage = ({ personInfo }) => {
   let index = 0;
   const isJpk = isPersonJpk(documents);
 
-  const {
-    data,
-    isLoading: displacementDataLoading,
-    isError,
-    error,
-  } = useFetchArtsakh(sanitizedPNum);
-  if (data?.certificates) {
-    personInfo.certificates = data.certificates;
-  }
   return (
     <>
       <Grid container spacing={2}>
@@ -352,14 +340,6 @@ const PersonInfoPage = ({ personInfo }) => {
                 </TabPanel>
               )}
               {userHasPermission(
-                [permissionsMap.ARTSAKH.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                <TabPanel value={value} index={index++}>
-                  <DisplacementsTab pnum={sanitizedPNum} />
-                </TabPanel>
-              )}
-              {userHasPermission(
                 [permissionsMap.WP.uid, permissionsMap.ADMIN.uid],
                 user.permissions
               ) && (
@@ -465,15 +445,6 @@ const PersonInfoPage = ({ personInfo }) => {
                 //   <Tab icon={<LocalPoliceIcon />} aria-label="police" />
                 // </Tooltip>
                 <Tab label="ԻՑ տվյալներ" aria-label="family" />
-              )}
-              {userHasPermission(
-                [permissionsMap.ARTSAKH.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                // <Tooltip title="Տեղահանումների տվյալներ">
-                //   <Tab icon={<LocalFireDepartmentIcon />} aria-label="artsakh" />
-                // </Tooltip>
-                <Tab label="Տեղահանություններ" aria-label="family" />
               )}
               {userHasPermission(
                 [permissionsMap.WP.uid, permissionsMap.ADMIN.uid],
