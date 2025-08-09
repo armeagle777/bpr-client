@@ -88,7 +88,7 @@ export const getWpPersonData = async (filters, page) => {
 
 export const getWpPersonFullData = async (props) => {
   const { id, tablename, user_id } = props;
-  const response = await personsApi.post(`/wp/person/${id}/detail`, {
+  const response = await personsApi.post(`/wp/person/${id}/wp-data`, {
     tablename,
     user_id,
   });
