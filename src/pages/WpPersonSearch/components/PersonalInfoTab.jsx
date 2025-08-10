@@ -257,7 +257,7 @@ const PersonalInfoTab = ({ data }) => {
         </Grid>
         <Grid item container xs={12}>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={3}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 label="Էլ.փոստ"
                 fullWidth
@@ -273,18 +273,6 @@ const PersonalInfoTab = ({ data }) => {
                 value={
                   user_created
                     ? dayjs(user_created).format("YYYY-MM-DD HH:mm:ss")
-                    : ""
-                }
-              />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField
-                label="Ակտիվացման ամսաթիվ"
-                fullWidth
-                InputProps={{ readOnly: true }}
-                value={
-                  email_verified_at
-                    ? dayjs(email_verified_at).format("YYYY-MM-DD HH:mm:ss")
                     : ""
                 }
               />

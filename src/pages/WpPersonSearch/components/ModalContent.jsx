@@ -43,6 +43,7 @@ const ModalContent = ({ selectedTab, onTabChange, data }) => {
             dataSource={claims}
             columns={claimsTabColumns}
             pagination={false}
+            rowKey="id"
           />
         )}
       </TabPanel>
@@ -53,6 +54,7 @@ const ModalContent = ({ selectedTab, onTabChange, data }) => {
             dataSource={cards}
             columns={cardsTabColumns}
             pagination={false}
+            rowKey="id"
           />
         )}
       </TabPanel>
@@ -81,6 +83,7 @@ const ModalContent = ({ selectedTab, onTabChange, data }) => {
                 },
               };
             }}
+            rowKey="id"
           />
         )}
       </TabPanel>
