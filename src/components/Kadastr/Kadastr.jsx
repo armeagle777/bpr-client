@@ -3,7 +3,7 @@ import MuiAlert from "@mui/material/Alert";
 import useFetchKadastr from "../../hooks/useFetchKadastr";
 import DocumentNotFound from "./DocumentNotFound";
 import ListScileton from "../listSceleton/ListScileton";
-import KadastrDocument from "./KadastrDocument";
+import PropertyInfo from "../../pages/KadastrCertificate/components/PropertyInfo";
 import { Stack } from "@mui/material";
 
 const Kadastr = ({ ssn }) => {
@@ -20,29 +20,14 @@ const Kadastr = ({ ssn }) => {
       </MuiAlert>
     );
   }
-  const sortedData = data?.sort((a, b) => {
-    // First, sort by cad_is_terminate (0 before 1)
-    if (a.cad_is_terminate !== b.cad_is_terminate) {
-      return a.cad_is_terminate - b.cad_is_terminate;
-    }
 
-    // Then, sort by cad_registration_date in descending order
-    const dateA = new Date(a.cad_registration_date);
-    const dateB = new Date(b.cad_registration_date);
-
-    return dateB - dateA; // Sorting in descending order
-  });
   return (
     <Stack spacing={2} flexDirection="column" sx={{ py: 3, px: 1 }}>
-      {sortedData?.length === 0 ? (
+      {data?.length === 0 ? (
         <DocumentNotFound />
       ) : (
-        sortedData.map((property, index) => (
-          <KadastrDocument
-            key={index}
-            property={property}
-            isLoading={isLoading}
-          />
+        data?.map((property, index) => (
+          <PropertyInfo key={index} property={property} />
         ))
       )}
     </Stack>
