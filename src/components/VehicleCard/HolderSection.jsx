@@ -5,6 +5,8 @@ import HomeIcon from "@mui/icons-material/Home";
 import PhoneIphoneIcon from "@mui/icons-material/PhoneIphone";
 
 const HolderSection = ({ holder }) => {
+  const isTheOnlyHolder =
+    holder.rp_is_holder === undefined || holder.rp_is_holder === true;
   return (
     <>
       <Divider sx={{ my: 2 }} />
@@ -16,24 +18,26 @@ const HolderSection = ({ holder }) => {
                 fontSize="small"
                 sx={{ verticalAlign: "middle", mr: 1 }}
               />
-              {holder.is_holder ? "Սեփականատերը" : "Սեփականատեր"}
+              {isTheOnlyHolder ? "Սեփականատերը" : "Սեփականատեր"}
             </Typography>
             <Typography variant="h6">
-              {holder?.first_name} {holder?.middle_name} {holder?.last_name}
+              {holder?.first_name} {holder?.patronic_name} {holder?.last_name}
             </Typography>
             <Typography variant="body2">
               <BadgeIcon
                 fontSize="small"
                 sx={{ verticalAlign: "middle", mr: 1 }}
               />
-              Անձնագիր: {holder?.identification_no}
+              Անձնագիր: {holder?.rp_entity_identification_number}
             </Typography>
             <Typography variant="body2">
               <PhoneIphoneIcon
                 fontSize="small"
                 sx={{ verticalAlign: "middle", mr: 1 }}
               />
-              Հեռ: {holder?.address?.mobile || holder?.address?.phone}
+              Հեռ:{" "}
+              {holder?.rp_vehicle_holder_address?.br_mobile ||
+                holder?.rp_vehicle_holder_address?.br_phone}
             </Typography>
           </Box>
         </Grid>
@@ -50,12 +54,15 @@ const HolderSection = ({ holder }) => {
               Հասցեն
             </Typography>
             <Typography variant="body2">
-              {holder?.address?.street1},{holder?.address?.house_type}{" "}
-              {holder?.address?.house},{holder?.address?.apt}
+              {holder?.rp_vehicle_holder_address?.br_address_line_1},
+              {holder?.rp_vehicle_holder_address?.building_type}{" "}
+              {holder?.rp_vehicle_holder_address?.building},
+              {holder?.rp_vehicle_holder_address?.apartment}
             </Typography>
             <Typography variant="body2">
-              {holder?.address?.city_town}, {holder?.address?.province},{" "}
-              {holder?.address?.postcode}
+              {holder?.rp_vehicle_holder_address?.community},{" "}
+              {holder?.rp_vehicle_holder_address?.region},{" "}
+              {holder?.rp_vehicle_holder_address?.postal_index}
             </Typography>
           </Box>
         </Grid>

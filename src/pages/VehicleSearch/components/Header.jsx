@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/PersonSearch";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
@@ -8,7 +8,6 @@ import BuildIcon from "@mui/icons-material/Build";
 
 import {
   Box,
-  Button,
   Stack,
   TextField,
   ToggleButton,
@@ -16,14 +15,13 @@ import {
   Tooltip,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { useKadastrCerts } from "../../../components/context/kadastrCerts";
 import { useVehicleSearch } from "../../../components/context/vehicleSearch";
 
 const SEARCH_BASES = {
-  PLATE_NUMBER: "number",
+  PLATE_NUMBER: "vehicle_number",
   SSN: "psn",
-  VIN_CODE: "vin",
-  CERTIFICATE_NUMBER: "cert_num",
+  VIN_CODE: "vehicle_vin",
+  CERTIFICATE_NUMBER: "vehicle_reg_num",
 };
 
 const PLACEHOLDERS = {

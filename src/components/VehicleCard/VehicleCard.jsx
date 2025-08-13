@@ -21,8 +21,11 @@ import LenderSection from "./LenderSection";
 
 const VehicleCard = ({ car }) => {
   const holder =
-    car.owners?.find((owner) => owner.is_holder === 1) || car.holder;
-  const otherOwners = car.owners?.filter((owner) => owner.is_holder !== 1);
+    car.rp_vehicle_holder ||
+    car.rp_vehicle_owners?.find((owner) => owner.rp_is_holder === true);
+  const otherOwners = car.rp_vehicle_owners?.filter(
+    (owner) => owner.rp_is_holder !== true
+  );
 
   return (
     <Grid item xs={9}>
@@ -30,8 +33,10 @@ const VehicleCard = ({ car }) => {
         {/* Header */}
         <CardHeader
           avatar={<DirectionsCarIcon color="primary" />}
-          title={`${car.model_name} - ${car.model} - ${car.cert_num}`}
-          subheader={`Կարգաիճակը: ${car.registration_status}`}
+          title={`${car.model_name} - ${car.vehicle_model} - ${
+            car.cert_num || car.vehicle_registration_certificate_number
+          }`}
+          subheader={`Կարգաիճակը: ${car.vehicle_registration_status}`}
         />
 
         <CardContent>
@@ -47,12 +52,12 @@ const VehicleCard = ({ car }) => {
               </Typography>
               <Box
                 sx={{
-                  width: 150, // Adjust based on the plate size
+                  width: 150,
                   height: 34,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundImage: `url("../../../../../public/plate.png")`, // Replace with the actual image path
+                  backgroundImage: `url("../../../../../public/plate.png")`,
                   backgroundSize: "contain",
                   backgroundPosition: "center",
                 }}
@@ -65,7 +70,7 @@ const VehicleCard = ({ car }) => {
                     fontFamily: "'DIN 1451 Mittelschrift', sans-serif",
                   }}
                 >
-                  {car.number}
+                  {car.vehicle_number}
                 </Typography>
               </Box>
             </Grid>
@@ -79,14 +84,17 @@ const VehicleCard = ({ car }) => {
                 ԱՊՊԱ
               </Typography>
               <Chip
-                label={car.insurance_info?.insurance_name}
+                label={
+                  car.rp_vehicle_insurance_details?.vehicle_insurance_company
+                }
                 color="success"
                 variant="outlined"
                 size="small"
               />
               <Typography variant="body2" color="text.secondary">
-                Վավեր: {car.insurance_info?.start_date} -{" "}
-                {car.insurance_info?.end_date}
+                Վավեր:{" "}
+                {car.rp_vehicle_insurance_details?.vehicle_insurance_start_date}{" "}
+                - {car.rp_vehicle_insurance_details?.vehicle_insurance_end_date}
               </Typography>
             </Grid>
 
@@ -99,7 +107,7 @@ const VehicleCard = ({ car }) => {
                 />
                 Նույնականացման համարը(VIN)
               </Typography>
-              <Typography>{car.vin}</Typography>
+              <Typography>{car.vehicle_vin}</Typography>
             </Grid>
 
             {car.special_notes && (
@@ -111,7 +119,7 @@ const VehicleCard = ({ car }) => {
                   />
                   Հատուկ նշումներ
                 </Typography>
-                <Typography>{car.special_notes}</Typography>
+                <Typography>{car.vehicle_special_notes}</Typography>
               </Grid>
             )}
 
@@ -124,7 +132,7 @@ const VehicleCard = ({ car }) => {
                 />
                 Թողարկման տարեթիվը
               </Typography>
-              <Typography>{car.released}</Typography>
+              <Typography>{car.vehicle_release_date}</Typography>
             </Grid>
 
             {/* Engine & Fuel */}
@@ -137,7 +145,7 @@ const VehicleCard = ({ car }) => {
                 Շարժիչի տեսակը
               </Typography>
               <Typography>
-                {car.fuel} ({car.fuel_type})
+                {car.fuel} ({car.vehicle_fuel_type})
               </Typography>
             </Grid>
 
@@ -150,26 +158,26 @@ const VehicleCard = ({ car }) => {
                 Շարժիչի հզորությունը (ԿՎՏ / ՁՈՒ)
               </Typography>
               <Typography>
-                {car.engine_power} kW / {car.engine_hp} HP
+                {car.vehicle_engine_power} kW / {car.vehicle_engine_hp} HP
               </Typography>
             </Grid>
 
             {/* Transit & Temporary Numbers */}
-            {car.transit_number && (
+            {car.vehicle_transit_number && (
               <Grid item xs={6}>
                 <Typography variant="subtitle2" color="text.secondary">
                   Ժամանակավոր համարանիշը
                 </Typography>
-                <Typography>{car.transit_number}</Typography>
+                <Typography>{car.vehicle_transit_number}</Typography>
               </Grid>
             )}
 
-            {car.temporary_number && (
+            {car.vehicle_temporary_number && (
               <Grid item xs={6}>
                 <Typography variant="subtitle2" color="text.secondary">
                   Ժամանակավոր համարանիշը
                 </Typography>
-                <Typography>{car.temporary_number}</Typography>
+                <Typography>{car.vehicle_temporary_number}</Typography>
               </Grid>
             )}
 
@@ -182,7 +190,7 @@ const VehicleCard = ({ car }) => {
                 />
                 Տրված է
               </Typography>
-              <Typography>{car.recording_date}</Typography>
+              <Typography>{car.vehicle_recording_date}</Typography>
             </Grid>
 
             <Grid item xs={6}>
@@ -190,7 +198,7 @@ const VehicleCard = ({ car }) => {
                 Թափքի տեսակը
               </Typography>
               <Typography>
-                {car.vehicle_type} / {car.body_type}
+                {car.vehicle_type} / {car.vehicle_body_type}
               </Typography>
             </Grid>
           </Grid>
