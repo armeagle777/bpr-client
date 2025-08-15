@@ -166,21 +166,6 @@ export const getLikes = async () => {
   return response.data;
 };
 
-export const getShares = async () => {
-  const response = await personsApi.get(`/shares`);
-  return response.data;
-};
-
-export const shareInfo = async (data) => {
-  const response = await personsApi.post(`/shares/share`, data);
-  return response.data;
-};
-
-export const removeShare = async ({ id, data }) => {
-  const response = await personsApi.put(`/shares/remove/${id}`, data);
-  return response.data;
-};
-
 export const toggleLike = async ({ uid, text }) => {
   const response = await personsApi.post(`/likes/like/${uid}`, { text });
   return response.data;
@@ -260,6 +245,11 @@ export const getCompaniesBySsn = async (ssn) => {
 
 export const getPoliceByPnum = async (pnum) => {
   const response = await personsApi.get(`/persons/${pnum}/police`);
+  return response.data;
+};
+
+export const createLog = async (fileInfo = {}) => {
+  const response = await personsApi.post(`/logs`, fileInfo);
   return response.data;
 };
 
