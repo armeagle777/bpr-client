@@ -37,15 +37,17 @@ const styles = StyleSheet.create({
   },
 });
 
-const Company = ({ data }) => (
-  <Document>
-    <Page style={styles.page}>
-      <View style={styles.container}>
-        <Text>Company DATA</Text>
-        <Text style={styles.text}>{data.name_am}</Text>
-      </View>
-    </Page>
-  </Document>
-);
+const Company = ({ data }) => {
+  return (
+    <Document>
+      <Page style={styles.page}>
+        <View style={styles.container}>
+          <Text>Company DATA</Text>
+          <Text style={styles.text}>{data.name_am}</Text>
+        </View>
+      </Page>
+    </Document>
+  );
+};
 
 export default Company;

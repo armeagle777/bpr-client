@@ -39,10 +39,10 @@ import PdfViewer from "../pdfViewer/PdfViewer";
 
 import { activityCodes } from "../../utils/industryCodes";
 import OwnerRow from "./OwnerRow";
-import FullScreenDialog from "../fullscreenModal/FullscreenModal";
 import { companyDocumentNames } from "../../utils/constants";
 import PDFGenerator from "../PDFGenerator/PDFGenerator";
 import Company from "../pdf-templates/Company";
+import useLogs from "../../hooks/useLogs";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -60,6 +60,8 @@ const CompanyInfo = ({ company }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [documentName, setDocumentName] = useState(undefined);
   const [showDialog, setShowDialog] = useState(false);
+
+  const { createLogHandler } = useLogs();
 
   const open = Boolean(anchorEl);
 
@@ -245,9 +247,6 @@ const CompanyInfo = ({ company }) => {
           </Stack>
         </CardContent>
         <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
           <PDFGenerator
             PDFTemplate={Company}
             fileName={`petregister_${name_am}.pdf`}
@@ -400,6 +399,12 @@ const CompanyInfo = ({ company }) => {
                           style={{
                             textDecoration: "none",
                             color: "black",
+                          }}
+                          onClick={() => {
+                            createLogHandler({
+                              fileName: `${companyDocumentNames[documentName]?.title}.pdf`,
+                              hvhh: taxid,
+                            });
                           }}
                         >
                           Ներբեռնել

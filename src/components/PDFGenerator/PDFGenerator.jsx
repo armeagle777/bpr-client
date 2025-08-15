@@ -1,8 +1,7 @@
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import LoadingButton from "@mui/lab/LoadingButton";
 import IconButton from "@mui/material/IconButton";
-import { useMutation } from "@tanstack/react-query";
-import { createLog } from "../../api/personsApi";
+import useLogs from "../../hooks/useLogs";
 
 const PDFGenerator = ({
   PDFTemplate,
@@ -14,9 +13,7 @@ const PDFGenerator = ({
   data,
   userFullName,
 }) => {
-  const logMutation = useMutation({
-    mutationFn: createLog,
-  });
+  const { createLogHandler } = useLogs();
 
   return (
     <PDFDownloadLink
@@ -24,15 +21,15 @@ const PDFGenerator = ({
       fileName={fileName}
     >
       {({ blob, url, loading, error }) => {
-        const handleClick = () => {
-          logMutation.mutate({
+        const handleClick = () =>
+          createLogHandler({
             fileName,
-            userFullName,
+            PNum: data?.PNum || data?.person?.psn,
+            hvhh: data?.taxid,
           });
-        };
 
         return iconButton ? (
-          <IconButton aria-label="export">
+          <IconButton aria-label="export" onClick={handleClick}>
             <Icon color="error" />
           </IconButton>
         ) : (
