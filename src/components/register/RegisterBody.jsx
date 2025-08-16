@@ -1,11 +1,8 @@
-import MuiAlert from "@mui/material/Alert";
+import { MuiAlert } from "@mui/material";
 
-import { useCompanies } from "../context/companies";
 import CompanyInfo from "./CompanyInfo";
 
-const RegisterBody = () => {
-  const { data, isFetching, isError, error } = useCompanies();
-
+const RegisterBody = ({ isError, error, data, isFetching }) => {
   if (isFetching) {
     return "Loading...";
   }
