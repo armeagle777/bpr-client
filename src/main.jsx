@@ -9,7 +9,6 @@ import App from "./App";
 
 import "./index.css";
 import { PersonsProvider } from "./components/context/persons";
-import { KadastrCertsProvider } from "./components/context/kadastrCerts";
 import { VehicleSearchProvider } from "./components/context/vehicleSearch";
 
 const queryClient = new QueryClient({
@@ -32,13 +31,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <AuthProvider store={store}>
     <QueryClientProvider client={queryClient}>
       <PersonsProvider>
-        <KadastrCertsProvider>
-          <VehicleSearchProvider>
-            <BrowserRouter>
-              <App />
-            </BrowserRouter>
-          </VehicleSearchProvider>
-        </KadastrCertsProvider>
+        <VehicleSearchProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </VehicleSearchProvider>
       </PersonsProvider>
     </QueryClientProvider>
   </AuthProvider>
