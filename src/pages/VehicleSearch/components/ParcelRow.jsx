@@ -1,5 +1,4 @@
-import { List, ListItem, ListItemText, Stack } from "@mui/material";
-import Typography from "@mui/material/Typography";
+import { List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
 
 const ParcelRow = ({ CADASTRAL_CODE, PARTS = [] }) => {
   return (

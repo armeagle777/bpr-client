@@ -1,23 +1,44 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { getVehiclesByParams } from "../api/personsApi";
 
-const useFetchVehicles = ({ q, searchBase }) => {
+const useFetchVehicles = () => {
+  const [certNumberInput, setCertNumberInput] = useState("");
+  const [certificatesSearchParams, setCertificatesSearchParams] = useState({});
+
+  const handleSubmitSearch = (q, searchBase) => {
+    if (!q && !certNumberInput) return;
+
+    setCertificatesSearchParams({ q: q ?? certNumberInput, searchBase });
+  };
+
   const { isFetching, isLoading, isError, error, data } = useQuery(
-    ["vehicle-search", q, searchBase],
-    () => getVehiclesByParams(q, searchBase),
+    [
+      "vehicle-search",
+      certificatesSearchParams?.q,
+      certificatesSearchParams?.searchBase,
+    ],
+    () =>
+      getVehiclesByParams(
+        certificatesSearchParams?.q,
+        certificatesSearchParams?.searchBase
+      ),
     {
       keepPreviousData: true,
-      enabled: !!q,
+      enabled: !!certificatesSearchParams?.q,
     }
   );
 
   return {
+    data,
     error,
     isError,
-    isFetching,
     isLoading,
-    data,
+    isFetching,
+    certNumberInput,
+    setCertNumberInput,
+    handleSubmitSearch,
   };
 };
 
