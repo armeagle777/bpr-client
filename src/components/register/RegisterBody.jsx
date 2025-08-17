@@ -1,10 +1,11 @@
 import { Alert as MuiAlert } from "@mui/material";
 
 import CompanyInfo from "./CompanyInfo";
+import DataLoader from "../DataLoader/DataLoader";
 
 const RegisterBody = ({ isError, error, data, isFetching }) => {
   if (isFetching) {
-    return "Loading...";
+    return <DataLoader />;
   }
   if (isError) {
     return (

@@ -38,6 +38,7 @@
     "react-pdf": "^6.2.2",
     "react-pro-sidebar": "^1.1.0-alpha.1",
     "react-router-dom": "^6.8.2",
+    "react-spinners": "^0.17.0",
     "react-swipeable-views": "^0.14.0",
     "react-swipeable-views-utils": "^0.14.0",
     "react-toastify": "^9.1.3",

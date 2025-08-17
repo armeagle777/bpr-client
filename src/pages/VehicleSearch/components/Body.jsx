@@ -1,10 +1,11 @@
 import { Grid, Alert as MuiAlert } from "@mui/material";
 
 import VehicleCard from "../../../components/VehicleCard/VehicleCard";
+import DataLoader from "../../../components/DataLoader/DataLoader";
 
 const Body = ({ data, isFetching, isError, error }) => {
   if (isFetching) {
-    return "Loading...";
+    return <DataLoader />;
   }
 
   if (isError) {

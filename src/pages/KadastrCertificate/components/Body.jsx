@@ -1,10 +1,11 @@
 import MuiAlert from "@mui/material/Alert";
 
 import PropertyInfo from "./PropertyInfo";
+import DataLoader from "../../../components/DataLoader/DataLoader";
 
 const Body = ({ data, isLoading, isFetching, isError, error }) => {
   if (isFetching) {
-    return "Loading...";
+    return <DataLoader />;
   }
 
   if (isError) {
