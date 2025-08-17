@@ -1,22 +1,34 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { getCompanyForPersonByHvhh } from "../api/personsApi";
 
-const useFetchBusiness = (tax_id) => {
+const useFetchBusiness = () => {
+  const [taxIdInputValue, setTaxIdInputValue] = useState("");
+  const [companySearchParams, setCompanySearchParams] = useState(null);
+
   const { isFetching, isError, error, data } = useQuery(
-    ["business", tax_id],
-    () => getCompanyForPersonByHvhh(tax_id),
+    ["business", companySearchParams],
+    () => getCompanyForPersonByHvhh(companySearchParams),
     {
       keepPreviousData: true,
-      enabled: !!tax_id,
+      enabled: !!companySearchParams,
     }
   );
 
+  const handleSubmitSearch = (taxId) => {
+    if (!taxId && !taxIdInputValue) return;
+    setCompanySearchParams(taxId ? taxId : taxIdInputValue);
+  };
+
   return {
+    data,
     error,
     isError,
     isFetching,
-    data,
+    taxIdInputValue,
+    setTaxIdInputValue,
+    handleSubmitSearch,
   };
 };
 

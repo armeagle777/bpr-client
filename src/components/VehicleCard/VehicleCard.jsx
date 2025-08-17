@@ -57,7 +57,7 @@ const VehicleCard = ({ car }) => {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundImage: `url("../../../../../public/plate.png")`,
+                  backgroundImage: `url("/plate.png")`,
                   backgroundSize: "contain",
                   backgroundPosition: "center",
                 }}

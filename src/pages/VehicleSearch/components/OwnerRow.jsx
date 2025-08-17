@@ -1,5 +1,4 @@
-import { List, ListItem, ListItemText, Stack } from "@mui/material";
-import Typography from "@mui/material/Typography";
+import { List, ListItem, ListItemText, Typography } from "@mui/material";
 
 const OwnerRow = ({ ssn, lastname, firstname }) => {
   return (

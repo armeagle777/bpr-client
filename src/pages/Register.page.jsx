@@ -1,25 +1,44 @@
-import { Container } from '@mui/material';
+import { useEffect } from "react";
+import { Container } from "@mui/material";
+import { useParams } from "react-router-dom";
 
-import RegisterHead from '../components/register/RegisterHead';
-
-import RegisterBody from '../components/register/RegisterBody';
+import useFetchBusiness from "../hooks/useFetchBusiness";
+import RegisterHead from "../components/register/RegisterHead";
+import RegisterBody from "../components/register/RegisterBody";
 
 const Register = () => {
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     const trimedString = searchString.trim();
-    //     const searchParamsObj = createSearchParamsObject(trimedString);
+  const { taxId } = useParams();
 
-    //     setSearchParams(searchParamsObj);
+  const {
+    data,
+    error,
+    isError,
+    isFetching,
+    taxIdInputValue,
+    handleSubmitSearch,
+    setTaxIdInputValue,
+  } = useFetchBusiness();
 
-    // };
+  useEffect(() => {
+    if (taxId) {
+      handleSubmitSearch(taxId);
+    }
+  }, [taxId]);
 
-    return (
-        <Container>
-            <RegisterHead />
-            <RegisterBody />
-        </Container>
-    );
+  return (
+    <Container>
+      <RegisterHead
+        taxIdInputValue={taxIdInputValue}
+        setTaxIdInputValue={setTaxIdInputValue}
+      />
+      <RegisterBody
+        data={data}
+        error={error}
+        isError={isError}
+        isFetching={isFetching}
+      />
+    </Container>
+  );
 };
 
 export default Register;

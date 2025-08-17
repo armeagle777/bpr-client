@@ -1,63 +1,32 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import SearchIcon from "@mui/icons-material/PersonSearch";
-import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import PinIcon from "@mui/icons-material/Pin";
-import BuildIcon from "@mui/icons-material/Build";
+import {
+  Pin as PinIcon,
+  Build as BuildIcon,
+  PersonSearch as SearchIcon,
+  AccountBox as AccountBoxIcon,
+  DirectionsCar as DirectionsCarIcon,
+} from "@mui/icons-material";
 
 import {
   Box,
   Stack,
+  Tooltip,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
-  Tooltip,
 } from "@mui/material";
+
 import { LoadingButton } from "@mui/lab";
-import { useVehicleSearch } from "../../../components/context/vehicleSearch";
 
-const SEARCH_BASES = {
-  PLATE_NUMBER: "vehicle_number",
-  SSN: "psn",
-  VIN_CODE: "vehicle_vin",
-  CERTIFICATE_NUMBER: "vehicle_registration_certificate_number",
-};
+import { PLACEHOLDERS, SEARCH_BASES } from "../VehicleSearch.constants";
 
-const PLACEHOLDERS = {
-  PLATE_NUMBER: "Հաշվառման համարանիշ",
-  SSN: "ՀԾՀ / ՀՎՀՀ",
-  VIN_CODE: "VIN",
-  CERTIFICATE_NUMBER: "Վկայականի համաար",
-};
-
-const Header = () => {
-  const [searchParams] = useSearchParams();
-  const q = searchParams.get("q");
-  const search_base = searchParams.get("search_base");
-
-  const [searchBase, setSearchBase] = useState(search_base || "PLATE_NUMBER");
-
-  const handleBaseChange = (event, newBase) => {
-    if (SEARCH_BASES[newBase]) {
-      setSearchBase(newBase);
-    }
-  };
-
-  const {
-    isLoading,
-    isFetching,
-    certNumberInput,
-    setCertNumberInput,
-    handleSubmitSearch,
-  } = useVehicleSearch();
-
-  useEffect(() => {
-    if (q) {
-      handleSubmitSearch(q, SEARCH_BASES[searchBase]);
-    }
-  }, [q]);
-  const navigate = useNavigate();
+const Header = ({
+  searchBase,
+  isFetching,
+  certNumberInput,
+  handleBaseChange,
+  setCertNumberInput,
+  handleSubmitSearch,
+}) => {
   return (
     <Stack
       spacing={2}

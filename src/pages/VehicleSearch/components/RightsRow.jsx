@@ -1,11 +1,10 @@
 import {
-  Divider,
   List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
   Stack,
+  Divider,
+  ListItem,
   Typography,
+  ListItemText,
 } from "@mui/material";
 import OwnerRow from "./OwnerRow";
 import ParcelRow from "./ParcelRow";

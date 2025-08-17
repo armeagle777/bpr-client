@@ -1,15 +1,11 @@
-import MuiAlert from "@mui/material/Alert";
+import { Alert as MuiAlert } from "@mui/material";
 
-import { useCompanies } from "../context/companies";
 import CompanyInfo from "./CompanyInfo";
 
-const RegisterBody = () => {
-  const { data, isFetching, isError, error } = useCompanies();
-
+const RegisterBody = ({ isError, error, data, isFetching }) => {
   if (isFetching) {
     return "Loading...";
   }
-
   if (isError) {
     return (
       <MuiAlert severity="error">
@@ -17,9 +13,7 @@ const RegisterBody = () => {
       </MuiAlert>
     );
   }
-
   if (!data || (Array.isArray(data) && !data.length)) return null;
-
   return (
     <div>
       {((Array.isArray(data) && !!data.length) || data) && (

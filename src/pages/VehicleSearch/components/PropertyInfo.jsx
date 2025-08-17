@@ -1,22 +1,28 @@
-import CloseIcon from "@mui/icons-material/Close";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Divider, Stack } from "@mui/material";
-import AppBar from "@mui/material/AppBar";
-import Avatar from "@mui/material/Avatar";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import Collapse from "@mui/material/Collapse";
-import Dialog from "@mui/material/Dialog";
-import IconButton from "@mui/material/IconButton";
-import Slide from "@mui/material/Slide";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import { useState, forwardRef } from "react";
+import {
+  Close as CloseIcon,
+  ExpandMore as ExpandMoreIcon,
+} from "@mui/icons-material";
+
+import {
+  Card,
+  Slide,
+  Stack,
+  AppBar,
+  Dialog,
+  Avatar,
+  Toolbar,
+  Divider,
+  Collapse,
+  CardMedia,
+  Typography,
+  CardHeader,
+  IconButton,
+  CardContent,
+  CardActions,
+} from "@mui/material";
 import { red } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
-import React, { useState } from "react";
 
 import RightsRow from "./RightsRow";
 
@@ -35,7 +41,7 @@ const PropertyInfo = ({ property }) => {
   const [expanded, setExpanded] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
 
-  const Transition = React.forwardRef(function Transition(props, ref) {
+  const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 

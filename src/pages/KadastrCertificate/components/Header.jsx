@@ -1,70 +1,33 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import SearchIcon from "@mui/icons-material/PersonSearch";
-import HomeIcon from "@mui/icons-material/Home";
-import BusinessIcon from "@mui/icons-material/Business";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import VerifiedIcon from "@mui/icons-material/Verified";
-import MapIcon from "@mui/icons-material/Map";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import {
+  Map as MapIcon,
+  Home as HomeIcon,
+  Business as BusinessIcon,
+  Verified as VerifiedIcon,
+  PersonSearch as SearchIcon,
+  AccountBox as AccountBoxIcon,
+  AttachMoney as AttachMoneyIcon,
+} from "@mui/icons-material";
 
 import {
   Box,
-  Button,
   Stack,
+  Tooltip,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
-  Tooltip,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import { useKadastrCerts } from "../../../components/context/kadastrCerts";
 
-const SEARCH_BASES = {
-  CERT_NUMBER: "cert_number",
-  SSN: "ssn",
-  TAX_NUMBER: "tax_number",
-  UNIT_ID: "unit_id",
-  BLD_CODE: "bld_code",
-  PARCEL_CODE: "parcel_code",
-};
+import { PLACEHOLDERS, SEARCH_BASES } from "../KadastrCertificate.constants";
 
-const PLACEHOLDERS = {
-  CERT_NUMBER: "Վկայական",
-  SSN: "ՀԾՀ",
-  TAX_NUMBER: "ՀՎՀՀ",
-  UNIT_ID: "էլ. համար",
-  BLD_CODE: "Շենքի ծածկագիր",
-  PARCEL_CODE: "Հողի ծածկագիր",
-};
-
-const Header = () => {
-  const [searchParams] = useSearchParams();
-  const q = searchParams.get("q");
-  const search_base = searchParams.get("search_base");
-
-  const [searchBase, setSearchBase] = useState(search_base || "CERT_NUMBER");
-
-  const handleBaseChange = (event, newBase) => {
-    if (SEARCH_BASES[newBase]) {
-      setSearchBase(newBase);
-    }
-  };
-
-  const {
-    isLoading,
-    isFetching,
-    certNumberInput,
-    setCertNumberInput,
-    handleSubmitSearch,
-  } = useKadastrCerts();
-
-  useEffect(() => {
-    if (q) {
-      handleSubmitSearch(q, SEARCH_BASES[searchBase]);
-    }
-  }, [q]);
-  const navigate = useNavigate();
+const Header = ({
+  searchBase,
+  isFetching,
+  certNumberInput,
+  handleBaseChange,
+  setCertNumberInput,
+  handleSubmitSearch,
+}) => {
   return (
     <Stack
       spacing={2}

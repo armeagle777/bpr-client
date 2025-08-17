@@ -1,13 +1,8 @@
-import MuiAlert from "@mui/material/Alert";
+import { Grid, Alert as MuiAlert } from "@mui/material";
 
-import PropertyInfo from "./PropertyInfo";
-import { useVehicleSearch } from "../../../components/context/vehicleSearch";
 import VehicleCard from "../../../components/VehicleCard/VehicleCard";
-import { Grid } from "@mui/material";
 
-const Body = () => {
-  const { data, isLoading, isFetching, isError, error } = useVehicleSearch();
-
+const Body = ({ data, isFetching, isError, error }) => {
   if (isFetching) {
     return "Loading...";
   }
