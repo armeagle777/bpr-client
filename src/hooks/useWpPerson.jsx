@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { getWpPersonData, getWpPersonFullData } from "../api/personsApi";
 import { initialFilters } from "../pages/WpPersonSearch/constants";
 import { Link } from "react-router-dom";
+import { Avatar } from "@mui/material";
 
 const useWpPerson = () => {
   const [filters, setFilters] = useState(initialFilters);
@@ -103,6 +104,19 @@ const useWpPerson = () => {
       title: "Type",
       dataIndex: "tablename",
       key: "tablename",
+    },
+    {
+      title: "Նկարը",
+      dataIndex: "path",
+      key: "path",
+      render: (_, record) => (
+        <Avatar
+          src={record.path}
+          alt="Profile Photo"
+          variant="rounded"
+          sx={{ width: 60, height: 80 }}
+        />
+      ),
     },
     {
       title: "Փաստաթուղթը",
