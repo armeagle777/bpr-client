@@ -1,20 +1,15 @@
+import dayjs from "dayjs";
+import { memo, useMemo } from "react";
 import { Button, Grid } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import dayjs from "dayjs";
 import useCountriesData from "../../../hooks/useCountriesData";
 import FilterDatePicker from "./FilterDatePicker";
 import FilterSelect from "./FilterSelect";
 import FilterTextInput from "./FilterTextInput";
-import {
-  genderOptions,
-  procedureOptions,
-  cardStatusOptions,
-  claimStatusOptions,
-} from "../constants";
-import { memo, useMemo } from "react";
+import { genderOptions, procedureOptions } from "../constants";
 import FilterAutocomplete from "./FilterAutocomplete";
 
 const Filters = ({
@@ -62,32 +57,33 @@ const Filters = ({
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Grid container spacing={2} p={3}>
         <FilterTextInput
-          label="Card ID"
+          label="Քարտի N"
           value={filters.card_id}
           onChange={(value) => handleChange("card_id", value)}
         />
         <FilterTextInput
-          label="Document N:"
+          label="Փաստաթղթի N:"
           value={filters.document_number}
           onChange={(value) => handleChange("document_number", value)}
         />
         <FilterTextInput
-          label="First Name(arm)"
+          label="Անունը(հայ)"
           value={filters.fisrt_name_arm}
           onChange={(value) => handleChange("fisrt_name_arm", value)}
         />
         <FilterTextInput
-          label="Last Name(arm)"
+          label="Ազգանունը(հայ)"
           value={filters.last_name_arm}
           onChange={(value) => handleChange("last_name_arm", value)}
         />
         <FilterSelect
           options={genderOptions}
-          label="Gender"
+          label="Սեռը"
           value={filters.select_gender}
           onChange={(value) => handleChange("select_gender", value)}
         />
         <FilterAutocomplete
+          label="Քաղաքացիություն"
           options={countriesOptions}
           value={filters.select_country}
           onChange={(event, newValue) =>
@@ -95,7 +91,7 @@ const Filters = ({
           }
         />
         <FilterTextInput
-          label="PSN"
+          label="ՀԾՀ"
           value={filters.psn}
           onChange={(value) => handleChange("psn", value)}
         />
@@ -106,29 +102,17 @@ const Filters = ({
           onChange={(value) => handleChange("select_procedure", value)}
         />
         <FilterTextInput
-          label="First Name(lat)"
+          label="Անունը(լատ)"
           value={filters.fisrt_name_lat}
           onChange={(value) => handleChange("fisrt_name_lat", value)}
         />
         <FilterTextInput
-          label="Last Name(lat)"
+          label="Ազգանունը(լատ)"
           value={filters.last_name_lat}
           onChange={(value) => handleChange("last_name_lat", value)}
         />
-        <FilterSelect
-          options={cardStatusOptions}
-          label="Card Status"
-          value={filters.select_card_status}
-          onChange={(value) => handleChange("select_card_status", value)}
-        />
-        <FilterSelect
-          options={claimStatusOptions}
-          label="Claim Status"
-          value={filters.select_claim_status}
-          onChange={(value) => handleChange("select_claim_status", value)}
-        />
         <FilterDatePicker
-          label="Created at(from)"
+          label="Մուտքագրման ա/թ(սկսած)"
           value={filters.created_at_start}
           onChange={(date) => {
             handleChange(
@@ -139,18 +123,18 @@ const Filters = ({
           maxDate={maxCreateDate}
         />
         <FilterDatePicker
-          label="Created at(to)"
+          label="Մուտքագրման ա/թ(մինչև)"
           value={filters.created_at_end}
           onChange={(date) => {
             handleChange(
               "created_at_end",
-              date ? dayjs(date).format("DD/MM/YYYY") : null
+              date ? dayjs(date).format("ՕՕ/ԱԱ/ՏՏՏՏ") : null
             );
           }}
           minDate={minCreateDate}
         />
         <FilterDatePicker
-          label="Birth date(from)"
+          label="Ծննդյան ա/թ(սկսած)"
           value={filters.birth_date_start}
           onChange={(date) => {
             handleChange(
@@ -161,7 +145,7 @@ const Filters = ({
           maxDate={maxBirthDate}
         />
         <FilterDatePicker
-          label="Birth date(to)"
+          label="Ծննդյան ա/թ(մինչև)"
           value={filters.birth_date_end}
           onChange={(date) => {
             handleChange(
@@ -183,7 +167,7 @@ const Filters = ({
             loading={isSubmitBtnLoading}
             style={{ paddingTop: 14, paddingBottom: 14 }}
           >
-            Submit
+            ՖԻԼՏՐԵԼ
           </LoadingButton>
         </Grid>
         <Grid item xs={12} md={2}>
@@ -196,7 +180,7 @@ const Filters = ({
             disabled={isFetching || !isFiltersChanged}
             style={{ paddingTop: 14, paddingBottom: 14 }}
           >
-            Reset
+            ՋՆՋԵԼ
           </Button>
         </Grid>
       </Grid>

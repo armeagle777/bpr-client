@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { message } from "antd";
-import { Button } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { useQuery } from "@tanstack/react-query";
+import { message } from "antd";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { getWpPersonData, getWpPersonFullData } from "../api/personsApi";
 import { initialFilters } from "../pages/WpPersonSearch/constants";
+import { Link } from "react-router-dom";
 
 const useWpPerson = () => {
   const [filters, setFilters] = useState(initialFilters);
@@ -100,83 +100,60 @@ const useWpPerson = () => {
 
   const columns = [
     {
-      title: "Created At",
-      dataIndex: "REG_DATE",
-      key: "REG_DATE",
-    },
-    {
       title: "Type",
       dataIndex: "tablename",
       key: "tablename",
     },
     {
-      title: "Id",
-      dataIndex: "id",
-      key: "id",
-    },
-    {
-      title: "Passport",
+      title: "Փաստաթուղթը",
       dataIndex: "passport_number",
       key: "passport_number",
     },
     {
-      title: "Psn",
+      title: "ՀԾՀ",
       dataIndex: "ssn",
       key: "ssn",
+      render: (_, record) =>
+        record.ssn ? <Link to={`/bpr/${record.ssn}`}>{record.ssn}</Link> : "",
     },
     {
-      title: "Country",
+      title: "Քաղաքացիությունը",
       dataIndex: "arm_short",
       key: "arm_short",
       render: (_, record) => `${record.arm_short} | ${record.alpha_3}`,
     },
     {
-      title: "First Name",
+      title: "Անունը (լատ)",
       dataIndex: "first_name_en",
       key: "first_name_en",
     },
     {
-      title: "Last Name",
+      title: "Ազգանունը (լատ)",
       dataIndex: "last_name_en",
       key: "last_name_en",
     },
     {
-      title: "Gender",
+      title: "Անունը (hայ)",
+      dataIndex: "first_name_am",
+      key: "first_name_am",
+    },
+    {
+      title: "Ազգանունը (hայ)",
+      dataIndex: "last_name_am",
+      key: "last_name_am",
+    },
+    {
+      title: "Սեռը",
       dataIndex: "gender_id",
       key: "gender_id",
       render: (_, record) => (record.gender_id == 1 ? "Male" : "Female"),
     },
     {
-      title: "Birth Day",
+      title: "Ծննդյան ա/թ",
       dataIndex: "birthday_day",
       key: "birthday",
       render: (_, record) =>
         `${record.birthday_day}.${record.birthday_month}.${record.birthday_year}`,
-    },
-    {
-      title: "Card N",
-      dataIndex: "serial_number",
-      key: "serial_number",
-    },
-    {
-      title: "Card Issued",
-      dataIndex: "issue_date",
-      key: "issue_date",
-    },
-    {
-      title: "Card Expiry",
-      dataIndex: "expire_date",
-      key: "expire_date",
-    },
-    {
-      title: "Card Status",
-      dataIndex: "card_status",
-      key: "card_status",
-    },
-    {
-      title: "Claim Status",
-      dataIndex: "claim_status",
-      key: "claim_status",
     },
     {
       title: "...",
@@ -187,7 +164,7 @@ const useWpPerson = () => {
           loading={modalPersonProps?.id === record.id && isFullDataFetching}
           onClick={() => handleModalOpen(record)}
         >
-          info
+          Մանրամասն
         </LoadingButton>
       ),
     },

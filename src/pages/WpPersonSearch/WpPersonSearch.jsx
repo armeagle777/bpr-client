@@ -1,7 +1,6 @@
-import { Button } from "@mui/material";
-import { message, Table } from "antd";
+import { Table } from "antd";
 
-import { memo, useEffect } from "react";
+import { memo } from "react";
 import Modal from "../../components/Modal/Modal";
 import useWpPerson from "../../hooks/useWpPerson";
 import Filters from "./components/Filters";

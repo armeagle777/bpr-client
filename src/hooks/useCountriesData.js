@@ -10,7 +10,7 @@ const useCountriesData = () => {
   const countriesOptions =
     data?.map((country) => ({
       value: country.id,
-      label: country.name_en,
+      label: country.name_am,
     })) || [];
 
   return { countriesOptions };

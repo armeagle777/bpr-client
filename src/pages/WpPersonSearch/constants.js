@@ -11,8 +11,6 @@ export const initialFilters = {
   select_gender: "",
   select_country: "",
   select_procedure: "",
-  select_card_status: "",
-  select_claim_status: "",
   created_at_start: null,
   created_at_end: null,
   birth_date_start: null,
@@ -39,23 +37,6 @@ export const procedureOptions = [
   { value: "Employee", label: "Employee" },
   { value: "EAEU", label: "EAEU citizen" },
   { value: "FAMILY", label: "EAEU family member" },
-];
-
-export const cardStatusOptions = [
-  { value: 0, label: "Card status" },
-  { value: "active", label: "Active" },
-  { value: "suspended", label: "Suspended" },
-];
-
-export const claimStatusOptions = [
-  { value: 0, label: "Claim status" },
-  { value: "pending_am", label: "Pending MLSA" },
-  { value: "pending", label: "Pending NSS" },
-  { value: "pending_foreigner", label: "Pending Employer" },
-  { value: "pending_ms", label: "Pending MCS" },
-  { value: "rejected", label: "Rejected" },
-  { value: "finished", label: "Ceased" },
-  { value: "allowed", label: "Allowed" },
 ];
 
 export const claimsTabColumns = [
