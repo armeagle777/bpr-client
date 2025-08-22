@@ -1,18 +1,14 @@
 import dayjs from "dayjs";
 
 export const initialFilters = {
-  card_id: "",
   document_number: "",
   fisrt_name_arm: "",
   last_name_arm: "",
-  psn: "",
   fisrt_name_lat: "",
   last_name_lat: "",
+  psn: "",
   select_gender: "",
   select_country: "",
-  select_procedure: "",
-  created_at_start: null,
-  created_at_end: null,
   birth_date_start: null,
   birth_date_end: null,
 };

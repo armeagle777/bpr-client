@@ -57,11 +57,6 @@ const Filters = ({
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Grid container spacing={2} p={3}>
         <FilterTextInput
-          label="Քարտի N"
-          value={filters.card_id}
-          onChange={(value) => handleChange("card_id", value)}
-        />
-        <FilterTextInput
           label="Փաստաթղթի N:"
           value={filters.document_number}
           onChange={(value) => handleChange("document_number", value)}
@@ -95,44 +90,6 @@ const Filters = ({
           value={filters.psn}
           onChange={(value) => handleChange("psn", value)}
         />
-        <FilterSelect
-          options={procedureOptions}
-          label="Procedure"
-          value={filters.select_procedure}
-          onChange={(value) => handleChange("select_procedure", value)}
-        />
-        <FilterTextInput
-          label="Անունը(լատ)"
-          value={filters.fisrt_name_lat}
-          onChange={(value) => handleChange("fisrt_name_lat", value)}
-        />
-        <FilterTextInput
-          label="Ազգանունը(լատ)"
-          value={filters.last_name_lat}
-          onChange={(value) => handleChange("last_name_lat", value)}
-        />
-        <FilterDatePicker
-          label="Մուտքագրման ա/թ(սկսած)"
-          value={filters.created_at_start}
-          onChange={(date) => {
-            handleChange(
-              "created_at_start",
-              date ? dayjs(date).format("DD/MM/YYYY") : null
-            );
-          }}
-          maxDate={maxCreateDate}
-        />
-        <FilterDatePicker
-          label="Մուտքագրման ա/թ(մինչև)"
-          value={filters.created_at_end}
-          onChange={(date) => {
-            handleChange(
-              "created_at_end",
-              date ? dayjs(date).format("ՕՕ/ԱԱ/ՏՏՏՏ") : null
-            );
-          }}
-          minDate={minCreateDate}
-        />
         <FilterDatePicker
           label="Ծննդյան ա/թ(սկսած)"
           value={filters.birth_date_start}
@@ -154,6 +111,16 @@ const Filters = ({
             );
           }}
           minDate={minBirthDate}
+        />
+        <FilterTextInput
+          label="Անունը(լատ)"
+          value={filters.fisrt_name_lat}
+          onChange={(value) => handleChange("fisrt_name_lat", value)}
+        />
+        <FilterTextInput
+          label="Ազգանունը(լատ)"
+          value={filters.last_name_lat}
+          onChange={(value) => handleChange("last_name_lat", value)}
         />
 
         {/* Buttons */}

@@ -72,8 +72,8 @@ const useWpPerson = () => {
 
   const handleModalOpen = useCallback(
     (personProps) => {
-      const { id, tablename, user_id } = personProps;
-      setModalPersonProps({ id, tablename, user_id });
+      const { id, tableName, user_id } = personProps;
+      setModalPersonProps({ id, tableName, user_id });
       setIsModalOpen(true);
     },
     [setIsModalOpen, setModalPersonProps]
@@ -96,15 +96,13 @@ const useWpPerson = () => {
   );
 
   if (data?.data) {
-    data.data = data.data.map((row, index) => ({ ...row, key: index }));
+    data.data = data.data.map((row, index) => ({
+      ...row,
+      key: data.user_id || index,
+    }));
   }
 
   const columns = [
-    {
-      title: "Type",
-      dataIndex: "tablename",
-      key: "tablename",
-    },
     {
       title: "Նկարը",
       dataIndex: "path",
