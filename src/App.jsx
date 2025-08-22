@@ -28,6 +28,9 @@ const LazyKadastrCertificate = lazy(() =>
 const LazyVehicleSearch = lazy(() =>
   import("./pages/VehicleSearch/VehicleSearch")
 );
+const LazyAsylumSearch = lazy(() =>
+  import("./pages/AsylumSearch/AsylumSearch")
+);
 
 function App() {
   return (
@@ -160,6 +163,21 @@ function App() {
             >
               <Suspense fallback={<PageLoader />}>
                 <LazyWpPersonSearch />
+              </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="asylum-search"
+          element={
+            <RequirePermission
+              permissions={[
+                permissionsMap.ASYLUM.uid,
+                permissionsMap.ADMIN.uid,
+              ]}
+            >
+              <Suspense fallback={<PageLoader />}>
+                <LazyAsylumSearch />
               </Suspense>
             </RequirePermission>
           }

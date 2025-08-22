@@ -40,7 +40,7 @@ const TableBody = ({ rows }) => {
         } = row;
 
         return (
-          <StyledTableRow key={serial_number}>
+          <StyledTableRow key={`${serial_number}-${index}`}>
             <StyledTableCell align="right">
               <Tooltip
                 title={card_status === "active" ? "Վավեր" : "Անվավեր"}
