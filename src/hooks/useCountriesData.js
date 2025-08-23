@@ -25,8 +25,8 @@ const useCountriesData = () => {
 
   const asylumCountriesOptions =
     asylumCountries?.map((c) => ({
-      value: country.country_id,
-      label: country.country_arm,
+      value: c.country_id,
+      label: c.country_arm,
     })) || [];
 
   return { countriesOptions, asylumCountriesOptions };

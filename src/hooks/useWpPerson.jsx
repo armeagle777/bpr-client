@@ -171,14 +171,19 @@ const useWpPerson = () => {
       title: "...",
       dataIndex: "",
       key: "action",
-      render: (_, record) => (
-        <LoadingButton
-          loading={modalPersonProps?.id === record.id && isFullDataFetching}
-          onClick={() => handleModalOpen(record)}
-        >
-          Մանրամասն
-        </LoadingButton>
-      ),
+      render: (_, record) => {
+        const hasDetailData =
+          !!record.id && !!record.user_id && !!record.tableName;
+        return (
+          <LoadingButton
+            loading={modalPersonProps?.id === record.id && isFullDataFetching}
+            onClick={() => handleModalOpen(record)}
+            disabled={!hasDetailData}
+          >
+            Մանրամասն
+          </LoadingButton>
+        );
+      },
     },
   ];
 
