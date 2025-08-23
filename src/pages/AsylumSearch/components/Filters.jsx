@@ -76,12 +76,6 @@ const Filters = ({
           value={filters.select_etnicity}
           onChange={(value) => handleChange("select_etnicity", value)}
         />
-        <FilterSelect
-          options={religionOptions}
-          label="Կրոնը"
-          value={filters.select_religion}
-          onChange={(value) => handleChange("select_religion", value)}
-        />
         <FilterTextInput
           label="Անունը(լատ)"
           value={filters.f_name_eng}

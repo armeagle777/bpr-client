@@ -7,7 +7,6 @@ export const initialFilters = {
   select_gender: "",
   select_country: "",
   select_etnicity: "",
-  select_religion: "",
   birth_date_start: null,
   birth_date_end: null,
 };
