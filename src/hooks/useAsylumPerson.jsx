@@ -29,33 +29,42 @@ const useAsylumPerson = () => {
     queryFn: getAsylumFilterOptionsData,
   });
 
-  const countriesOptions =
-    asylumfilterOptionsData?.countries?.map((c) => ({
-      value: c.country_id,
-      label: c.country_arm,
-    })) || [];
-
-  const ethnicOptions =
-    asylumfilterOptionsData?.ethnics?.map((e) => ({
-      value: e.etnic_id,
-      label: e.etnic_eng,
-    })) || [];
-
-  const religionOptions =
-    asylumfilterOptionsData?.religions?.map((r) => ({
-      value: r.religion_id,
-      label: r.religion_arm,
-    })) || [];
-
-  const isFiltersChanged = useMemo(() => {
-    return Object.values(filters).some((value) => Boolean(value));
-  }, [filters]);
-
   const { data, isFetching, isError, error, refetch } = useQuery({
     queryKey: ["asylum-person"],
     queryFn: () => filterAsylumPersonData(filters, page),
     enabled: false,
   });
+
+  const countriesOptions = useMemo(
+    () =>
+      asylumfilterOptionsData?.countries?.map((c) => ({
+        value: c.country_id,
+        label: c.country_arm,
+      })) || [],
+    [asylumfilterOptionsData]
+  );
+
+  const ethnicOptions = useMemo(
+    () =>
+      asylumfilterOptionsData?.ethnics?.map((e) => ({
+        value: e.etnic_id,
+        label: e.etnic_eng,
+      })) || [],
+    [asylumfilterOptionsData]
+  );
+
+  const religionOptions = useMemo(
+    () =>
+      asylumfilterOptionsData?.religions?.map((r) => ({
+        value: r.religion_id,
+        label: r.religion_arm,
+      })) || [],
+    [asylumfilterOptionsData]
+  );
+
+  const isFiltersChanged = useMemo(() => {
+    return Object.values(filters).some((value) => Boolean(value));
+  }, [filters]);
 
   const {
     data: fullData,
@@ -126,13 +135,6 @@ const useAsylumPerson = () => {
     },
     [setPage]
   );
-
-  if (data?.data) {
-    data.data = data.data.map((row, index) => ({
-      ...row,
-      key: data.personal_id || index,
-    }));
-  }
 
   const columns = [
     {

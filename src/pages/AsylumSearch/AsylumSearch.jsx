@@ -4,7 +4,6 @@ import { memo } from "react";
 import Modal from "../../components/Modal/Modal";
 import useAsylumPerson from "../../hooks/useAsylumPerson";
 import Filters from "./components/Filters";
-import { Box } from "@mui/material";
 // import ModalContent from "./components/ModalContent";
 
 const AsylumSearch = () => {
@@ -59,6 +58,7 @@ const AsylumSearch = () => {
               onChange: handlePageChange,
               pageSize: pagination.pageSize,
             }}
+            rowKey={"personal_id"}
           />
           <Modal
             isOpen={isModalOpen && !!fullData}

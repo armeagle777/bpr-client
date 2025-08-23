@@ -83,11 +83,6 @@ const Filters = ({
           onChange={(value) => handleChange("select_religion", value)}
         />
         <FilterTextInput
-          label="ՀԾՀ"
-          value={filters.psn}
-          onChange={(value) => handleChange("psn", value)}
-        />
-        <FilterTextInput
           label="Անունը(լատ)"
           value={filters.f_name_eng}
           onChange={(value) => handleChange("f_name_eng", value)}
@@ -101,9 +96,7 @@ const Filters = ({
           label="Քաղաքացիություն"
           options={countriesOptions}
           value={filters.select_country}
-          onChange={(event, newValue) =>
-            handleChange("select_country", newValue)
-          }
+          onChange={(value, newValue) => handleChange("select_country", value)}
         />
         <FilterDatePicker
           label="Ծննդյան ա/թ(սկսած)"
