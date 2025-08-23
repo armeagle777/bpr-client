@@ -95,6 +95,27 @@ export const getWpPersonFullData = async (props) => {
   return response.data;
 };
 
+export const getAsylumCountriesData = async () => {
+  const response = await personsApi.get(`/asylum/countries/all`);
+  return response.data;
+};
+
+export const filterAsylumPersonData = async (filters, page) => {
+  const response = await personsApi.post(`/asylum/filter/asylum-data`, {
+    filters,
+    page,
+  });
+  return response.data;
+};
+
+export const getAsylumPersonFullData = async (props) => {
+  const { personal_id } = props;
+  const response = await personsApi.get(
+    `/asylum/person/${personal_id}/asylum-data`
+  );
+  return response.data;
+};
+
 // Auth endpoints
 export const login = async (credentials) => {
   const response = await personsApi.post("/users/login", credentials);

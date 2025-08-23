@@ -181,3 +181,33 @@ export const ticketsTabColumns = [
     },
   },
 ];
+export const famMemberTabColumns = [
+  {
+    title: "Անուն",
+    dataIndex: "first_name_en",
+    key: "first_name_en",
+  },
+  {
+    title: "Ազգանուն",
+    dataIndex: "last_name_en",
+    key: "last_name_en",
+  },
+  {
+    title: "Փաստաթուղթ",
+    dataIndex: "passport_number",
+    key: "passport_number",
+  },
+  {
+    title: "ՀԾՀ",
+    dataIndex: "ssn",
+    key: "ssn",
+  },
+  {
+    title: "Քաղաքացիություն",
+    dataIndex: "alpha_3",
+    key: "alpha_3",
+    render: (_, record) => {
+      return `${record?.arm_short} | ${record?.alpha_3}`;
+    },
+  },
+];

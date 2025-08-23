@@ -6,9 +6,9 @@ import { Table } from "antd";
 import {
   cardsTabColumns,
   claimsTabColumns,
-  famMemberTabColumns,
   ticketsTabColumns,
 } from "../constants";
+import { famMemberTabColumns } from "../../WpPersonSearch/constants";
 
 const ModalContent = ({ selectedTab, onTabChange, data }) => {
   const { baseInfo, fines, claims, cards, familyMembers } = data;
@@ -91,8 +91,8 @@ const ModalContent = ({ selectedTab, onTabChange, data }) => {
       </TabPanel>
       <TabPanel
         hidden={selectedTab !== 4}
-        id="fam-members-tab"
-        ariaLabel="fam-members-tab"
+        id="fam-member-tab"
+        ariaLabel="fam-member-tab"
       >
         {familyMembers && (
           <Table
