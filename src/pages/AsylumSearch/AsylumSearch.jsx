@@ -3,9 +3,9 @@ import { Table } from "antd";
 import { memo } from "react";
 import Modal from "../../components/Modal/Modal";
 import useAsylumPerson from "../../hooks/useAsylumPerson";
-// import useWpPerson from "../../hooks/useWpPerson";
 import Filters from "./components/Filters";
-import ModalContent from "./components/ModalContent";
+import { Box } from "@mui/material";
+// import ModalContent from "./components/ModalContent";
 
 const AsylumSearch = () => {
   const {
@@ -24,6 +24,9 @@ const AsylumSearch = () => {
     isFiltersChanged,
     isSubmitBtnLoading,
     fullData,
+    countriesOptions,
+    ethnicOptions,
+    religionOptions,
   } = useAsylumPerson();
 
   const { data: persons, pagination } = { ...data };
@@ -36,6 +39,9 @@ const AsylumSearch = () => {
         handleReset={handleReset}
         handleSubmit={handleSubmit}
         handleChange={handleChange}
+        ethnicOptions={ethnicOptions}
+        religionOptions={religionOptions}
+        countriesOptions={countriesOptions}
         isFiltersChanged={isFiltersChanged}
         isSubmitBtnLoading={isSubmitBtnLoading}
       />
@@ -59,11 +65,11 @@ const AsylumSearch = () => {
             onClose={handleModalClose}
             centered={false}
           >
-            <ModalContent
+            {/* <ModalContent
               selectedTab={selectedTab}
               onTabChange={handleTabChange}
               data={fullData}
-            />
+            /> */}
           </Modal>
         </>
       )}

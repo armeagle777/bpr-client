@@ -1,20 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAsylumCountriesData, getCountriesData } from "../api/personsApi";
+import { getCountriesData } from "../api/personsApi";
 
 const useCountriesData = () => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["wp-countries"],
     queryFn: getCountriesData,
-  });
-
-  const {
-    data: asylumCountries,
-    isLoading: asylumCountriesLoading,
-    isError: asylumCountriesIsError,
-    error: asylumCountriesError,
-  } = useQuery({
-    queryKey: ["asylum-countries"],
-    queryFn: getAsylumCountriesData,
   });
 
   const countriesOptions =
@@ -23,13 +13,7 @@ const useCountriesData = () => {
       label: country.name_am,
     })) || [];
 
-  const asylumCountriesOptions =
-    asylumCountries?.map((c) => ({
-      value: c.country_id,
-      label: c.country_arm,
-    })) || [];
-
-  return { countriesOptions, asylumCountriesOptions };
+  return { countriesOptions };
 };
 
 export default useCountriesData;

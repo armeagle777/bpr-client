@@ -95,8 +95,8 @@ export const getWpPersonFullData = async (props) => {
   return response.data;
 };
 
-export const getAsylumCountriesData = async () => {
-  const response = await personsApi.get(`/asylum/countries/all`);
+export const getAsylumFilterOptionsData = async () => {
+  const response = await personsApi.get(`/asylum/filter/options`);
   return response.data;
 };
 

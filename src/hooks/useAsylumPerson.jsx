@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import {
   filterAsylumPersonData,
+  getAsylumFilterOptionsData,
   getAsylumPersonFullData,
 } from "../api/personsApi";
 import { initialFilters } from "../pages/AsylumSearch/AsylumSearch.constants";
@@ -17,6 +18,34 @@ const useAsylumPerson = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const [modalPersonProps, setModalPersonProps] = useState(null);
+
+  const {
+    data: asylumfilterOptionsData,
+    isLoading: asylumFilterOptionsLoading,
+    isError: asylumFilterOptionsIsError,
+    error: asylumFilterOptionsError,
+  } = useQuery({
+    queryKey: ["asylum-filter-options"],
+    queryFn: getAsylumFilterOptionsData,
+  });
+
+  const countriesOptions =
+    asylumfilterOptionsData?.countries?.map((c) => ({
+      value: c.country_id,
+      label: c.country_arm,
+    })) || [];
+
+  const ethnicOptions =
+    asylumfilterOptionsData?.ethnics?.map((e) => ({
+      value: e.etnic_id,
+      label: e.etnic_eng,
+    })) || [];
+
+  const religionOptions =
+    asylumfilterOptionsData?.religions?.map((r) => ({
+      value: r.religion_id,
+      label: r.religion_arm,
+    })) || [];
 
   const isFiltersChanged = useMemo(() => {
     return Object.values(filters).some((value) => Boolean(value));
@@ -202,6 +231,9 @@ const useAsylumPerson = () => {
     isFiltersChanged,
     handleModalClose,
     isSubmitBtnLoading,
+    countriesOptions,
+    ethnicOptions,
+    religionOptions,
     fullData,
   };
 };

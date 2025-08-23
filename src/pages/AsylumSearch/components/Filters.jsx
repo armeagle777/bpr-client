@@ -5,7 +5,6 @@ import { LoadingButton } from "@mui/lab";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
-import useCountriesData from "../../../hooks/useCountriesData";
 import FilterDatePicker from "./FilterDatePicker";
 import FilterSelect from "./FilterSelect";
 import FilterTextInput from "./FilterTextInput";
@@ -19,10 +18,12 @@ const Filters = ({
   handleReset,
   handleChange,
   handleSubmit,
+  ethnicOptions,
+  religionOptions,
+  countriesOptions,
   isFiltersChanged,
   isSubmitBtnLoading,
 }) => {
-  const { asylumCountriesOptions } = useCountriesData();
   const minBirthDate = useMemo(
     () =>
       filters.birth_date_start
@@ -41,7 +42,13 @@ const Filters = ({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Grid container spacing={2} p={3}>
+      <Grid
+        container
+        spacing={2}
+        p={3}
+        display="flex"
+        justifyContent="flex-end"
+      >
         <FilterTextInput
           label="Փաստաթղթի N:"
           value={filters.doc_num}
@@ -64,29 +71,39 @@ const Filters = ({
           onChange={(value) => handleChange("select_gender", value)}
         />
         <FilterSelect
-          options={genderOptions}
+          options={ethnicOptions}
           label="Ազգությունը"
           value={filters.select_etnicity}
           onChange={(value) => handleChange("select_etnicity", value)}
         />
         <FilterSelect
-          options={genderOptions}
+          options={religionOptions}
           label="Կրոնը"
           value={filters.select_religion}
           onChange={(value) => handleChange("select_religion", value)}
-        />
-        <FilterAutocomplete
-          label="Քաղաքացիություն"
-          options={asylumCountriesOptions}
-          value={filters.select_country}
-          onChange={(event, newValue) =>
-            handleChange("select_country", newValue)
-          }
         />
         <FilterTextInput
           label="ՀԾՀ"
           value={filters.psn}
           onChange={(value) => handleChange("psn", value)}
+        />
+        <FilterTextInput
+          label="Անունը(լատ)"
+          value={filters.f_name_eng}
+          onChange={(value) => handleChange("f_name_eng", value)}
+        />
+        <FilterTextInput
+          label="Ազգանունը(լատ)"
+          value={filters.l_name_eng}
+          onChange={(value) => handleChange("l_name_eng", value)}
+        />
+        <FilterAutocomplete
+          label="Քաղաքացիություն"
+          options={countriesOptions}
+          value={filters.select_country}
+          onChange={(event, newValue) =>
+            handleChange("select_country", newValue)
+          }
         />
         <FilterDatePicker
           label="Ծննդյան ա/թ(սկսած)"
@@ -109,20 +126,6 @@ const Filters = ({
             );
           }}
           minDate={minBirthDate}
-        />
-        <FilterTextInput
-          label="Անունը(լատ)"
-          value={filters.f_name_eng}
-          onChange={(value) => handleChange("f_name_eng", value)}
-        />
-        <FilterTextInput
-          label="Ազգանունը(լատ)"
-          value={filters.l_name_eng}
-          onChange={(value) => handleChange("l_name_eng", value)}
-        />
-        <FilterCheckbox
-          label="Սահմանախախտ"
-          onChange={(e) => handleChange("illegal_border", e.target.checked)}
         />
         {/* Buttons */}
         <Grid item xs={12} md={2}>
@@ -157,10 +160,3 @@ const Filters = ({
 };
 
 export default memo(Filters);
-
-//   trafficking_victim: false,
-//   violence_victim: false,
-//   illegal_border: false,
-//   transfer_moj: false,
-//   deport_prescurator: false,
-//   prison: false,

@@ -10,15 +10,6 @@ export const initialFilters = {
   select_religion: "",
   birth_date_start: null,
   birth_date_end: null,
-  invalid: false,
-  pregnant: false,
-  seriously_ill: false,
-  trafficking_victim: false,
-  violence_victim: false,
-  illegal_border: false,
-  transfer_moj: false,
-  deport_prescurator: false,
-  prison: false,
 };
 
 export const genderOptions = [
