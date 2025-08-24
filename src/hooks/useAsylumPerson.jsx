@@ -33,6 +33,7 @@ const useAsylumPerson = () => {
     queryKey: ["asylum-person"],
     queryFn: () => filterAsylumPersonData(filters, page),
     enabled: false,
+    keepPreviousData: false,
   });
 
   const countriesOptions = useMemo(
@@ -75,6 +76,7 @@ const useAsylumPerson = () => {
     queryKey: ["asylum-person-full-data", modalPersonProps],
     queryFn: () => getAsylumPersonFullData(modalPersonProps),
     enabled: !!modalPersonProps,
+    keepPreviousData: false,
   });
 
   const isSubmitBtnLoading = useMemo(() => {
@@ -201,7 +203,10 @@ const useAsylumPerson = () => {
       key: "action",
       render: (_, record) => (
         <LoadingButton
-          loading={modalPersonProps?.id === record.id && isFullDataFetching}
+          loading={
+            modalPersonProps?.personal_id === record.personal_id &&
+            isFullDataFetching
+          }
           onClick={() => handleModalOpen(record)}
         >
           Մանրամասն

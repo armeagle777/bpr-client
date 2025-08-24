@@ -19,7 +19,6 @@ const Filters = ({
   handleChange,
   handleSubmit,
   ethnicOptions,
-  religionOptions,
   countriesOptions,
   isFiltersChanged,
   isSubmitBtnLoading,
@@ -50,11 +49,6 @@ const Filters = ({
         justifyContent="flex-end"
       >
         <FilterTextInput
-          label="Փաստաթղթի N:"
-          value={filters.doc_num}
-          onChange={(value) => handleChange("doc_num", value)}
-        />
-        <FilterTextInput
           label="Անունը(հայ)"
           value={filters.f_name_arm}
           onChange={(value) => handleChange("f_name_arm", value)}
@@ -63,6 +57,19 @@ const Filters = ({
           label="Ազգանունը(հայ)"
           value={filters.l_name_arm}
           onChange={(value) => handleChange("l_name_arm", value)}
+        />
+        <FilterTextInput
+          label="Փաստաթղթի N:"
+          value={filters.doc_num}
+          onChange={(value) => handleChange("doc_num", value)}
+        />
+        <FilterAutocomplete
+          label="Քաղաքացիություն"
+          options={countriesOptions}
+          value={filters.select_country}
+          onChange={(event, newValue) => {
+            return handleChange("select_country", newValue);
+          }}
         />
         <FilterSelect
           options={genderOptions}
@@ -87,14 +94,6 @@ const Filters = ({
           label="Ազգանունը(լատ)"
           value={filters.l_name_eng}
           onChange={(value) => handleChange("l_name_eng", value)}
-        />
-        <FilterAutocomplete
-          label="Քաղաքացիություն"
-          options={countriesOptions}
-          value={filters.select_country}
-          onChange={(event, newValue) => {
-            return handleChange("select_country", newValue);
-          }}
         />
         <FilterDatePicker
           label="Ծննդյան ա/թ(սկսած)"

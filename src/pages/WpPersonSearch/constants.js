@@ -181,6 +181,7 @@ export const ticketsTabColumns = [
     },
   },
 ];
+
 export const famMemberTabColumns = [
   {
     title: "Անուն",

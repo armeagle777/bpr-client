@@ -1,17 +1,53 @@
-import { useMemo } from "react";
 import dayjs from "dayjs";
 import { Grid, TextField, Box, Avatar } from "@mui/material";
 
 const PersonalInfoTab = ({ data }) => {
-  const {} = data;
-
-  const middleNameAm = useMemo(() => {
-    return patronymic_am && patronymic_am !== "null" ? patronymic_am : "";
-  }, [patronymic_am]);
-
-  const middleNameEn = useMemo(() => {
-    return patronymic_en && patronymic_en !== "null" ? patronymic_en : "";
-  }, [patronymic_en]);
+  const {
+    personal_id,
+    case_id,
+    f_name_arm,
+    f_name_eng,
+    l_name_arm,
+    l_name_eng,
+    m_name_arm,
+    m_name_eng,
+    b_day,
+    b_month,
+    b_year,
+    sex,
+    previous_residence,
+    citizen_adr,
+    residence_adr,
+    departure_from_citizen,
+    departure_from_residence,
+    arrival_date,
+    doc_num,
+    invalid,
+    pregnant,
+    seriously_ill,
+    trafficking_victim,
+    violence_victim,
+    comment,
+    illegal_border,
+    transfer_moj,
+    deport_prescurator,
+    prison,
+    image,
+    CITIZENSHIP_COUNTRY_NAME,
+    PREVIOUS_RESIDENCE_COUNTRY_NAME,
+    ETNICITY_NAME,
+    RELIGION_NAME,
+    ROLE_NAME,
+    PERSON_STATUS_NAME,
+    contact_email,
+    contact_tel,
+    STREET_NAME,
+    BUILDING_NUMBER,
+    APPARTMENT_NUMBER,
+    MARZ_NAME,
+    COMMUNITY_NAME,
+    SETTLEMENT_NAME,
+  } = { ...data };
 
   return (
     <Box>
@@ -19,7 +55,7 @@ const PersonalInfoTab = ({ data }) => {
         {/* Left Side: Photo */}
         <Grid item xs={12} sm={4} md={3} sx={{ py: 4 }}>
           <Avatar
-            src={path}
+            src={image || ""}
             alt="Profile Photo"
             variant="rounded"
             sx={{ width: 150, height: 200, marginLeft: 4 }}
@@ -35,7 +71,7 @@ const PersonalInfoTab = ({ data }) => {
                   label="Անուն հայատառ"
                   fullWidth
                   InputProps={{ readOnly: true }}
-                  value={first_name_am}
+                  value={f_name_arm || ""}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -43,7 +79,7 @@ const PersonalInfoTab = ({ data }) => {
                   label="Ազգնուն հայատառ"
                   fullWidth
                   InputProps={{ readOnly: true }}
-                  value={last_name_am}
+                  value={l_name_arm || ""}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -51,7 +87,7 @@ const PersonalInfoTab = ({ data }) => {
                   label="Հայրանուն հայատառ"
                   fullWidth
                   InputProps={{ readOnly: true }}
-                  value={middleNameAm}
+                  value={m_name_arm || ""}
                 />
               </Grid>
             </Grid>
@@ -61,7 +97,7 @@ const PersonalInfoTab = ({ data }) => {
                   label="Անուն լատինատառ"
                   fullWidth
                   InputProps={{ readOnly: true }}
-                  value={first_name_en}
+                  value={f_name_eng || ""}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -69,7 +105,7 @@ const PersonalInfoTab = ({ data }) => {
                   label="Ազգնուն լատինատառ"
                   fullWidth
                   InputProps={{ readOnly: true }}
-                  value={last_name_en}
+                  value={l_name_eng || ""}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
@@ -77,7 +113,7 @@ const PersonalInfoTab = ({ data }) => {
                   label="Հայրանուն լատինատառ"
                   fullWidth
                   InputProps={{ readOnly: true }}
-                  value={middleNameEn}
+                  value={m_name_eng || ""}
                 />
               </Grid>
             </Grid>
@@ -87,7 +123,7 @@ const PersonalInfoTab = ({ data }) => {
                   <TextField
                     label="օր"
                     InputProps={{ readOnly: true }}
-                    value={birthday_day}
+                    value={b_day || ""}
                     fullWidth
                   />
                 </Grid>
@@ -95,7 +131,7 @@ const PersonalInfoTab = ({ data }) => {
                   <TextField
                     label="ամիս"
                     InputProps={{ readOnly: true }}
-                    value={birthday_month}
+                    value={b_month || ""}
                     fullWidth
                   />
                 </Grid>
@@ -103,7 +139,7 @@ const PersonalInfoTab = ({ data }) => {
                   <TextField
                     label="տարի"
                     InputProps={{ readOnly: true }}
-                    value={birthday_year}
+                    value={b_year || ""}
                     fullWidth
                   />
                 </Grid>
@@ -113,21 +149,20 @@ const PersonalInfoTab = ({ data }) => {
                   label="Սեռը"
                   fullWidth
                   InputProps={{ readOnly: true }}
-                  value={genderText}
+                  value={sex === 1 ? "Արական" : "Իգական"}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
                 <TextField
-                  label="ՀԾՀ"
+                  label="Դերը"
                   fullWidth
                   InputProps={{ readOnly: true }}
-                  value={ssn}
+                  value={ROLE_NAME || ""}
                 />
               </Grid>
             </Grid>
           </Grid>
         </Grid>
-
         <Grid item container xs={12}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={3}>
@@ -135,7 +170,7 @@ const PersonalInfoTab = ({ data }) => {
                 label="Քաղաքացիություն"
                 fullWidth
                 InputProps={{ readOnly: true }}
-                value={`${country_arm ?? ""} / ${country_eng ?? ""}`}
+                value={CITIZENSHIP_COUNTRY_NAME || ""}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
@@ -143,23 +178,23 @@ const PersonalInfoTab = ({ data }) => {
                 label="Անձնագիր"
                 fullWidth
                 InputProps={{ readOnly: true }}
-                value={passport_number}
+                value={doc_num || ""}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Անձնագիրը տրված է"
+                label="Ազգությունը"
                 fullWidth
                 InputProps={{ readOnly: true }}
-                value={passport_issued}
+                value={ETNICITY_NAME || ""}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Անձնագիրը վավեր է"
+                label="Կրոնը"
                 fullWidth
                 InputProps={{ readOnly: true }}
-                value={passport_valid}
+                value={RELIGION_NAME || ""}
               />
             </Grid>
           </Grid>
@@ -168,34 +203,34 @@ const PersonalInfoTab = ({ data }) => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Քարտ #"
+                label="Մարզ"
                 fullWidth
                 InputProps={{ readOnly: true }}
-                value={serial_number || ""}
+                value={MARZ_NAME || ""}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Քարտը տրված է"
+                label="Համայնք"
                 fullWidth
                 InputProps={{ readOnly: true }}
-                value={card_issued || ""}
+                value={COMMUNITY_NAME || ""}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Քարտը վավեր է"
+                label="Բնակավայր"
                 fullWidth
                 InputProps={{ readOnly: true }}
-                value={card_valid || ""}
+                value={SETTLEMENT_NAME || ""}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Քարտի կարգավիճակ"
+                label="ՏՈՒՆ"
                 fullWidth
                 InputProps={{ readOnly: true }}
-                value={card_status}
+                value={BUILDING_NUMBER || APPARTMENT_NUMBER || ""}
               />
             </Grid>
           </Grid>
@@ -207,7 +242,7 @@ const PersonalInfoTab = ({ data }) => {
                 label="Բնակության հասցե"
                 fullWidth
                 InputProps={{ readOnly: true }}
-                value={full_address || ""}
+                value={STREET_NAME || ""}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -215,7 +250,7 @@ const PersonalInfoTab = ({ data }) => {
                 label="Հեռախոսահամար"
                 fullWidth
                 InputProps={{ readOnly: true }}
-                value={telephone || ""}
+                value={contact_tel || ""}
               />
             </Grid>
           </Grid>
@@ -227,31 +262,23 @@ const PersonalInfoTab = ({ data }) => {
                 label="Էլ.փոստ"
                 fullWidth
                 InputProps={{ readOnly: true }}
-                value={email || ""}
+                value={contact_email || ""}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Գրանցման ամսաթիվ"
+                label="Ժամանման ամսաթիվ"
                 fullWidth
                 InputProps={{ readOnly: true }}
-                value={
-                  user_created
-                    ? dayjs(user_created).format("YYYY-MM-DD HH:mm:ss")
-                    : ""
-                }
+                value={arrival_date || ""}
               />
             </Grid>
             <Grid item xs={12} sm={3}>
               <TextField
-                label="Վերջին ակտիվություն"
+                label="Քաղ։ երկրից մեկնում"
                 fullWidth
                 InputProps={{ readOnly: true }}
-                value={
-                  last_active_at
-                    ? dayjs(last_active_at).format("YYYY-MM-DD HH:mm:ss")
-                    : ""
-                }
+                value={departure_from_citizen || ""}
               />
             </Grid>
           </Grid>

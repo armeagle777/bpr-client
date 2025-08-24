@@ -4,7 +4,7 @@ import { memo } from "react";
 import Modal from "../../components/Modal/Modal";
 import useAsylumPerson from "../../hooks/useAsylumPerson";
 import Filters from "./components/Filters";
-// import ModalContent from "./components/ModalContent";
+import ModalContent from "./components/ModalContent";
 
 const AsylumSearch = () => {
   const {
@@ -65,11 +65,11 @@ const AsylumSearch = () => {
             onClose={handleModalClose}
             centered={false}
           >
-            {/* <ModalContent
+            <ModalContent
               selectedTab={selectedTab}
               onTabChange={handleTabChange}
               data={fullData}
-            /> */}
+            />
           </Modal>
         </>
       )}
