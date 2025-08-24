@@ -139,11 +139,11 @@ const useAsylumPerson = () => {
   const columns = [
     {
       title: "Նկարը",
-      dataIndex: "path",
-      key: "path",
+      dataIndex: "image",
+      key: "image",
       render: (_, record) => (
         <Avatar
-          src={record.path}
+          src={record.image}
           alt="Profile Photo"
           variant="rounded"
           sx={{ width: 60, height: 80 }}
@@ -152,54 +152,48 @@ const useAsylumPerson = () => {
     },
     {
       title: "Փաստաթուղթը",
-      dataIndex: "passport_number",
-      key: "passport_number",
-    },
-    {
-      title: "ՀԾՀ",
-      dataIndex: "ssn",
-      key: "ssn",
-      render: (_, record) =>
-        record.ssn ? <Link to={`/bpr/${record.ssn}`}>{record.ssn}</Link> : "",
+      dataIndex: "doc_num",
+      key: "doc_num",
     },
     {
       title: "Քաղաքացիությունը",
-      dataIndex: "arm_short",
-      key: "arm_short",
-      render: (_, record) => `${record.arm_short} | ${record.alpha_3}`,
+      dataIndex: "CITIZENSHIP_NAME_ARM",
+      key: "CITIZENSHIP_NAME_ARM",
+      render: (_, record) =>
+        `${record.CITIZENSHIP_NAME_ARM} | ${record.CITIZENSHIP_NAME_ENG}`,
     },
     {
       title: "Անունը (լատ)",
-      dataIndex: "first_name_en",
-      key: "first_name_en",
+      dataIndex: "f_name_eng",
+      key: "f_name_eng",
     },
     {
       title: "Ազգանունը (լատ)",
-      dataIndex: "last_name_en",
-      key: "last_name_en",
+      dataIndex: "l_name_eng",
+      key: "l_name_eng",
     },
     {
       title: "Անունը (hայ)",
-      dataIndex: "first_name_am",
-      key: "first_name_am",
+      dataIndex: "f_name_arm",
+      key: "f_name_arm",
     },
     {
       title: "Ազգանունը (hայ)",
-      dataIndex: "last_name_am",
-      key: "last_name_am",
+      dataIndex: "l_name_arm",
+      key: "l_name_arm",
     },
     {
       title: "Սեռը",
-      dataIndex: "gender_id",
-      key: "gender_id",
-      render: (_, record) => (record.gender_id == 1 ? "Male" : "Female"),
+      dataIndex: "sex",
+      key: "sex",
+      render: (_, record) => (record.sex == 1 ? "Արական" : "Իգական"),
     },
     {
       title: "Ծննդյան ա/թ",
-      dataIndex: "birthday_day",
+      dataIndex: "b_day",
       key: "birthday",
       render: (_, record) =>
-        `${record.birthday_day}.${record.birthday_month}.${record.birthday_year}`,
+        `${record.b_day}.${record.b_month}.${record.b_year}`,
     },
     {
       title: "...",

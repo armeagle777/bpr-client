@@ -70,11 +70,13 @@ const Filters = ({
           value={filters.select_gender}
           onChange={(value) => handleChange("select_gender", value)}
         />
-        <FilterSelect
-          options={ethnicOptions}
+        <FilterAutocomplete
           label="Ազգությունը"
+          options={ethnicOptions}
           value={filters.select_etnicity}
-          onChange={(value) => handleChange("select_etnicity", value)}
+          onChange={(event, newValue) => {
+            return handleChange("select_etnicity", newValue);
+          }}
         />
         <FilterTextInput
           label="Անունը(լատ)"
@@ -90,7 +92,9 @@ const Filters = ({
           label="Քաղաքացիություն"
           options={countriesOptions}
           value={filters.select_country}
-          onChange={(value, newValue) => handleChange("select_country", value)}
+          onChange={(event, newValue) => {
+            return handleChange("select_country", newValue);
+          }}
         />
         <FilterDatePicker
           label="Ծննդյան ա/թ(սկսած)"

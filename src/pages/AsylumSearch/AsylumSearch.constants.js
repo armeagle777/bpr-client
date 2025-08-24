@@ -4,9 +4,9 @@ export const initialFilters = {
   f_name_eng: "",
   l_name_eng: "",
   doc_num: "",
-  select_gender: "",
-  select_country: "",
-  select_etnicity: "",
+  select_gender: 0,
+  select_country: null,
+  select_etnicity: null,
   birth_date_start: null,
   birth_date_end: null,
 };
