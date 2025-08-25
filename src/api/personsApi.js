@@ -230,6 +230,11 @@ export const getRoadpoliceDataBySsn = async (ssn) => {
   return response.data;
 };
 
+export const getWeaponsData = async (params) => {
+  const response = await personsApi.post(`/police/weapons`, params);
+  return response.data;
+};
+
 export const getVehiclesByParams = async (q, searchBase) => {
   const response = await personsApi.get(
     `/persons/${q}/vehicle?searchBase=${searchBase}`

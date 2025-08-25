@@ -32,6 +32,7 @@ import {
 import RoadPoliceTab from "../RoadPoliceTab/RoadPoliceTab";
 import WpTab from "../WpTab/WpTab";
 import PoliceTab from "../policeTab/PoliceTab";
+import WeaponsTab from "../WeaponsTab/WeaponsTab";
 
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
@@ -355,6 +356,14 @@ const PersonInfoPage = ({ personInfo }) => {
                   <RoadPoliceTab pnum={sanitizedPNum} />
                 </TabPanel>
               )}
+              {userHasPermission(
+                [permissionsMap.WEAPON.uid, permissionsMap.ADMIN.uid],
+                user.permissions
+              ) && (
+                <TabPanel value={value} index={index++}>
+                  <WeaponsTab pnum={sanitizedPNum} />
+                </TabPanel>
+              )}
             </Box>
 
             <SpeedDialButton
@@ -404,69 +413,37 @@ const PersonInfoPage = ({ personInfo }) => {
               {userHasPermission(
                 [permissionsMap.TAX.uid, permissionsMap.ADMIN.uid],
                 user.permissions
-              ) && (
-                // <Tooltip title="ՊԵԿ տվյալներ">
-                //   <Tab icon={<AttachMoneyIcon />} aria-label="finances" />
-                // </Tooltip>
-                <Tab label="ՊԵԿ տվյալներ" aria-label="finances" />
-              )}
+              ) && <Tab label="ՊԵԿ տվյալներ" aria-label="finances" />}
               {userHasPermission(
                 [permissionsMap.ZAQS.uid, permissionsMap.ADMIN.uid],
                 user.permissions
-              ) && (
-                // <Tooltip title="ՔԿԱԳ տվյալներ">
-                //   <Tab icon={<FamilyRestroomIcon />} aria-label="family" />
-                // </Tooltip>
-                <Tab label="ՔԿԱԳ տվյալներ" aria-label="family" />
-              )}
+              ) && <Tab label="ՔԿԱԳ տվյալներ" aria-label="zaqs" />}
               {userHasPermission(
                 [permissionsMap.PETREGISTER.uid, permissionsMap.ADMIN.uid],
                 user.permissions
-              ) && (
-                // <Tooltip title="ԻԱՊՌ տվյալներ">
-                //   <Tab icon={<BusinessIcon />} aria-label="business" />
-                // </Tooltip>
-                <Tab label="ԻԱՊՌ տվյալներ" aria-label="family" />
-              )}
+              ) && <Tab label="ԻԱՊՌ տվյալներ" aria-label="petregistre" />}
               {userHasPermission(
                 [permissionsMap.KADASTR.uid, permissionsMap.ADMIN.uid],
                 user.permissions
-              ) && (
-                // <Tooltip title="Կադաստրի տվյալներ">
-                //   <Tab icon={<CastleIcon />} aria-label="kadastr" />
-                // </Tooltip>
-                <Tab label="Կադաստրի տվյալներ" aria-label="family" />
-              )}
+              ) && <Tab label="Կադաստրի տվյալներ" aria-label="cadastre" />}
               {userHasPermission(
                 [permissionsMap.POLICE.uid, permissionsMap.ADMIN.uid],
                 user.permissions
-              ) && (
-                // <Tooltip title="ԻՑ տվյալներ">
-                //   <Tab icon={<LocalPoliceIcon />} aria-label="police" />
-                // </Tooltip>
-                <Tab label="ԻՑ տվյալներ" aria-label="family" />
-              )}
+              ) && <Tab label="ԻՑ տվյալներ" aria-label="police" />}
               {userHasPermission(
                 [permissionsMap.WP.uid, permissionsMap.ADMIN.uid],
                 user.permissions
               ) && (
-                // <Tooltip title="Աշխատանքի թույլտվության տվյալներ">
-                //   <Tab icon={<PersonSearchIcon />} aria-label="wp" />
-                // </Tooltip>
-                <Tab
-                  label="Աշխատանքի թույլտվության տվյալներ"
-                  aria-label="family"
-                />
+                <Tab label="Աշխատանքի թույլտվության տվյալներ" aria-label="wp" />
               )}
               {userHasPermission(
                 [permissionsMap.ROADPOLICE.uid, permissionsMap.ADMIN.uid],
                 user.permissions
-              ) && (
-                // <Tooltip title="ՃՈ տվյալներ">
-                //   <Tab icon={<DirectionsCarIcon />} aria-label="roadpolice" />
-                // </Tooltip>
-                <Tab label="ՃՈ տվյալներ" aria-label="family" />
-              )}
+              ) && <Tab label="ՃՈ տվյալներ" aria-label="roadpolice" />}
+              {userHasPermission(
+                [permissionsMap.WEAPON.uid, permissionsMap.ADMIN.uid],
+                user.permissions
+              ) && <Tab label="Զենքերի տվյալներ" aria-label="weapons" />}
             </Tabs>
           </Box>
         </Grid>
