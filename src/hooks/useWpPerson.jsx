@@ -23,6 +23,8 @@ const useWpPerson = () => {
     queryKey: ["wp-person"],
     queryFn: () => getWpPersonData(filters, page),
     enabled: false,
+    keepPreviousData: false,
+    cacheTime: 0,
   });
 
   const {

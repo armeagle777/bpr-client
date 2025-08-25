@@ -34,6 +34,7 @@ const useAsylumPerson = () => {
     queryFn: () => filterAsylumPersonData(filters, page),
     enabled: false,
     keepPreviousData: false,
+    cacheTime: 0,
   });
 
   const countriesOptions = useMemo(
