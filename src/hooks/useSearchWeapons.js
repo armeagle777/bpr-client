@@ -1,29 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { getWeaponsData } from "../api/personsApi";
 
 const useSearchWeapons = () => {
-  const [certNumberInput, setCertNumberInput] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [weaponsSearchParams, setWeaponsSearchParams] = useState({});
 
   const handleSubmitSearch = (q, searchBase) => {
-    if (!q && !certNumberInput) return;
+    if (!q && !searchInput) return;
 
-    setCertificatesSearchParams({ q: q ?? certNumberInput, searchBase });
+    setWeaponsSearchParams({ q: q ?? searchInput, searchBase });
   };
 
   const { isFetching, isLoading, isError, error, data } = useQuery(
-    [
-      "vehicle-search",
-      certificatesSearchParams?.q,
-      certificatesSearchParams?.searchBase,
-    ],
+    ["weapons-search", weaponsSearchParams?.q, weaponsSearchParams?.searchBase],
     () =>
-      getVehiclesByParams(
-        certificatesSearchParams?.q,
-        certificatesSearchParams?.searchBase
-      ),
+      getWeaponsData({
+        [weaponsSearchParams?.q]: weaponsSearchParams?.searchBase,
+      }),
     {
       keepPreviousData: true,
-      enabled: !!certificatesSearchParams?.q,
+      enabled: !!weaponsSearchParams?.q,
     }
   );
   return {
@@ -32,8 +29,8 @@ const useSearchWeapons = () => {
     isError,
     isLoading,
     isFetching,
-    certNumberInput,
-    setCertNumberInput,
+    searchInput,
+    setSearchInput,
     handleSubmitSearch,
   };
 };

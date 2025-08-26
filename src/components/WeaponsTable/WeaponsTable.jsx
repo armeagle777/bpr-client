@@ -1,7 +1,6 @@
-import { createStyles } from "antd-style";
 import { Table } from "antd";
-
-import "./styles.css";
+import { createStyles } from "antd-style";
+import { ExpandRow } from "./components";
 
 const WeaponsTable = ({ isFetching, data }) => {
   const useStyle = createStyles(({ css, token }) => {
@@ -21,6 +20,7 @@ const WeaponsTable = ({ isFetching, data }) => {
       `,
     };
   });
+
   const { styles } = useStyle();
   const columns = [
     {
@@ -28,17 +28,14 @@ const WeaponsTable = ({ isFetching, data }) => {
       dataIndex: "ZHAMAR",
       key: "ZHAMAR",
       fixed: "left",
+      width: 100,
     },
     {
       title: "Անունը",
       dataIndex: "ZANUN_NAME",
       key: "ZANUN_NAME",
       fixed: "left",
-    },
-    {
-      title: "Տ/չ",
-      dataIndex: "KALIBR",
-      key: "KALIBR",
+      width: 100,
     },
     {
       title: "Տեսակը",
@@ -71,70 +68,60 @@ const WeaponsTable = ({ isFetching, data }) => {
       key: "TBAJIN",
     },
     {
-      title: "Պարգևատրություն",
-      dataIndex: "PARGEV",
-      key: "PARGEV",
+      title: "ԱԱՀ",
+      dataIndex: "AZG",
+      key: "AZG",
+      render: (_, { AZG, ANUN, HAYR }) =>
+        `${ANUN || ""} ${AZG || ""} ${HAYR || ""}`,
     },
     {
-      title: "Նշումներ",
-      dataIndex: "NOTE",
-      key: "NOTE",
+      title: "Ծննդ. ա/թ",
+      dataIndex: "BDATE",
+      key: "BDATE",
     },
     {
-      title: "Քր.Գործ N",
-      dataIndex: "QRGORCN",
-      key: "QRGORCN",
+      title: "ՀԾՀ",
+      dataIndex: "SSN",
+      key: "SSN",
     },
     {
-      title: "Քր.Գործ ա/թ",
-      dataIndex: "QRGORC_DATE",
-      key: "QRGORC_DATE",
+      title: "Փ/թ",
+      dataIndex: "PASSPORT",
+      key: "PASSPORT",
     },
     {
-      title: "Հոդված",
-      dataIndex: "HODVAC",
-      key: "HODVAC",
+      title: "Հասցե",
+      dataIndex: "HASCE",
+      key: "HASCE",
+      render: (_, { HASCE, ABNAK, APOXOC, ASHENQ, ABNAKARAN }) =>
+        `${HASCE || ""}, ${ABNAK || ""}, ${APOXOC || ""} , ${ASHENQ || ""} ${
+          ABNAKARAN || ""
+        }`,
     },
     {
-      title: "Վայր",
-      dataIndex: "WVAYR",
-      key: "WVAYR",
+      title: "Տ/չ",
+      dataIndex: "KALIBR",
+      key: "KALIBR",
       fixed: "right",
+      width: 100,
     },
   ];
 
   return (
     <Table
       bordered
-      columns={columns}
-      className={styles.customTable}
-      loading={isFetching}
-      dataSource={data}
-      scroll={{ x: "max-content" }}
-      pagination={false}
-      expandable={{
-        expandedRowRender: ({
-          AZG,
-          ANUN,
-          HAYR,
-          BDATE,
-          SSN,
-          PASSPORT,
-          PASHTON,
-          HASCE,
-          ABNAK,
-          APOXOC,
-          ASHENQ,
-          ABNAKARAN,
-        }) => (
-          <p style={{ margin: 0 }}>
-            {AZG} {ANUN} {HAYR || ""} | {BDATE} | ՀԾՀ՝ {SSN} | փ/թ՝ {PASSPORT} |{" "}
-            {HASCE || ""}, {ABNAK || ""}, {APOXOC || ""} , {ASHENQ || ""}{" "}
-            {ABNAKARAN || ""}
-          </p>
-        ),
-      }}
       rowKey="ZHAMAR"
+      columns={columns}
+      dataSource={data}
+      pagination={false}
+      loading={isFetching}
+      scroll={{ x: "max-content" }}
+      className={styles.customTable}
+      expandable={{
+        expandedRowRender: (record) => <ExpandRow {...record} />,
+        rowExpandable: (record) =>
+          !!record.HODVAC.trim() || !!record.PARGEV.trim(),
+      }}
     />
   );
 };

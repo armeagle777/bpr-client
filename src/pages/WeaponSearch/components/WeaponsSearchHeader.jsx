@@ -1,11 +1,9 @@
 import {
-  Pin as PinIcon,
-  Build as BuildIcon,
+  BusinessCenter as BusinessCenterIcon,
   PersonSearch as SearchIcon,
   AccountBox as AccountBoxIcon,
-  DirectionsCar as DirectionsCarIcon,
+  LocalPolice as LocalPoliceIcon,
 } from "@mui/icons-material";
-
 import {
   Box,
   Stack,
@@ -14,17 +12,16 @@ import {
   ToggleButton,
   ToggleButtonGroup,
 } from "@mui/material";
-
 import { LoadingButton } from "@mui/lab";
 
-import { PLACEHOLDERS, SEARCH_BASES } from "../VehicleSearch.constants";
+import { PLACEHOLDERS, SEARCH_BASES } from "../WeaponSearch.constants";
 
 const WeaponsSearchHeader = ({
   searchBase,
   isFetching,
-  certNumberInput,
+  searchInput,
+  setSearchInput,
   handleBaseChange,
-  setCertNumberInput,
   handleSubmitSearch,
 }) => {
   return (
@@ -48,15 +45,15 @@ const WeaponsSearchHeader = ({
         autoComplete="off"
       >
         <TextField
-          label={PLACEHOLDERS[searchBase] || "Հաշվառման համարանիշ"}
+          label={PLACEHOLDERS[searchBase] || "ՀԾՀ"}
           type="search"
-          value={certNumberInput}
-          onChange={(e) => setCertNumberInput(e.target.value)}
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
           autoFocus
         />
         <LoadingButton
           onClick={() =>
-            handleSubmitSearch(certNumberInput, SEARCH_BASES[searchBase])
+            handleSubmitSearch(searchInput, SEARCH_BASES[searchBase])
           }
           variant="contained"
           size="large"
@@ -81,24 +78,19 @@ const WeaponsSearchHeader = ({
           aria-label="Search-base"
           onChange={handleBaseChange}
         >
-          <Tooltip title="Որոնում ըստ հաշվառման համարանիշի">
-            <ToggleButton value="PLATE_NUMBER">
-              <PinIcon />
-            </ToggleButton>
-          </Tooltip>
-          <Tooltip title="Որոնում ըստ ՀԾՀ-ի/ՀՎՀՀ-ի">
+          <Tooltip title="Որոնում ըստ ՀԾՀ-ի">
             <ToggleButton value="SSN">
               <AccountBoxIcon />
             </ToggleButton>
           </Tooltip>
-          <Tooltip title="Որոնում ըստ VIN կոդի">
-            <ToggleButton value="VIN_CODE">
-              <BuildIcon />
+          <Tooltip title="Որոնում ըստ ՀՎՀՀ-ի">
+            <ToggleButton value="TAX_ID">
+              <BusinessCenterIcon />
             </ToggleButton>
           </Tooltip>
-          <Tooltip title="Որոնում ըստ հաշվառման վկայագրի">
-            <ToggleButton value="CERTIFICATE_NUMBER">
-              <DirectionsCarIcon />
+          <Tooltip title="Որոնում ըստ զենքի N">
+            <ToggleButton value="WEAPON_ID">
+              <LocalPoliceIcon />
             </ToggleButton>
           </Tooltip>
         </ToggleButtonGroup>

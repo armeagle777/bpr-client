@@ -1,10 +1,10 @@
 import { memo, useEffect, useState } from "react";
 import { Container } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 
 import WeaponsSearchHeader from "./components/WeaponsSearchHeader";
 import WeaponsTable from "../../components/WeaponsTable/WeaponsTable";
 import useSearchWeapons from "../../hooks/useSearchWeapons";
-import { useSearchParams } from "react-router-dom";
 import { SEARCH_BASES } from "./WeaponSearch.constants";
 
 const WeaponSearch = () => {
@@ -31,8 +31,8 @@ const WeaponSearch = () => {
     isFetching,
     isError,
     error,
-    certNumberInput,
-    setCertNumberInput,
+    searchInput,
+    setSearchInput,
     handleSubmitSearch,
   } = useSearchWeapons();
 
@@ -41,12 +41,12 @@ const WeaponSearch = () => {
       <WeaponsSearchHeader
         searchBase={searchBase}
         isFetching={isFetching}
-        certNumberInput={certNumberInput}
+        searchInput={searchInput}
         handleBaseChange={handleBaseChange}
-        setCertNumberInput={setCertNumberInput}
+        setSearchInput={setSearchInput}
         handleSubmitSearch={handleSubmitSearch}
       />
-      <WeaponsTable isFetching={isFetching} data={weapons} />
+      <WeaponsTable isFetching={isFetching} data={data} />
     </Container>
   );
 };
