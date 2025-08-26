@@ -3,8 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { getWeaponsData } from "../api/personsApi";
 
 const useFetchWeaponsData = (params) => {
-  const { isLoading, isError, error, data } = useQuery(
-    ["weapons", pnum],
+  const [certNumberInput, setCertNumberInput] = useState("");
+
+  const { isLoading, isError, error, data, isFetching } = useQuery(
+    ["weapons", params],
     () => getWeaponsData(params),
     {
       keepPreviousData: false,
@@ -12,11 +14,21 @@ const useFetchWeaponsData = (params) => {
     }
   );
 
+  const handleSubmitSearch = (q, searchBase) => {
+    if (!q && !certNumberInput) return;
+
+    setCertificatesSearchParams({ q: q ?? certNumberInput, searchBase });
+  };
+
   return {
     error,
     isError,
     isLoading,
+    isFetching,
     data,
+    certNumberInput,
+    handleSubmitSearch,
+    setCertNumberInput,
   };
 };
 

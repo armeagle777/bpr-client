@@ -31,6 +31,9 @@ const LazyVehicleSearch = lazy(() =>
 const LazyAsylumSearch = lazy(() =>
   import("./pages/AsylumSearch/AsylumSearch")
 );
+const LazyWeaponSearch = lazy(() =>
+  import("./pages/WeaponSearch/WeaponSearch")
+);
 
 function App() {
   return (
@@ -178,6 +181,21 @@ function App() {
             >
               <Suspense fallback={<PageLoader />}>
                 <LazyAsylumSearch />
+              </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="weapon-search"
+          element={
+            <RequirePermission
+              permissions={[
+                permissionsMap.WEAPON.uid,
+                permissionsMap.ADMIN.uid,
+              ]}
+            >
+              <Suspense fallback={<PageLoader />}>
+                <LazyWeaponSearch />
               </Suspense>
             </RequirePermission>
           }

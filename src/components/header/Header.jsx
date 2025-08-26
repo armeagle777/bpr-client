@@ -127,6 +127,14 @@ const Header = () => {
                 <Link to="asylum-search">Փախստականների Որոնում</Link>
               </Button>
             )}
+            {userHasPermission(
+              [permissionsMap.WEAPON.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <Button sx={{ my: 2, color: "white", display: "block" }}>
+                <Link to="weapon-search">Զենք</Link>
+              </Button>
+            )}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

@@ -1,0 +1,6 @@
+.customTable .ant-table-body {
+  scrollbar-width: none; /* Firefox */
+}
+.customTable .ant-table-body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}

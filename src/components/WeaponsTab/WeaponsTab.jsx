@@ -1,15 +1,23 @@
 import { Grid, Alert as MuiAlert, Stack } from "@mui/material";
 
-import useFetchWeaponsData from "../../hooks/useFetchWeaponsData";
+import useFetchWeaponsData from "../../hooks/useFetchWeaponsData.js";
 import ListScileton from "../listSceleton/ListScileton";
+import WeaponsTable from "../WeaponsTable/WeaponsTable";
 
 import DocumentNotFound from "../family/DocumentNotFound";
+import { WEAPONS_NOT_FOUND_MESSAGE } from "./WeaponsTab.constants.js";
 
 const WeaponsTab = ({ pnum }) => {
-  const { data, isLoading, isError, error } = useFetchWeaponsData({
+  const {
+    data = [],
+    isLoading,
+    isFetching,
+    isError,
+    error,
+  } = useFetchWeaponsData({
     ssn: pnum,
   });
-  console.log("data>>>>", data);
+
   if (isLoading) {
     return <ListScileton />;
   }
@@ -22,19 +30,10 @@ const WeaponsTab = ({ pnum }) => {
     );
   }
 
-  return (
-    <Stack direction="column" gap={4}>
-      {!data?.length && (
-        <DocumentNotFound notification="Տվյալ անձի վերաբերյալ զենքերի բազայում տվյալներ չեն հայտնաբերվել:" />
-      )}
-      {/* <Grid container>{showLicense && <LicenseCard license={license} />}</Grid>
-       <Grid container spacing={2}>
-         {showVehicleCards &&
-           vehicles?.map((vehicleInfo, index) => (
-             <VehicleCard key={index} car={vehicleInfo} />
-           ))}
-       </Grid> */}
-    </Stack>
+  return !data?.length ? (
+    <DocumentNotFound notification={WEAPONS_NOT_FOUND_MESSAGE} />
+  ) : (
+    <WeaponsTable data={data} isFetching={isFetching} />
   );
 };
 
