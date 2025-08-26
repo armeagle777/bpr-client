@@ -1,8 +1,9 @@
 import { Table } from "antd";
 import { createStyles } from "antd-style";
+
 import { ExpandRow } from "./components";
 
-const WeaponsTable = ({ isFetching, data }) => {
+const WeaponsTable = ({ isFetching, data, fullWidth = false }) => {
   const useStyle = createStyles(({ css, token }) => {
     const { antCls } = token;
     return {
@@ -113,14 +114,14 @@ const WeaponsTable = ({ isFetching, data }) => {
       rowKey="ZHAMAR"
       columns={columns}
       dataSource={data}
-      pagination={false}
+      pagination={fullWidth}
       loading={isFetching}
       scroll={{ x: "max-content" }}
       className={styles.customTable}
       expandable={{
         expandedRowRender: (record) => <ExpandRow {...record} />,
         rowExpandable: (record) =>
-          !!record.HODVAC.trim() || !!record.PARGEV.trim(),
+          !!record?.HODVAC?.trim() || !!record.PARGEV?.trim(),
       }}
     />
   );
