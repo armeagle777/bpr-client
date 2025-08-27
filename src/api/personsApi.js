@@ -281,6 +281,17 @@ export const getRoadPoliceTransactions = async (pnum) => {
   return response.data;
 };
 
+export const getTerritorialMinPropertyTaxes = async ({
+  identificator,
+  personType = "PHYSICAL", // LEGAL
+  serviceType = "VEHICLES", // REAL_ESTATE
+}) => {
+  const response = await personsApi.get(
+    `/territorial-ministry/property-taxes/${identificator}?personType=${personType}&serviceType=${serviceType}`
+  );
+  return response.data;
+};
+
 export const createLog = async (fileInfo = {}) => {
   const response = await personsApi.post(`/logs`, fileInfo);
   return response.data;

@@ -34,6 +34,7 @@ import WpTab from "../WpTab/WpTab";
 import PoliceTab from "../policeTab/PoliceTab";
 import WeaponsTab from "../WeaponsTab/WeaponsTab";
 import RoadPoliceTransactionsTab from "../RoadPoliceTransactionsTab/RoadPoliceTransactionsTab";
+import PropertyTaxesTab from "../PropertyTaxesTab/PropertyTaxesTab";
 
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
@@ -376,6 +377,17 @@ const PersonInfoPage = ({ personInfo }) => {
                   <RoadPoliceTransactionsTab pnum={sanitizedPNum} />
                 </TabPanel>
               )}
+              {userHasPermission(
+                [
+                  permissionsMap.MTA_PROPERTY_TAXES.uid,
+                  permissionsMap.ADMIN.uid,
+                ],
+                user.permissions
+              ) && (
+                <TabPanel value={value} index={index++}>
+                  <PropertyTaxesTab pnum={sanitizedPNum} />
+                </TabPanel>
+              )}
             </Box>
 
             <SpeedDialButton
@@ -464,6 +476,18 @@ const PersonInfoPage = ({ personInfo }) => {
                 user.permissions
               ) && (
                 <Tab label="Տ/մ հաշվառումներ" aria-label="rp-transactions" />
+              )}
+              {userHasPermission(
+                [
+                  permissionsMap.MTA_PROPERTY_TAXES.uid,
+                  permissionsMap.ADMIN.uid,
+                ],
+                user.permissions
+              ) && (
+                <Tab
+                  label="Գույքահարկ"
+                  aria-label="territorial-ministry-property-taxes"
+                />
               )}
             </Tabs>
           </Box>
