@@ -1,14 +1,16 @@
 import {
   Card,
-  CardContent,
-  Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Grid,
   Chip,
+  Stack,
   Divider,
+  Accordion,
+  Typography,
+  CardContent,
+  AccordionDetails,
+  AccordionSummary,
   Alert as MuiAlert,
+  Tooltip,
 } from "@mui/material";
 import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 
@@ -17,11 +19,13 @@ import ListScileton from "../listSceleton/ListScileton";
 import DocumentNotFound from "../family/DocumentNotFound";
 import { TRANSACTIONS_NOT_FOUND_MESSAGE } from "./RoadPoliceTransactionsTab.helpers";
 import { OwnerCard } from "./components";
+import { formatPrice } from "./RoadPoliceTransactions.helpers";
 
 const RoadPoliceTransactionsTab = ({ pnum }) => {
-  const { data, error, isError, isFetching } = useFetchRoadPoliceTransactions();
+  const { data, error, isError, isFetching } =
+    useFetchRoadPoliceTransactions(pnum);
 
-  if (isLoading) {
+  if (isFetching) {
     return <ListScileton />;
   }
 
@@ -41,57 +45,119 @@ const RoadPoliceTransactionsTab = ({ pnum }) => {
         <Grid item xs={12} key={idx}>
           <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
             <CardContent>
-              <Typography variant="h6" gutterBottom>
-                {tx.model ?? "Unknown Model"}{" "}
-                <Chip label={tx.released ?? "Unknown Year"} size="small" />
-              </Typography>
+              {/* Vehicle Header */}
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={1}
+                flexWrap="wrap"
+                sx={{ mb: 1 }}
+              >
+                {/* Big Model Title */}
+                <Typography variant="h6" fontWeight={600}>
+                  {tx.model ?? "Unknown Model"}
+                </Typography>
 
+                {/* Year as a badge */}
+                <Chip
+                  label={tx.released ?? "Unknown Year"}
+                  color="primary"
+                  size="small"
+                  sx={{ fontWeight: 500 }}
+                />
+
+                {/* Changeset name full text */}
+                {!!tx.changeset_name && (
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ fontStyle: "italic" }}
+                  >
+                    {tx.changeset_name}
+                  </Typography>
+                )}
+              </Stack>
+
+              {/* Badges */}
+              <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mb: 2 }}>
+                <Chip
+                  label={tx.vehicle_type || "Unknown Type"}
+                  color="secondary"
+                  size="small"
+                  variant="outlined"
+                />
+                <Chip
+                  label={tx.reason_type || "No Reason"}
+                  color="info"
+                  size="small"
+                  variant="outlined"
+                />
+                {tx.price?.trim() && (
+                  <Chip
+                    label={`${formatPrice(tx.price, tx.currency)}`}
+                    color="success"
+                    size="small"
+                    variant="outlined"
+                  />
+                )}
+                {tx.engine_hp && (
+                  <Chip
+                    label={`${tx.engine_hp} HP`}
+                    color="warning"
+                    size="small"
+                  />
+                )}
+                {tx.fuel_type && (
+                  <Chip
+                    label={tx.fuel_type}
+                    color="error"
+                    size="small"
+                    variant="outlined"
+                  />
+                )}
+              </Stack>
+
+              {/* Vehicle Main Info */}
               <Typography variant="body2" color="text.secondary">
-                VIN: {tx.vin || "N/A"} | Color: {tx.color || "N/A"} | Plate:{" "}
+                VIN: {tx.vin || "N/A"} | Գույն: {tx.color || "N/A"} | հ/հ:{" "}
                 {tx.number || tx.old_number || "N/A"}
               </Typography>
               <Typography variant="body2" color="text.secondary" gutterBottom>
-                Reg №: {tx.reg_num || "N/A"} | Engine HP:{" "}
-                {tx.engine_hp || "N/A"} | Fuel: {tx.fuel_type || "N/A"}
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                Price: {tx.price ? `${tx.price} ${tx.currency}` : "N/A"}
+                Վկ։ №: {tx.cert_num || "N/A"} | Գրանցման ա/թ:{" "}
+                {tx.recording_date || "N/A"}
               </Typography>
               <Divider sx={{ my: 2 }} />
 
-              <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography variant="subtitle1">Current Owner(s)</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  {tx.persons?.new?.length ? (
-                    tx.persons.new.map((p, i) => (
+              {/* Owners */}
+              {!!tx.persons?.new?.length && (
+                <Accordion>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography variant="subtitle1">
+                      Նոր Սեփականատեր(եր)
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {tx.persons.new.map((p, i) => (
                       <OwnerCard person={p} key={i} label="Active" />
-                    ))
-                  ) : (
-                    <Typography variant="body2" color="text.secondary">
-                      No active owners
-                    </Typography>
-                  )}
-                </AccordionDetails>
-              </Accordion>
+                    ))}
+                  </AccordionDetails>
+                </Accordion>
+              )}
 
-              <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography variant="subtitle1">Previous Owner(s)</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  {tx.persons?.old?.length ? (
-                    tx.persons.old.map((p, i) => (
-                      <OwnerCard person={p} key={i} label="Previous" />
-                    ))
-                  ) : (
-                    <Typography variant="body2" color="text.secondary">
-                      No previous owners
+              {!!tx.persons?.old?.length && (
+                <Accordion>
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography variant="subtitle1">
+                      Նախկին Սեփականատեր(եր)
                     </Typography>
-                  )}
-                </AccordionDetails>
-              </Accordion>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    {tx.persons.old.map((p, i) => (
+                      <OwnerCard person={p} key={i} label="Previous" />
+                    ))}
+                  </AccordionDetails>
+                </Accordion>
+              )}
             </CardContent>
           </Card>
         </Grid>

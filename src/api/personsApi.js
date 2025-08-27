@@ -276,7 +276,7 @@ export const getPoliceByPnum = async (pnum) => {
 
 export const getRoadPoliceTransactions = async (pnum) => {
   const response = await personsApi.get(
-    `/road-police/persons/:${pnum}/transactions`
+    `/road-police/persons/${pnum}/transactions`
   );
   return response.data;
 };
