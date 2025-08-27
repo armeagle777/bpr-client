@@ -33,6 +33,7 @@ import RoadPoliceTab from "../RoadPoliceTab/RoadPoliceTab";
 import WpTab from "../WpTab/WpTab";
 import PoliceTab from "../policeTab/PoliceTab";
 import WeaponsTab from "../WeaponsTab/WeaponsTab";
+import RoadPoliceTransactionsTab from "../RoadPoliceTransactionsTab/RoadPoliceTransactionsTab";
 
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
@@ -364,6 +365,17 @@ const PersonInfoPage = ({ personInfo }) => {
                   <WeaponsTab pnum={sanitizedPNum} />
                 </TabPanel>
               )}
+              {userHasPermission(
+                [
+                  permissionsMap.ROADPOLICE_TRANSACTIONS.uid,
+                  permissionsMap.ADMIN.uid,
+                ],
+                user.permissions
+              ) && (
+                <TabPanel value={value} index={index++}>
+                  <RoadPoliceTransactionsTab pnum={sanitizedPNum} />
+                </TabPanel>
+              )}
             </Box>
 
             <SpeedDialButton
@@ -444,6 +456,15 @@ const PersonInfoPage = ({ personInfo }) => {
                 [permissionsMap.WEAPON.uid, permissionsMap.ADMIN.uid],
                 user.permissions
               ) && <Tab label="Զենքերի տվյալներ" aria-label="weapons" />}
+              {userHasPermission(
+                [
+                  permissionsMap.ROADPOLICE_TRANSACTIONS.uid,
+                  permissionsMap.ADMIN.uid,
+                ],
+                user.permissions
+              ) && (
+                <Tab label="Տ/մ հաշվառումներ" aria-label="rp-transactions" />
+              )}
             </Tabs>
           </Box>
         </Grid>

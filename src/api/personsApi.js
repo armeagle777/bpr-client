@@ -231,7 +231,7 @@ export const getRoadpoliceDataBySsn = async (ssn) => {
 };
 
 export const getWeaponsData = async (params) => {
-  const response = await personsApi.post(`/police/weapons`, params);
+  const response = await personsApi.post(`/ic/weapons`, params);
   return response.data;
 };
 
@@ -271,6 +271,13 @@ export const getCompaniesBySsn = async (ssn) => {
 
 export const getPoliceByPnum = async (pnum) => {
   const response = await personsApi.get(`/persons/${pnum}/police`);
+  return response.data;
+};
+
+export const getRoadPoliceTransactions = async (pnum) => {
+  const response = await personsApi.get(
+    `/road-police/persons/:${pnum}/transactions`
+  );
   return response.data;
 };
 

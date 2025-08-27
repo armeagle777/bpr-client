@@ -1,4 +1,4 @@
-import { Grid, Alert as MuiAlert, Stack } from "@mui/material";
+import { Alert as MuiAlert } from "@mui/material";
 
 import useFetchWeaponsData from "../../hooks/useFetchWeaponsData.js";
 import ListScileton from "../listSceleton/ListScileton";
