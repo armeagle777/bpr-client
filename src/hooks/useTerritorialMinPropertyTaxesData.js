@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { getTerritorialMinPropertyTaxes } from "../api/personsApi";
 
-const useTerritorialMinPropertyTaxesData = (
+const useTerritorialMinPropertyTaxesData = ({
   identificator,
   personType = "PHYSICAL",
-  serviceType
-) => {
+  serviceType,
+}) => {
   const { data, error, isError, isFetching } = useQuery(
     [
       "territorial-ministry-property-taxes",
@@ -13,8 +13,13 @@ const useTerritorialMinPropertyTaxesData = (
       personType,
       serviceType,
     ],
-    () => getTerritorialMinPropertyTaxes(pnum),
-    { keepPreviousData: false, enabled: !!identificator && !!serviceType }
+    () =>
+      getTerritorialMinPropertyTaxes({
+        identificator,
+        personType,
+        serviceType,
+      }),
+    { keepPreviousData: true, enabled: !!identificator && !!serviceType }
   );
 
   return {
