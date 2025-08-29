@@ -10,6 +10,7 @@ import PageLoader from "./components/PageLoader/PageLoader";
 import Home from "./pages/Home.page";
 import Login from "./pages/Login/Login";
 import NotFound from "./pages/NotFound.page";
+import CompanyDetail from "./pages/CompanyDetail/CompanyDetail";
 const LazyRegister = lazy(() => import("./pages/Register.page"));
 const LazyRoles = lazy(() => import("./pages/Roles/Roles"));
 const LazyPdf = lazy(() => import("./pages/Pdf.page"));
@@ -236,6 +237,7 @@ function App() {
             </RequirePermission>
           }
         />
+        <Route path="test-register" element={<CompanyDetail />} />
         <Route path="/*" element={<NotFound />} />
       </Route>
     </Routes>
