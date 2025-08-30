@@ -257,6 +257,18 @@ export const getCompanyForPersonByHvhh = async (tax_id) => {
   return response.data;
 };
 
+export const filterCompanies = async (params) => {
+  // Keep only truthy values
+  const cleanedParams = Object.fromEntries(
+    Object.entries(params).filter(([_, value]) => Boolean(value))
+  );
+  const response = await personsApi.get("/companies/search", {
+    params: cleanedParams,
+  });
+
+  return response.data;
+};
+
 export const getKadastrCertByNumber = async (q, searchBase) => {
   const response = await personsApi.get(
     `/kadastr/${q}/document?searchBase=${searchBase}`

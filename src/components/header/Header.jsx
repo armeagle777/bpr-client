@@ -86,7 +86,7 @@ const Header = () => {
               user.permissions
             ) && (
               <Button sx={{ my: 2, color: "white", display: "block" }}>
-                <Link to="register">ԻԱՊՌ</Link>
+                <Link to="companies">ԻԱՊՌ</Link>
               </Button>
             )}
             {userHasPermission(

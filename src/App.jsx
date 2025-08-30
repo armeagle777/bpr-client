@@ -10,8 +10,12 @@ import PageLoader from "./components/PageLoader/PageLoader";
 import Home from "./pages/Home.page";
 import Login from "./pages/Login/Login";
 import NotFound from "./pages/NotFound.page";
-import CompanyDetail from "./pages/CompanyDetail/CompanyDetail";
-const LazyRegister = lazy(() => import("./pages/Register.page"));
+const LazyCompanySearch = lazy(() =>
+  import("./pages/CompanySearchPage/CompanySearchPage")
+);
+const LazyCompanyDetailPge = lazy(() =>
+  import("./pages/CompanyDetailsPage/CompanyDetailsPage")
+);
 const LazyRoles = lazy(() => import("./pages/Roles/Roles"));
 const LazyPdf = lazy(() => import("./pages/Pdf.page"));
 const LazyProfile = lazy(() => import("./pages/Profile/Profile"));
@@ -80,9 +84,8 @@ function App() {
             </RequirePermission>
           }
         />
-
         <Route
-          path="register"
+          path="companies"
           element={
             <RequirePermission
               permissions={[
@@ -91,7 +94,22 @@ function App() {
               ]}
             >
               <Suspense fallback={<PageLoader />}>
-                <LazyRegister />
+                <LazyCompanySearch />
+              </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="companies/:taxId"
+          element={
+            <RequirePermission
+              permissions={[
+                permissionsMap.PETREGISTER.uid,
+                permissionsMap.ADMIN.uid,
+              ]}
+            >
+              <Suspense fallback={<PageLoader />}>
+                <LazyCompanyDetailPge />
               </Suspense>
             </RequirePermission>
           }
@@ -126,7 +144,7 @@ function App() {
             </RequirePermission>
           }
         />
-        <Route
+        {/* <Route
           path="vehicle-search"
           element={
             <RequirePermission
@@ -140,22 +158,7 @@ function App() {
               </Suspense>
             </RequirePermission>
           }
-        />
-        <Route
-          path="register/:taxId"
-          element={
-            <RequirePermission
-              permissions={[
-                permissionsMap.PETREGISTER.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
-            >
-              <Suspense fallback={<PageLoader />}>
-                <LazyRegister />
-              </Suspense>
-            </RequirePermission>
-          }
-        />
+        /> */}
         <Route
           path="wp-person-search"
           element={
@@ -237,7 +240,6 @@ function App() {
             </RequirePermission>
           }
         />
-        <Route path="test-register" element={<CompanyDetail />} />
         <Route path="/*" element={<NotFound />} />
       </Route>
     </Routes>
