@@ -262,7 +262,7 @@ export const filterCompanies = async (params) => {
   const cleanedParams = Object.fromEntries(
     Object.entries(params).filter(([_, value]) => Boolean(value))
   );
-  const response = await personsApi.get("/companies/search", {
+  const response = await personsApi.get("/petregistr/search", {
     params: cleanedParams,
   });
 
