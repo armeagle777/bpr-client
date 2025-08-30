@@ -2,7 +2,7 @@ import { Box, Typography, Button } from "@mui/material";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 import RefreshIcon from "@mui/icons-material/Refresh";
 
-const NoResults = ({ onReset }) => {
+const NoResults = ({ onReset,disabled }) => {
   return (
     <Box
       sx={{
@@ -17,21 +17,21 @@ const NoResults = ({ onReset }) => {
     >
       <SearchOffIcon sx={{ fontSize: 80, color: "text.disabled" }} />
       <Typography variant="h5" fontWeight="bold" gutterBottom>
-        No Results Found
+        Տվյալներ Չեն Գտնվել
       </Typography>
       <Typography variant="body1" color="text.secondary" maxWidth="400px">
-        We couldn’t find any companies matching your search. Try adjusting your
-        filters or search again.
+        Մենք չգտանք որևէ ընկերություն, որը համապատասխանում է ձեր որոնմանը։ Փորձեք փոխել ֆիլտրերը կամ կրկին որոնել:
       </Typography>
 
       {onReset && (
         <Button
+          onClick={onReset}
+          disabled={disabled}
           variant="contained"
           startIcon={<RefreshIcon />}
           sx={{ mt: 3, borderRadius: "999px", px: 3 }}
-          onClick={onReset}
         >
-          Տվյալներ չեն գտնվել
+          Մաքրել ֆիլտրերը
         </Button>
       )}
     </Box>

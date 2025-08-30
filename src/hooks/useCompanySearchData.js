@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 
-import { filterCompanies, getCompanyForPersonByHvhh } from "../api/personsApi";
+import { filterCompanies } from "../api/personsApi";
 
 const useCompanySearchData = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -13,12 +13,11 @@ const useCompanySearchData = () => {
     taxId: searchParams.get("taxId") || "",
     type: searchParams.get("type") || "",
   });
-
   const { isFetching, isError, error, data } = useQuery(
     ["search-companies", searchParams],
     () => filterCompanies(filters),
     {
-      keepPreviousData: true,
+      keepPreviousData: false,
       enabled: searchEnabled,
     }
   );

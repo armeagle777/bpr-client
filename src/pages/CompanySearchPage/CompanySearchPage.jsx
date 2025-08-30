@@ -22,28 +22,12 @@ const CompanySearchPage = () => {
   } = useCompanySearchData();
 
   const buttonsDisabled = !filters.name && !filters.taxId && !filters.type;
-
-  if (isError) {
-    return (
-      <MuiAlert severity="error">
-        {error.response?.data?.message || error.message}
-      </MuiAlert>
-    );
-  }
-
+  const typesSelectDisabled = !filters?.name;
   return (
     <Box p={3}>
       <BreadCrumb />
       <Container>
         <Stack spacing={2} direction="row" justifyContent={"center"} mb={2}>
-          <TextField
-            id="name"
-            name="name"
-            type="search"
-            label="Անվանումը"
-            value={filters.name}
-            onChange={handleFieldChange}
-          />
           <TextField
             autoFocus
             id="taxId"
@@ -54,12 +38,21 @@ const CompanySearchPage = () => {
             onChange={handleFieldChange}
           />
           <TextField
+            id="name"
+            name="name"
+            type="search"
+            label="Անվանումը"
+            value={filters.name}
+            onChange={handleFieldChange}
+          />
+          <TextField
             select
             label="Տիպը"
             name="type"
             value={filters.type}
             sx={{ minWidth: 150 }}
             onChange={handleFieldChange}
+            disabled={typesSelectDisabled}
           >
             {companyTypes.map((t) => (
               <MenuItem key={t.value} value={t.value}>
@@ -83,9 +76,16 @@ const CompanySearchPage = () => {
             Մաքրել
           </Button>
         </Stack>
+        {isError && (
+          <MuiAlert severity="error">
+            {error.response?.data?.message || error.message}
+          </MuiAlert>
+        )}
         {isFetching && <DataLoader />}
-        {data && data.length === 0 && <NoResults />}
-        {data?.length > 0 && (
+        {data && data.length === 0 && (
+          <NoResults onReset={handleReset} disabled={buttonsDisabled} />
+        )}
+        {!isError && !isFetching && data?.length > 0 && (
           <Box>
             {data?.map((company) => (
               <CompanyRow key={company.id} company={company} />
