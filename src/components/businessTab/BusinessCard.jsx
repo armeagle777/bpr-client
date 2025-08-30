@@ -86,7 +86,7 @@ const BusinessCard = ({ company }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={() => navigate(`/register/${taxid}`)} size="small">
+        <Button onClick={() => navigate(`/companies/${taxid}`)} size="small">
           Ավելին
         </Button>
       </CardActions>

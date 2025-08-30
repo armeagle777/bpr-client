@@ -17,7 +17,7 @@ import {
 const CompanyRow = ({ company }) => {
   const navigate = useNavigate();
   const handleSeeMore = () => {
-    navigate(`/companies/${company.id}`);
+    navigate(`/companies/${company.src_tin}`);
   };
   return (
     <Card

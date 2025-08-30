@@ -88,7 +88,7 @@ const CompanySearchPage = () => {
         {!isError && !isFetching && data?.length > 0 && (
           <Box>
             {data?.map((company) => (
-              <CompanyRow key={company.id} company={company} />
+              <CompanyRow key={company.company_id} company={company} />
             ))}
           </Box>
         )}
