@@ -1,4 +1,13 @@
 export const tabsMap = {
   stateRegister: { id: "stateRegister", label: "ԻԱՊՌ Տվյալներ" },
-  propertyTaxes: { id: "propertyTaxes", label: "Գույքահարկ" },
+  weaponsInfo: {
+    id: "weaponsInfo",
+    label: "Զենքերի Տվյալներ",
+    tabTitle: "Հաշվառված Զենքերի Վերաբերյալ Տեղեկատվություն",
+  },
+  propertyTaxes: {
+    id: "propertyTaxes",
+    label: "Գույքահարկ",
+    tabTitle: "Գույքահարկի Վճարների Վերաբերյալ Տեղեկատվություն",
+  },
 };

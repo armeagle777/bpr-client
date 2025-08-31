@@ -14,12 +14,12 @@ import {
 } from "@mui/material";
 import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 
-import useFetchRoadPoliceTransactions from "../../hooks/useFetchRoadPoliceTransactions";
+import { OwnerCard } from "./components";
 import ListScileton from "../listSceleton/ListScileton";
 import DocumentNotFound from "../family/DocumentNotFound";
-import { TRANSACTIONS_NOT_FOUND_MESSAGE } from "./RoadPoliceTransactionsTab.helpers";
-import { OwnerCard } from "./components";
 import { formatPrice } from "./RoadPoliceTransactions.helpers";
+import { TRANSACTIONS_NOT_FOUND_MESSAGE } from "./RoadPoliceTransactionsTab.helpers";
+import useFetchRoadPoliceTransactions from "../../hooks/useFetchRoadPoliceTransactions";
 
 const RoadPoliceTransactionsTab = ({ pnum }) => {
   const { data, error, isError, isFetching } =

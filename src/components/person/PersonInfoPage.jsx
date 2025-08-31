@@ -363,7 +363,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 user.permissions
               ) && (
                 <TabPanel value={value} index={index++}>
-                  <WeaponsTab pnum={sanitizedPNum} />
+                  <WeaponsTab ssn={sanitizedPNum} />
                 </TabPanel>
               )}
               {userHasPermission(

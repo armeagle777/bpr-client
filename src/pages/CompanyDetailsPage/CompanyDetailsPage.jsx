@@ -7,6 +7,7 @@ import { permissionsMap } from "../../utils/constants";
 import useFetchCompany from "../../hooks/useFetchCompany";
 import DataLoader from "../../components/DataLoader/DataLoader";
 import CompanyMainTab from "../../components/CompanyMainTab/CompanyMainTab";
+import WeaponsTab from "../../components/WeaponsTab/WeaponsTab";
 import ScrollTabsLayout from "../../components/ScrollTabsLayout/ScrollTabsLayout";
 import PropertyTaxesTab from "../../components/PropertyTaxesTab/PropertyTaxesTab";
 import { tabsMap } from "./CompanyDetailsPage.constants";
@@ -19,13 +20,26 @@ const CompanyDetailsPage = () => {
     {
       id: tabsMap.stateRegister.id,
       label: tabsMap.stateRegister.label,
+      tabTitle: tabsMap.stateRegister.tabTitle,
       Component: CompanyMainTab,
       props: { company: company },
       permissions: [permissionsMap.ADMIN.uid, permissionsMap.PETREGISTER.uid],
     },
     {
+      id: tabsMap.weaponsInfo.id,
+      label: tabsMap.weaponsInfo.label,
+      tabTitle: tabsMap.weaponsInfo.tabTitle,
+      Component: WeaponsTab,
+      props: {
+        tax_id: taxId,
+        isTabActive: activeId === tabsMap.weaponsInfo.id,
+      },
+      permissions: [permissionsMap.ADMIN.uid, permissionsMap.WEAPON.uid],
+    },
+    {
       id: tabsMap.propertyTaxes.id,
       label: tabsMap.propertyTaxes.label,
+      tabTitle: tabsMap.propertyTaxes.tabTitle,
       Component: PropertyTaxesTab,
       props: {
         identificatorNumber: taxId,
