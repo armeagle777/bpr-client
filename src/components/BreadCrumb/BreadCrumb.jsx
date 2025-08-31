@@ -1,10 +1,11 @@
-import Typography from "@mui/material/Typography";
-import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Link from "@mui/material/Link";
+import { Breadcrumbs } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
-import GrainIcon from "@mui/icons-material/Grain";
+import { Link } from "react-router-dom";
 
-const BreadCrumb = ({ onClick }) => {
+import BreadCrumbText from "./components/BreadCrumbText";
+import BreadCrumbLink from "./components/BreadCrumbLink";
+
+const BreadCrumb = ({ onClick, items }) => {
   return (
     <div role="presentation" onClick={onClick}>
       <Breadcrumbs aria-label="breadcrumb">
@@ -12,17 +13,24 @@ const BreadCrumb = ({ onClick }) => {
           underline="hover"
           sx={{ display: "flex", alignItems: "center" }}
           color="inherit"
-          href="/"
+          to="/"
         >
           <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
           Գլխավոր
         </Link>
-        <Typography
-          sx={{ color: "text.primary", display: "flex", alignItems: "center" }}
-        >
-          <GrainIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-          Կազմակերպության Որոնում
-        </Typography>
+        {items?.map(({ label, Icon, href }, index) => {
+          if (index === items.length - 1)
+            return <BreadCrumbText key={index} label={label} Icon={Icon} />;
+          else
+            return (
+              <BreadCrumbLink
+                key={index}
+                Icon={Icon}
+                href={href}
+                label={label}
+              />
+            );
+        })}
       </Breadcrumbs>
     </div>
   );

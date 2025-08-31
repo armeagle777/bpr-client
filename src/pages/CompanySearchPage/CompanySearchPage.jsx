@@ -1,6 +1,14 @@
 import { LoadingButton } from "@mui/lab";
-import { Container, Alert as MuiAlert } from "@mui/material";
-import { Box, Stack, Button, MenuItem, TextField } from "@mui/material";
+import {
+  Box,
+  Stack,
+  Button,
+  MenuItem,
+  TextField,
+  Container,
+  Alert as MuiAlert,
+} from "@mui/material";
+import GrainIcon from "@mui/icons-material/Grain";
 
 import NoResults from "./components/NoResults";
 import CompanyRow from "./components/CompanyRow";
@@ -23,9 +31,12 @@ const CompanySearchPage = () => {
 
   const buttonsDisabled = !filters.name && !filters.taxId && !filters.type;
   const typesSelectDisabled = !filters?.name;
+  const breadCrumbsItems = [
+    { label: "Կազմակերպության Որոնում", Icon: GrainIcon },
+  ];
   return (
     <Box p={3}>
-      <BreadCrumb />
+      <BreadCrumb items={breadCrumbsItems} />
       <Container>
         <Stack spacing={2} direction="row" justifyContent={"center"} mb={2}>
           <TextField

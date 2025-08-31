@@ -25,16 +25,21 @@ const fakeOwner = {
 
 const OwnerRow = ({ ownerInfo }) => {
   const {
-    address: { addr_descr, email, mobile, phone, website } = {},
     full_name = "",
+    address: { addr_descr, email, mobile, phone, website } = {},
     id_info: { birth_date, sex, ssn, taxid, passport_no } = {},
     is_founder,
     is_legal_entity,
     joined_date,
     left_date,
     shares,
-    share_info,
-  } = fakeOwner || {};
+    share_info: {
+      share_value,
+      share_count,
+      share_percent,
+      share_fraction,
+    } = {},
+  } = ownerInfo || {};
 
   return (
     <Paper sx={{ p: 2, mb: 2 }}>
@@ -89,12 +94,13 @@ const OwnerRow = ({ ownerInfo }) => {
         {/* Shares & Dates */}
         <Grid item xs={12} sm={6}>
           <Typography fontWeight={600}>Բաժնեմաս</Typography>
-          <Typography>{shares || share_info || "-"}</Typography>
+          <Typography>{shares || share_percent || "-"}</Typography>
         </Grid>
         <Grid item xs={12} sm={6}>
           <Typography fontWeight={600}>Միանալու / Հեռանալու ամսաթիվ</Typography>
           <Typography>
-            {joined_date || "-"} / {left_date || "-"}
+            {joined_date || "-"} /{" "}
+            {left_date && left_date !== "0000-00-00" ? left_date : " "}
           </Typography>
         </Grid>
       </Grid>

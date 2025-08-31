@@ -103,7 +103,7 @@ const CompanyInfo = ({ company }) => {
     setAnchorEl(null);
     setShowDialog(true);
   };
-
+  //
   const { addr_descr, mobile, phone, website, email } = { ...address };
   const {
     address: bossAddress,

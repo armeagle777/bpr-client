@@ -3,9 +3,9 @@ import {
   Box,
   List,
   Divider,
+  Container,
   ListItemText,
   ListItemButton,
-  Container,
 } from "@mui/material";
 
 const ScrollTabsLayout = ({ sections = [] }) => {
@@ -42,7 +42,7 @@ const ScrollTabsLayout = ({ sections = [] }) => {
       {/* Main content */}
       <Container>
         <Box flex={1} pr={4}>
-          {sections?.map(({ id, label, Component }) => (
+          {sections?.map(({ id, Component, props }) => (
             <Box
               key={id}
               id={id}
@@ -53,11 +53,12 @@ const ScrollTabsLayout = ({ sections = [] }) => {
               }}
             >
               <Divider sx={{ my: 2 }} />
-              <Component isActive={activeId === id} />
+              <Component isActive={activeId === id} {...props} />
             </Box>
           ))}
         </Box>
       </Container>
+
       {/* Right sidebar */}
       <Box
         sx={{
