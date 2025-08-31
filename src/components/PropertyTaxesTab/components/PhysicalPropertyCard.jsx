@@ -11,7 +11,7 @@ import {
   CardContent,
 } from "@mui/material";
 
-const PropertyCard = ({ item }) => {
+const PhysicalPropertyCard = ({ item }) => {
   return (
     <Box mb={3}>
       <Card variant="outlined" sx={{ borderRadius: 3, boxShadow: 2 }}>
@@ -68,4 +68,4 @@ const PropertyCard = ({ item }) => {
   );
 };
 
-export default PropertyCard;
+export default PhysicalPropertyCard;

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
+import { Map as MapIcon } from "@mui/icons-material";
 
 import { Header, Body } from "./components";
-import useFetchKadastrCertificates from "../../hooks/useFetchKadastrCertificates";
 import { SEARCH_BASES } from "./KadastrCertificate.constants";
+import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
+import useFetchKadastrCertificates from "../../hooks/useFetchKadastrCertificates";
 
 const KadastrCertificate = () => {
   const [searchParams] = useSearchParams();
@@ -36,25 +38,32 @@ const KadastrCertificate = () => {
     }
   };
 
+  const breadCrumbItems = [
+    { label: "Կադաստրի Տվյալների Որոնում", Icon: MapIcon },
+  ];
+
   return (
-    <Container>
-      <Header
-        isLoading={isLoading}
-        searchBase={searchBase}
-        isFetching={isFetching}
-        certNumberInput={certNumberInput}
-        handleBaseChange={handleBaseChange}
-        setCertNumberInput={setCertNumberInput}
-        handleSubmitSearch={handleSubmitSearch}
-      />
-      <Body
-        data={data}
-        error={error}
-        isError={isError}
-        isLoading={isLoading}
-        isFetching={isFetching}
-      />
-    </Container>
+    <Box p={3}>
+      <BreadCrumb items={breadCrumbItems} />
+      <Container>
+        <Header
+          isLoading={isLoading}
+          searchBase={searchBase}
+          isFetching={isFetching}
+          certNumberInput={certNumberInput}
+          handleBaseChange={handleBaseChange}
+          setCertNumberInput={setCertNumberInput}
+          handleSubmitSearch={handleSubmitSearch}
+        />
+        <Body
+          data={data}
+          error={error}
+          isError={isError}
+          isLoading={isLoading}
+          isFetching={isFetching}
+        />
+      </Container>
+    </Box>
   );
 };
 

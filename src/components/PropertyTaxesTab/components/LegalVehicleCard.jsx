@@ -15,9 +15,11 @@ import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import SpeedIcon from "@mui/icons-material/Speed";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import BusinessIcon from "@mui/icons-material/Business"; // for legal persons
 
-const VehicleCard = ({ item }) => {
-  const service = item.physical_vehicles_service;
+const LegalVehicleCard = ({ item }) => {
+  const service = item.legal_vehicles_service;
+
   return (
     <Card variant="outlined" sx={{ borderRadius: 3, boxShadow: 2, mb: 3 }}>
       <CardContent>
@@ -55,16 +57,26 @@ const VehicleCard = ({ item }) => {
               variant="outlined"
             />
           )}
+          {service?.cert_num && (
+            <Chip
+              icon={<BusinessIcon />}
+              label={`Վկայական: ${service.cert_num}`}
+              color="default"
+              variant="outlined"
+            />
+          )}
         </Box>
 
         <Divider sx={{ mb: 2 }} />
 
-        {/* Persons + Taxes */}
-        {item.physical_vehicles_persons?.map((person, pIdx) => (
+        {/* Legal Persons + Taxes */}
+        {item.legal_vehicles_persons?.map((person, pIdx) => (
           <Box key={pIdx} mb={3}>
             <Typography variant="subtitle1" gutterBottom>
-              👤 {person.mta_get_taxes_last_name || ""}{" "}
-              {person.mta_get_taxes_first_name || ""}
+              🏢 {person.organization_name}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" gutterBottom>
+              Գրանցման համարը: {person.reg_num} | Բաժին: {person.share}
             </Typography>
 
             <Table size="small">
@@ -76,14 +88,14 @@ const VehicleCard = ({ item }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {person.physical_vehicles_taxes?.map((t, tIdx) => (
+                {person.legal_vehicles_taxes?.map((t, tIdx) => (
                   <TableRow key={tIdx}>
                     <TableCell>{t.year || ""}</TableCell>
                     <TableCell align="right">
-                      {t.physical_vehicles_tax_item?.amount ?? "-"}
+                      {t.legal_vehicles_tax_item?.amount ?? "-"}
                     </TableCell>
                     <TableCell align="right">
-                      {t.physical_vehicles_tax_item?.debt ?? "-"}
+                      {t.legal_vehicles_tax_item?.debt ?? "-"}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -96,4 +108,4 @@ const VehicleCard = ({ item }) => {
   );
 };
 
-export default VehicleCard;
+export default LegalVehicleCard;

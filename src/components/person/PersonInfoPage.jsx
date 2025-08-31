@@ -385,7 +385,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 user.permissions
               ) && (
                 <TabPanel value={value} index={index++}>
-                  <PropertyTaxesTab pnum={sanitizedPNum} />
+                  <PropertyTaxesTab identificatorNumber={sanitizedPNum} />
                 </TabPanel>
               )}
             </Box>

@@ -11,8 +11,7 @@ import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 
 import { userHasPermission } from "../../utils/helperFunctions";
 
-const ScrollTabsLayout = ({ sections = [] }) => {
-  const [activeId, setActiveId] = useState(sections[0].id);
+const ScrollTabsLayout = ({ sections = [], activeId, setActiveId }) => {
   const sectionRefs = useRef({});
   const user = useAuthUser();
 

@@ -5,6 +5,7 @@ const useTerritorialMinPropertyTaxesData = ({
   identificator,
   personType = "PHYSICAL",
   serviceType,
+  isTabActive = true,
 }) => {
   const { data, error, isError, isFetching } = useQuery(
     [
@@ -19,7 +20,10 @@ const useTerritorialMinPropertyTaxesData = ({
         personType,
         serviceType,
       }),
-    { keepPreviousData: true, enabled: !!identificator && !!serviceType }
+    {
+      keepPreviousData: true,
+      enabled: !!identificator && !!serviceType && isTabActive,
+    }
   );
 
   return {

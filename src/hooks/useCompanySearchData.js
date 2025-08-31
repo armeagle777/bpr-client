@@ -19,6 +19,7 @@ const useCompanySearchData = () => {
     {
       keepPreviousData: false,
       enabled: searchEnabled,
+      cacheTime: 0,
     }
   );
 

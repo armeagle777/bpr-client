@@ -81,7 +81,7 @@ const WeaponsTable = ({ isFetching, data, fullWidth = false }) => {
       key: "BDATE",
     },
     {
-      title: "ՀԾՀ",
+      title: "ՀԾՀ / ՀՎՀՀ",
       dataIndex: "SSN",
       key: "SSN",
     },
