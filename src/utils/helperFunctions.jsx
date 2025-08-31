@@ -251,7 +251,7 @@ export const formatedData = (periods) => {
 };
 
 export const userHasPermission = (allowedPermissions, userPermissions) => {
-  const hasPermission = allowedPermissions.some((perm) =>
+  const hasPermission = allowedPermissions?.some((perm) =>
     userPermissions.includes(perm)
   );
 

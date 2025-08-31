@@ -213,7 +213,9 @@ const CompanyMainTab = ({ company }) => {
       <Paper sx={{ p: 3, mb: 3 }}>
         <Stack direction="row" alignItems="center" spacing={1}>
           <PersonIcon />
-          <Typography variant="h6">{exec_position || ""}</Typography>
+          <Typography variant="h6">
+            {exec_position || "Անհատ Ձեռնարկատեր"}
+          </Typography>
         </Stack>
         <Divider sx={{ mb: 2 }} />
         <Typography>{full_name}</Typography>

@@ -93,7 +93,7 @@ const CompanySearchPage = () => {
           </MuiAlert>
         )}
         {isFetching && <DataLoader />}
-        {data && data.length === 0 && (
+        {data && data.length === 0 && !isFetching && !isError && (
           <NoResults onReset={handleReset} disabled={buttonsDisabled} />
         )}
         {!isError && !isFetching && data?.length > 0 && (

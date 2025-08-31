@@ -7,10 +7,14 @@ import {
   ListItemText,
   ListItemButton,
 } from "@mui/material";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+
+import { userHasPermission } from "../../utils/helperFunctions";
 
 const ScrollTabsLayout = ({ sections = [] }) => {
   const [activeId, setActiveId] = useState(sections[0].id);
   const sectionRefs = useRef({});
+  const user = useAuthUser();
 
   // scroll listener
   useEffect(() => {
@@ -42,20 +46,23 @@ const ScrollTabsLayout = ({ sections = [] }) => {
       {/* Main content */}
       <Container>
         <Box flex={1} pr={4}>
-          {sections?.map(({ id, Component, props }) => (
-            <Box
-              key={id}
-              id={id}
-              ref={(el) => (sectionRefs.current[id] = el)}
-              sx={{
-                minHeight: "100vh",
-                scrollMarginTop: "64px",
-              }}
-            >
-              <Divider sx={{ my: 2 }} />
-              <Component isActive={activeId === id} {...props} />
-            </Box>
-          ))}
+          {sections?.map(({ id, Component, props, permissions }) => {
+            if (!userHasPermission(permissions, user.permissions)) return null;
+            return (
+              <Box
+                key={id}
+                id={id}
+                ref={(el) => (sectionRefs.current[id] = el)}
+                sx={{
+                  minHeight: "100vh",
+                  scrollMarginTop: "64px",
+                }}
+              >
+                <Divider sx={{ my: 2 }} />
+                <Component isActive={activeId === id} {...props} />
+              </Box>
+            );
+          })}
         </Box>
       </Container>
 
@@ -72,15 +79,18 @@ const ScrollTabsLayout = ({ sections = [] }) => {
         }}
       >
         <List>
-          {sections.map(({ id, label }) => (
-            <ListItemButton
-              key={id}
-              selected={activeId === id}
-              onClick={() => handleTabClick(id)}
-            >
-              <ListItemText primary={label} />
-            </ListItemButton>
-          ))}
+          {sections.map(({ id, label, permissions }) => {
+            if (!userHasPermission(permissions, user.permissions)) return null;
+            return (
+              <ListItemButton
+                key={id}
+                selected={activeId === id}
+                onClick={() => handleTabClick(id)}
+              >
+                <ListItemText primary={label} />
+              </ListItemButton>
+            );
+          })}
         </List>
       </Box>
     </Box>
