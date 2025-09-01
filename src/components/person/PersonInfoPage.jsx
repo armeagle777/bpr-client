@@ -36,6 +36,7 @@ import WeaponsTab from "../WeaponsTab/WeaponsTab";
 import RoadPoliceTransactionsTab from "../RoadPoliceTransactionsTab/RoadPoliceTransactionsTab";
 import PropertyTaxesTab from "../PropertyTaxesTab/PropertyTaxesTab";
 import MojCesDebtorTab from "../MojCesDebtorTab/MojCesDebtorTab";
+import SocialPaymentsTab from "../SocialPaymentsTab/SocialPaymentsTab";
 
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
@@ -397,6 +398,14 @@ const PersonInfoPage = ({ personInfo }) => {
                   <MojCesDebtorTab psn={sanitizedPNum} />
                 </TabPanel>
               )}
+              {userHasPermission(
+                [permissionsMap.MLSA.uid, permissionsMap.ADMIN.uid],
+                user.permissions
+              ) && (
+                <TabPanel value={value} index={index++}>
+                  <SocialPaymentsTab ssn={sanitizedPNum} />
+                </TabPanel>
+              )}
             </Box>
 
             <SpeedDialButton
@@ -502,6 +511,10 @@ const PersonInfoPage = ({ personInfo }) => {
                 [permissionsMap.MOJ_CES.uid, permissionsMap.ADMIN.uid],
                 user.permissions
               ) && <Tab label="ԴԱՀԿ Որոնում" aria-label="moj-ces-debtor" />}
+              {userHasPermission(
+                [permissionsMap.MLSA.uid, permissionsMap.ADMIN.uid],
+                user.permissions
+              ) && <Tab label="Սոց. Վճարումներ" aria-label="mlsa-payments" />}
             </Tabs>
           </Box>
         </Grid>

@@ -252,6 +252,11 @@ export const getTaxBySsn = async (ssn) => {
   return response.data;
 };
 
+export const getSocialPayments = async (ssn) => {
+  const response = await personsApi.get(`/mlsa/social-payments/${ssn}`);
+  return response.data;
+};
+
 export const getCompanyByHvhh = async (tax_id) => {
   const response = await personsApi.get(`/persons/${tax_id}/petregistr`);
   return response.data;
