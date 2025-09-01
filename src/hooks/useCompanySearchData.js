@@ -25,7 +25,15 @@ const useCompanySearchData = () => {
 
   // Any search field change handler
   const handleFieldChange = (e) => {
-    setFilters({ ...filters, [e.target.name]: e.target.value });
+    const name = e.target.name;
+    const value = e.target.value;
+
+    const changedValues = {
+      [name]: value,
+      ...(name === "name" && value === "" ? { type: "" } : {}),
+    };
+
+    setFilters({ ...filters, ...changedValues });
     setSearchEnabled(false);
   };
 
