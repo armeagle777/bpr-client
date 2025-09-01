@@ -35,6 +35,7 @@ import PoliceTab from "../policeTab/PoliceTab";
 import WeaponsTab from "../WeaponsTab/WeaponsTab";
 import RoadPoliceTransactionsTab from "../RoadPoliceTransactionsTab/RoadPoliceTransactionsTab";
 import PropertyTaxesTab from "../PropertyTaxesTab/PropertyTaxesTab";
+import MojCesDebtorTab from "../MojCesDebtorTab/MojCesDebtorTab";
 
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
@@ -388,6 +389,14 @@ const PersonInfoPage = ({ personInfo }) => {
                   <PropertyTaxesTab identificatorNumber={sanitizedPNum} />
                 </TabPanel>
               )}
+              {userHasPermission(
+                [permissionsMap.MOJ_CES.uid, permissionsMap.ADMIN.uid],
+                user.permissions
+              ) && (
+                <TabPanel value={value} index={index++}>
+                  <MojCesDebtorTab psn={sanitizedPNum} />
+                </TabPanel>
+              )}
             </Box>
 
             <SpeedDialButton
@@ -489,6 +498,10 @@ const PersonInfoPage = ({ personInfo }) => {
                   aria-label="territorial-ministry-property-taxes"
                 />
               )}
+              {userHasPermission(
+                [permissionsMap.MOJ_CES.uid, permissionsMap.ADMIN.uid],
+                user.permissions
+              ) && <Tab label="ԴԱՀԿ Որոնում" aria-label="moj-ces-debtor" />}
             </Tabs>
           </Box>
         </Grid>

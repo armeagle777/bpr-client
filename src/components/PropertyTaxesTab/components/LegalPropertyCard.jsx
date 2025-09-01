@@ -10,6 +10,7 @@ import {
   Typography,
   CardContent,
 } from "@mui/material";
+import { formatAmount } from "../../../utils/helperFunctions";
 
 const LegalPropertyCard = ({ item }) => {
   return (
@@ -80,18 +81,28 @@ const LegalPropertyCard = ({ item }) => {
                     <TableRow key={tIdx}>
                       <TableCell>{t.year || ""}</TableCell>
                       <TableCell align="right">
-                        {t.legal_real_estate_tax_item?.amount ?? "-"}
+                        {t.legal_real_estate_tax_item?.amount
+                          ? formatAmount(t.legal_real_estate_tax_item.amount)
+                          : "-"}
                       </TableCell>
                       <TableCell align="right">
-                        {t.legal_real_estate_tax_item?.debt ?? "-"}
+                        {t.legal_real_estate_tax_item?.debt
+                          ? formatAmount(t.legal_real_estate_tax_item.debt)
+                          : "-"}
                       </TableCell>
                       <TableCell align="right">
-                        {t.legal_real_estate_penalty?.amount ?? "-"}
+                        {t.legal_real_estate_penalty?.amount
+                          ? formatAmount(t.legal_real_estate_penalty.amount)
+                          : "-"}
                       </TableCell>
                       <TableCell align="right">
-                        {t.legal_real_estate_penalty?.debt ?? "-"}
+                        {t.legal_real_estate_penalty?.debt
+                          ? formatAmount(t.legal_real_estate_penalty.debt)
+                          : "-"}
                       </TableCell>
-                      <TableCell align="right">{t.overpay ?? "-"}</TableCell>
+                      <TableCell align="right">
+                        {t.overpay ? formatAmount(t.overpay) : "-"}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

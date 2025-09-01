@@ -11,6 +11,7 @@ import WeaponsTab from "../../components/WeaponsTab/WeaponsTab";
 import ScrollTabsLayout from "../../components/ScrollTabsLayout/ScrollTabsLayout";
 import PropertyTaxesTab from "../../components/PropertyTaxesTab/PropertyTaxesTab";
 import { tabsMap } from "./CompanyDetailsPage.constants";
+import MojCesDebtorTab from "../../components/MojCesDebtorTab/MojCesDebtorTab";
 
 const CompanyDetailsPage = () => {
   const [activeId, setActiveId] = useState("stateRegister");
@@ -50,6 +51,17 @@ const CompanyDetailsPage = () => {
         permissionsMap.ADMIN.uid,
         permissionsMap.MTA_PROPERTY_TAXES.uid,
       ],
+    },
+    {
+      id: tabsMap.mojCesDebtor.id,
+      label: tabsMap.mojCesDebtor.label,
+      tabTitle: tabsMap.mojCesDebtor.tabTitle,
+      Component: MojCesDebtorTab,
+      props: {
+        tax_id: taxId,
+        isTabActive: activeId === tabsMap.mojCesDebtor.id,
+      },
+      permissions: [permissionsMap.ADMIN.uid, permissionsMap.MOJ_CES.uid],
     },
   ];
 

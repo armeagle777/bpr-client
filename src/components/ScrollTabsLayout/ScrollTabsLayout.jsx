@@ -73,9 +73,7 @@ const ScrollTabsLayout = ({ sections = [], activeId, setActiveId }) => {
                   </Typography>
                 )}
 
-                {activeId === id && (
-                  <Component isActive={activeId === id} {...props} />
-                )}
+                <Component isActive={activeId === id} {...props} />
               </Box>
             );
           })}

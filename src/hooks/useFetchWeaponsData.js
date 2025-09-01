@@ -10,7 +10,7 @@ const useFetchWeaponsData = (params) => {
     {
       keepPreviousData: false,
       cacheTime: 0,
-      enabled: isTabActive,
+      enabled: isTabActive !== false,
     }
   );
 

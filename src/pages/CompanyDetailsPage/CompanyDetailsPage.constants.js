@@ -10,4 +10,9 @@ export const tabsMap = {
     label: "Գույքահարկ",
     tabTitle: "Գույքահարկի Վճարների Վերաբերյալ Տեղեկատվություն",
   },
+  mojCesDebtor: {
+    id: "mojCesDebtor",
+    label: "ԴԱՀԿ",
+    tabTitle: "ԴԱՀԿ Գործերի Վերաբերյալ Տեղեկատվություն",
+  },
 };

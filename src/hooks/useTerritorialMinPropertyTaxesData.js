@@ -22,7 +22,7 @@ const useTerritorialMinPropertyTaxesData = ({
       }),
     {
       keepPreviousData: true,
-      enabled: !!identificator && !!serviceType && isTabActive,
+      enabled: !!identificator && !!serviceType && isTabActive !== false,
     }
   );
 

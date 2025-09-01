@@ -16,6 +16,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import SpeedIcon from "@mui/icons-material/Speed";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import BusinessIcon from "@mui/icons-material/Business"; // for legal persons
+import { formatAmount } from "../../../utils/helperFunctions";
 
 const LegalVehicleCard = ({ item }) => {
   const service = item.legal_vehicles_service;
@@ -92,10 +93,14 @@ const LegalVehicleCard = ({ item }) => {
                   <TableRow key={tIdx}>
                     <TableCell>{t.year || ""}</TableCell>
                     <TableCell align="right">
-                      {t.legal_vehicles_tax_item?.amount ?? "-"}
+                      {t.legal_vehicles_tax_item?.amount
+                        ? formatAmount(t.legal_vehicles_tax_item?.amount)
+                        : "-"}
                     </TableCell>
                     <TableCell align="right">
-                      {t.legal_vehicles_tax_item?.debt ?? "-"}
+                      {t.legal_vehicles_tax_item?.debt
+                        ? formatAmount(t.legal_vehicles_tax_item.debt)
+                        : "-"}
                     </TableCell>
                   </TableRow>
                 ))}

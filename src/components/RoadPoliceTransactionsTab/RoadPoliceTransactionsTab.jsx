@@ -17,8 +17,8 @@ import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import { OwnerCard } from "./components";
 import ListScileton from "../listSceleton/ListScileton";
 import DocumentNotFound from "../family/DocumentNotFound";
-import { formatPrice } from "./RoadPoliceTransactions.helpers";
-import { TRANSACTIONS_NOT_FOUND_MESSAGE } from "./RoadPoliceTransactionsTab.helpers";
+import { formatAmount } from "../../utils/helperFunctions";
+import { TRANSACTIONS_NOT_FOUND_MESSAGE } from "./RoadPoliceTransactionsTab.constants";
 import useFetchRoadPoliceTransactions from "../../hooks/useFetchRoadPoliceTransactions";
 
 const RoadPoliceTransactionsTab = ({ pnum }) => {
@@ -94,7 +94,7 @@ const RoadPoliceTransactionsTab = ({ pnum }) => {
                 />
                 {tx.price?.trim() && (
                   <Chip
-                    label={`${formatPrice(tx.price, tx.currency)}`}
+                    label={`${formatAmount(tx.price, tx.currency)}`}
                     color="success"
                     size="small"
                     variant="outlined"

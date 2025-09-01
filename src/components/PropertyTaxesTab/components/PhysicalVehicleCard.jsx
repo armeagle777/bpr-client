@@ -15,6 +15,7 @@ import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import SpeedIcon from "@mui/icons-material/Speed";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import { formatAmount } from "../../../utils/helperFunctions";
 
 const PhysicalVehicleCard = ({ item }) => {
   const service = item.physical_vehicles_service;
@@ -80,10 +81,14 @@ const PhysicalVehicleCard = ({ item }) => {
                   <TableRow key={tIdx}>
                     <TableCell>{t.year || ""}</TableCell>
                     <TableCell align="right">
-                      {t.physical_vehicles_tax_item?.amount ?? "-"}
+                      {t.physical_vehicles_tax_item?.amount
+                        ? formatAmount(t.physical_vehicles_tax_item.amount)
+                        : "-"}
                     </TableCell>
                     <TableCell align="right">
-                      {t.physical_vehicles_tax_item?.debt ?? "-"}
+                      {t.physical_vehicles_tax_item?.debt
+                        ? formatAmount(t.physical_vehicles_tax_item.debt)
+                        : "-"}
                     </TableCell>
                   </TableRow>
                 ))}
