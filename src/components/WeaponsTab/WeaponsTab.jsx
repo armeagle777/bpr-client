@@ -7,7 +7,7 @@ import WeaponsTable from "../WeaponsTable/WeaponsTable";
 import DocumentNotFound from "../family/DocumentNotFound";
 import { WEAPONS_NOT_FOUND_MESSAGE } from "./WeaponsTab.constants.js";
 
-const WeaponsTab = ({ pnum }) => {
+const WeaponsTab = ({ ssn, tax_id, isTabActive = true }) => {
   const {
     data = [],
     isLoading,
@@ -15,7 +15,9 @@ const WeaponsTab = ({ pnum }) => {
     isError,
     error,
   } = useFetchWeaponsData({
-    ssn: pnum,
+    ssn,
+    tax_id,
+    isTabActive,
   });
 
   if (isLoading) {

@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getCompanyByHvhh } from "../api/personsApi";
 
-const useFetchCompany = (tax_id, page) => {
+const useFetchCompany = (tax_id) => {
   const { isFetching, isError, error, data, isLoading } = useQuery(
-    ["company", page, tax_id],
+    ["company", tax_id],
     () => getCompanyByHvhh(tax_id),
     {
       keepPreviousData: true,

@@ -6,13 +6,13 @@ import {
   Container,
   ListItemText,
   ListItemButton,
+  Typography,
 } from "@mui/material";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 
 import { userHasPermission } from "../../utils/helperFunctions";
 
-const ScrollTabsLayout = ({ sections = [] }) => {
-  const [activeId, setActiveId] = useState(sections[0].id);
+const ScrollTabsLayout = ({ sections = [], activeId, setActiveId }) => {
   const sectionRefs = useRef({});
   const user = useAuthUser();
 
@@ -46,7 +46,7 @@ const ScrollTabsLayout = ({ sections = [] }) => {
       {/* Main content */}
       <Container>
         <Box flex={1} pr={4}>
-          {sections?.map(({ id, Component, props, permissions }) => {
+          {sections?.map(({ id, Component, props, permissions, tabTitle }) => {
             if (!userHasPermission(permissions, user.permissions)) return null;
             return (
               <Box
@@ -59,6 +59,20 @@ const ScrollTabsLayout = ({ sections = [] }) => {
                 }}
               >
                 <Divider sx={{ my: 2 }} />
+
+                {/* Tab Title */}
+                {tabTitle && (
+                  <Typography
+                    variant="h5"
+                    color="primary"
+                    fontWeight="bold"
+                    gutterBottom
+                    sx={{ mb: 2 }}
+                  >
+                    {tabTitle}
+                  </Typography>
+                )}
+
                 <Component isActive={activeId === id} {...props} />
               </Box>
             );

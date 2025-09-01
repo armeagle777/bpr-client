@@ -319,3 +319,13 @@ export const formatDateTimeString = (datetime, showTime = false) => {
 
 export const getDirectionColor = (direction) =>
   direction === "IN" ? "success" : "error";
+
+export const formatAmount = (value, currency) => {
+  if (!value) return "N/A";
+  const num = Number(value);
+  if (isNaN(num)) return value.toString();
+  return (
+    new Intl.NumberFormat("en-US").format(num) +
+    (currency ? ` ${currency}` : "")
+  );
+};

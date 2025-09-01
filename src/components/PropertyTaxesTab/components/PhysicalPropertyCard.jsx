@@ -10,8 +10,9 @@ import {
   Typography,
   CardContent,
 } from "@mui/material";
+import { formatAmount } from "../../../utils/helperFunctions";
 
-const PropertyCard = ({ item }) => {
+const PhysicalPropertyCard = ({ item }) => {
   return (
     <Box mb={3}>
       <Card variant="outlined" sx={{ borderRadius: 3, boxShadow: 2 }}>
@@ -48,13 +49,19 @@ const PropertyCard = ({ item }) => {
                     <TableRow key={tIdx}>
                       <TableCell>{t.year || ""}</TableCell>
                       <TableCell align="right">
-                        {t.physical_real_estate_tax_item?.amount ?? "-"}
+                        {t.physical_real_estate_tax_item?.amount
+                          ? formatAmount(t.physical_real_estate_tax_item.amount)
+                          : "-"}
                       </TableCell>
                       <TableCell align="right">
-                        {t.physical_real_estate_penalty?.amount ?? "-"}
+                        {t.physical_real_estate_penalty?.amount
+                          ? formatAmount(t.physical_real_estate_penalty.amount)
+                          : "-"}
                       </TableCell>
                       <TableCell align="right">
-                        {t.physical_real_estate_tax_item?.debt ?? "-"}
+                        {t.physical_real_estate_tax_item?.debt
+                          ? formatAmount(t.physical_real_estate_tax_item.debt)
+                          : "-"}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -68,4 +75,4 @@ const PropertyCard = ({ item }) => {
   );
 };
 
-export default PropertyCard;
+export default PhysicalPropertyCard;

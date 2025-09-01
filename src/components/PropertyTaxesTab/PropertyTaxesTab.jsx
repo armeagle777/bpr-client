@@ -3,17 +3,24 @@ import { Box, Tab, Tabs, Typography } from "@mui/material";
 
 import NotFound from "./components/NotFound";
 import DataLoader from "../DataLoader/DataLoader";
-import VehicleCard from "./components/VehicleCard";
-import PropertyCard from "./components/PropertyCard";
+import PhysicalVehicleCard from "./components/PhysicalVehicleCard";
+import PhysicalPropertyCard from "./components/PhysicalPropertyCard";
+import LegalPropertyCard from "./components/LegalPropertyCard";
 import useTerritorialMinPropertyTaxesData from "../../hooks/useTerritorialMinPropertyTaxesData";
+import LegalVehicleCard from "./components/LegalVehicleCard";
 
-const PropertyTaxesTab = ({ pnum }) => {
+const PropertyTaxesTab = ({
+  identificatorNumber,
+  personType = "PHYSICAL",
+  isTabActive,
+}) => {
   const [serviceType, setServiceType] = useState("REAL_ESTATE");
 
   const { data, isFetching, error } = useTerritorialMinPropertyTaxesData({
     serviceType,
-    identificator: pnum,
-    personType: "PHYSICAL",
+    identificator: identificatorNumber,
+    personType,
+    isTabActive,
   });
 
   const handleTabChange = (e, newValue) => {
@@ -50,10 +57,22 @@ const PropertyTaxesTab = ({ pnum }) => {
         <Box p={2}>
           {serviceType === "REAL_ESTATE" &&
             !!data?.length &&
-            data?.map((item, idx) => <PropertyCard item={item} key={idx} />)}
+            data?.map((item, idx) =>
+              personType === "PHYSICAL" ? (
+                <PhysicalPropertyCard item={item} key={idx} />
+              ) : (
+                <LegalPropertyCard item={item} key={idx} />
+              )
+            )}
 
           {serviceType === "VEHICLES" &&
-            data?.map((item, idx) => <VehicleCard key={idx} item={item} />)}
+            data?.map((item, idx) =>
+              personType === "PHYSICAL" ? (
+                <PhysicalVehicleCard key={idx} item={item} />
+              ) : (
+                <LegalVehicleCard key={idx} item={item} />
+              )
+            )}
 
           {!data?.length && <NotFound />}
         </Box>

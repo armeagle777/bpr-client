@@ -20,7 +20,7 @@ const useWpPerson = () => {
   }, [filters]);
 
   const { data, isFetching, isError, error, refetch } = useQuery({
-    queryKey: ["wp-person"],
+    queryKey: ["wp-person", filters],
     queryFn: () => getWpPersonData(filters, page),
     enabled: false,
     keepPreviousData: false,

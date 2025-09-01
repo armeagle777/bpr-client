@@ -15,8 +15,9 @@ import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import SpeedIcon from "@mui/icons-material/Speed";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
+import { formatAmount } from "../../../utils/helperFunctions";
 
-const VehicleCard = ({ item }) => {
+const PhysicalVehicleCard = ({ item }) => {
   const service = item.physical_vehicles_service;
   return (
     <Card variant="outlined" sx={{ borderRadius: 3, boxShadow: 2, mb: 3 }}>
@@ -80,10 +81,14 @@ const VehicleCard = ({ item }) => {
                   <TableRow key={tIdx}>
                     <TableCell>{t.year || ""}</TableCell>
                     <TableCell align="right">
-                      {t.physical_vehicles_tax_item?.amount ?? "-"}
+                      {t.physical_vehicles_tax_item?.amount
+                        ? formatAmount(t.physical_vehicles_tax_item.amount)
+                        : "-"}
                     </TableCell>
                     <TableCell align="right">
-                      {t.physical_vehicles_tax_item?.debt ?? "-"}
+                      {t.physical_vehicles_tax_item?.debt
+                        ? formatAmount(t.physical_vehicles_tax_item.debt)
+                        : "-"}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -96,4 +101,4 @@ const VehicleCard = ({ item }) => {
   );
 };
 
-export default VehicleCard;
+export default PhysicalVehicleCard;
