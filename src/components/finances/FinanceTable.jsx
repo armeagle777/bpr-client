@@ -15,24 +15,32 @@ import TableHeader from "./TableHeader";
 const FinanceTable = ({ employer }) => {
   const {
     taxpayerid,
+    taxpayerName,
+    legalTypeName,
     personInfoPeriods: { personInfoPeriod: periods },
   } = employer;
 
   const TableData = formatedData(periods);
+  const shouldFetchCompanyData = !taxpayerName;
 
   const {
     data: companyData,
     isFetching,
     isError,
     error,
-  } = useFetchCompany(taxpayerid);
+  } = useFetchCompany(taxpayerid, shouldFetchCompanyData);
 
   const tableTitle = isFetching ? (
     <Skeleton />
   ) : isError ? (
     taxpayerid
   ) : (
-    <TableHeader taxpayerid={taxpayerid} companyData={companyData} />
+    <TableHeader
+      legalTypeName={legalTypeName}
+      taxpayerName={taxpayerName}
+      taxpayerid={taxpayerid}
+      companyData={companyData}
+    />
   );
 
   return (
