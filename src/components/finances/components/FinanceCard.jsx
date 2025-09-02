@@ -31,11 +31,7 @@ const FinanceCard = ({ employer }) => {
     }
   );
   return (
-    <Card
-      key={idx}
-      variant="outlined"
-      sx={{ borderRadius: 3, boxShadow: 3, mb: 4 }}
-    >
+    <Card variant="outlined" sx={{ borderRadius: 3, boxShadow: 3, mb: 4 }}>
       <CardContent>
         {/* Employer Header */}
         <Typography variant="h6" gutterBottom>

@@ -1,8 +1,9 @@
+import { useState } from "react";
 import { Box } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 
 import useFetchTax from "../../hooks/useFetchTax";
-import TaxNotFound from "./components/TaxNotFound";
+import NoResults from "../NoResults/NoResults";
 import FinanceTable from "./components/FinanceTable";
 import FinanceCard from "./components/FinanceCard";
 import TableScileton from "../tableScileton/TableScileton";
@@ -11,6 +12,9 @@ import { pageViewsMap } from "./Finances.constants";
 
 const Finances = ({ ssn }) => {
   const [view, setView] = useState(pageViewsMap.TABLE);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
   const {
     data: taxInfo,
     isLoading,
@@ -20,11 +24,12 @@ const Finances = ({ ssn }) => {
   } = useFetchTax(ssn, "bpr");
 
   const handleChangeView = (e, newValue) => {
-    if (!pageViewsMap[newValue]) return;
-    setView(pageViewsMap[newValue]);
+    setView(newValue);
   };
 
-  if (isFetching) {
+  const handleDateChange = (newDate) => {};
+
+  if (isFetching || isLoading) {
     return <TableScileton />;
   }
 
@@ -35,19 +40,25 @@ const Finances = ({ ssn }) => {
       </MuiAlert>
     );
   }
-
+  console.log("View", view);
   return (
     <Box sx={{ mt: 3 }}>
-      <PageHeaderControls onChangeView={handleChangeView} />
+      <PageHeaderControls
+        view={view}
+        startDate={startDate}
+        endDate={endDate}
+        onChangeView={handleChangeView}
+        onDateChange={handleDateChange}
+      />
 
-      {!taxInfo.length ? (
-        <TaxNotFound />
+      {!taxInfo?.length ? (
+        <NoResults />
       ) : (
-        taxInfo.map((employer) =>
+        taxInfo.map((employer, index) =>
           view === pageViewsMap.TABLE ? (
-            <FinanceTable key={employer.taxpayerid} employer={employer} />
+            <FinanceTable key={index} employer={employer} />
           ) : (
-            <FinanceCard key={employer.taxpayerid} employer={employer} />
+            <FinanceCard key={index} employer={employer} />
           )
         )
       )}

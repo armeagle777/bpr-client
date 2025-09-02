@@ -1,7 +1,7 @@
 import { Stack, Alert as MuiAlert, Typography } from "@mui/material";
 
 import ListScileton from "../listSceleton/ListScileton";
-import NotFound from "./NotFound";
+import NoResults from "../NoResults/NoResults";
 import useFetchWpData from "../../hooks/useFetchWpData";
 import CertificatesTable from "./CertificatesTable/CertificatesTable";
 import WpCaseList from "./WpCaseList/WpCaseList";
@@ -26,7 +26,7 @@ const WpTab = ({ pnum }) => {
     !eatmFamilyData?.length &&
     !cards?.length
   ) {
-    return <NotFound />;
+    return <NoResults />;
   }
   return (
     <Stack spacing={2} flexDirection="column" sx={{ py: 3, px: 1 }}>

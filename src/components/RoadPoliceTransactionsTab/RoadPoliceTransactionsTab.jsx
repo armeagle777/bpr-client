@@ -16,10 +16,10 @@ import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 
 import { OwnerCard } from "./components";
 import ListScileton from "../listSceleton/ListScileton";
-import DocumentNotFound from "../family/DocumentNotFound";
 import { formatAmount } from "../../utils/helperFunctions";
 import { TRANSACTIONS_NOT_FOUND_MESSAGE } from "./RoadPoliceTransactionsTab.constants";
 import useFetchRoadPoliceTransactions from "../../hooks/useFetchRoadPoliceTransactions";
+import NoResults from "../NoResults/NoResults";
 
 const RoadPoliceTransactionsTab = ({ pnum }) => {
   const { data, error, isError, isFetching } =
@@ -38,7 +38,7 @@ const RoadPoliceTransactionsTab = ({ pnum }) => {
   }
 
   return !data?.items?.length ? (
-    <DocumentNotFound notification={TRANSACTIONS_NOT_FOUND_MESSAGE} />
+    <NoResults />
   ) : (
     <Grid container spacing={2}>
       {data?.items?.map((tx, idx) => (

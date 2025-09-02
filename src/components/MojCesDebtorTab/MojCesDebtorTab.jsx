@@ -14,7 +14,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import HomeIcon from "@mui/icons-material/Home";
 import DataLoader from "../DataLoader/DataLoader";
 import useFetchMojCesData from "../../hooks/useFetchMojCesData";
-import NoResults from "./components/NoResults";
+import NoResults from "../NoResults/NoResults";
 import { formatAmount } from "../../utils/helperFunctions";
 
 const MojCesDebtorTab = ({ psn, tax_id, isTabActive = true }) => {

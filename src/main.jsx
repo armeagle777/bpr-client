@@ -5,6 +5,7 @@ import AuthProvider from "react-auth-kit/AuthProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import App from "./App";
+import FunctionalErrorBoundary from "./components/ErrorBundary";
 
 import "./index.css";
 import { PersonsProvider } from "./components/context/persons";
@@ -30,7 +31,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <QueryClientProvider client={queryClient}>
       <PersonsProvider>
         <BrowserRouter>
-          <App />
+          <FunctionalErrorBoundary>
+            <App />
+          </FunctionalErrorBoundary>
         </BrowserRouter>
       </PersonsProvider>
     </QueryClientProvider>

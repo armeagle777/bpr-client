@@ -39,6 +39,7 @@ const TableBody = ({ rows }) => {
             Person,
             PassportData,
           } = row || {};
+
           const {
             First_Name = "",
             Last_Name = "",

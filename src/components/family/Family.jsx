@@ -3,7 +3,7 @@ import MuiAlert from "@mui/material/Alert";
 import QkagDocument from "../qkagDocument/QkagDocument";
 
 import useFetchQkag from "../../hooks/useFetchQkag";
-import DocumentNotFound from "./DocumentNotFound";
+import NoResults from "../NoResults/NoResults";
 import ListScileton from "../listSceleton/ListScileton";
 
 const Family = ({ ssn, firstName, lastName }) => {
@@ -29,7 +29,7 @@ const Family = ({ ssn, firstName, lastName }) => {
   return (
     <Box sx={{ pt: 3 }}>
       {documents?.length === 0 ? (
-        <DocumentNotFound />
+        <NoResults />
       ) : (
         documents.map((doc) => (
           <QkagDocument key={doc.tracking_id} targetSsn={ssn} document={doc} />

@@ -6,9 +6,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import MuiTableRow from "@mui/material/TableRow";
 
-import useFetchCompany from "../../hooks/useFetchCompany";
-import { formatedData } from "../../utils/helperFunctions";
-import CompanyTooltip from "./CompanyTooltip";
+import useFetchCompany from "../../../hooks/useFetchCompany";
+import { formatedData } from "../../../utils/helperFunctions";
+// import CompanyTooltip from "./CompanyTooltip";
 import StyledTableRow from "./StyledTableRow";
 import TableHeader from "./TableHeader";
 

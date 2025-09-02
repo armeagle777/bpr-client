@@ -4,7 +4,7 @@ import MuiAlert from "@mui/material/Alert";
 import useFetchCompanies from "../../hooks/useFetchCompanies";
 import ListScileton from "../listSceleton/ListScileton";
 import BusinessCard from "./BusinessCard";
-import BusinessNotFound from "./BusinessNotFound";
+import NoResults from "../NoResults/NoResults";
 
 const BusinessTab = ({ ssn }) => {
   const { data, isLoading, isError, error } = useFetchCompanies(ssn);
@@ -30,7 +30,7 @@ const BusinessTab = ({ ssn }) => {
   return (
     <Stack spacing={2} flexDirection="column" sx={{ py: 3, px: 1 }}>
       {data?.length === 0 ? (
-        <BusinessNotFound />
+        <NoResults />
       ) : (
         companies.map((company) => (
           <BusinessCard key={company.reg_num} company={company} />

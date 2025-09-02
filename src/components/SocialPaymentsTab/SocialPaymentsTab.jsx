@@ -36,12 +36,12 @@ const SocialPaymentsTab = ({ ssn }) => {
 
   return (
     <Stack direction="column" gap={4}>
-      {!pensionData && !disabilityRegisterData && !pyunikRegisterData && (
-        <NoResults />
-      )}
+      {!pensionData?.length &&
+        !disabilityRegisterData &&
+        !pyunikRegisterData && <NoResults />}
 
       {/* Pension Data */}
-      {pensionData && (
+      {!!pensionData?.length && (
         <Card sx={{ borderRadius: 3, boxShadow: 4 }}>
           <CardContent>
             <Typography variant="h6" gutterBottom>
@@ -54,7 +54,7 @@ const SocialPaymentsTab = ({ ssn }) => {
                   Անուն Ազգանուն
                 </Typography>
                 <Typography variant="subtitle1">
-                  {pensionData[0].full_name}
+                  {pensionData[0]?.full_name || ""}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -62,7 +62,7 @@ const SocialPaymentsTab = ({ ssn }) => {
                   Ծննդյան օր
                 </Typography>
                 <Typography variant="subtitle1">
-                  {pensionData[0].birthdate}
+                  {pensionData[0]?.birthdate || ""}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -70,7 +70,7 @@ const SocialPaymentsTab = ({ ssn }) => {
                   Սոցիալական քարտ
                 </Typography>
                 <Typography variant="subtitle1">
-                  {pensionData[0].soc_card}
+                  {pensionData[0]?.soc_card || ""}
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -78,7 +78,7 @@ const SocialPaymentsTab = ({ ssn }) => {
                   Աշխատանքային ստաժ
                 </Typography>
                 <Typography variant="subtitle1">
-                  {pensionData[0].Experience?.experience}
+                  {pensionData[0]?.Experience?.experience || ""}
                 </Typography>
               </Grid>
             </Grid>
@@ -91,7 +91,7 @@ const SocialPaymentsTab = ({ ssn }) => {
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                {pensionData[0].Pension?.map((p, idx) => (
+                {pensionData[0]?.Pension?.map((p, idx) => (
                   <Box key={idx} mb={2}>
                     <Chip
                       label={p.type}
@@ -99,12 +99,12 @@ const SocialPaymentsTab = ({ ssn }) => {
                       size="small"
                       sx={{ mb: 1 }}
                     />
-                    <Typography variant="body2">Հիմք՝ {p.law}</Typography>
+                    <Typography variant="body2">Հիմք՝ {p.law || ""}</Typography>
                     <Typography variant="body2">
-                      Ամսական գումար՝ {p.sum} ֏
+                      Ամսական գումար՝ {p.sum || ""} ֏
                     </Typography>
                     <Typography variant="body2">
-                      Սկիզբ՝ {p.assign_date}
+                      Սկիզբ՝ {p.assign_date || ""}
                     </Typography>
                   </Box>
                 ))}
@@ -123,16 +123,16 @@ const SocialPaymentsTab = ({ ssn }) => {
             </Typography>
             <Divider sx={{ mb: 2 }} />
             <Typography variant="body2">
-              Պատճառ՝ {disabilityRegisterData.disabilityCause}
+              Պատճառ՝ {disabilityRegisterData?.disabilityCause || ""}
             </Typography>
             <Typography variant="body2">
-              Գնահատում՝ {disabilityRegisterData.disabilityScoreName}
+              Գնահատում՝ {disabilityRegisterData?.disabilityScoreName || ""}
             </Typography>
             <Typography variant="body2">
-              Ժամկետ՝ {disabilityRegisterData.disabilityPeriodName}
+              Ժամկետ՝ {disabilityRegisterData?.disabilityPeriodName || ""}
             </Typography>
             <Typography variant="body2">
-              Մինչև՝ {disabilityRegisterData.disabilityDateUntil}
+              Մինչև՝ {disabilityRegisterData?.disabilityDateUntil || ""}
             </Typography>
           </CardContent>
         </Card>

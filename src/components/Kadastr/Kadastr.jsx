@@ -1,7 +1,7 @@
 import MuiAlert from "@mui/material/Alert";
 
 import useFetchKadastr from "../../hooks/useFetchKadastr";
-import DocumentNotFound from "./DocumentNotFound";
+import NoResults from "../NoResults/NoResults";
 import ListScileton from "../listSceleton/ListScileton";
 import PropertyInfo from "../../pages/KadastrCertificate/components/PropertyInfo";
 import { Stack } from "@mui/material";
@@ -24,7 +24,7 @@ const Kadastr = ({ ssn }) => {
   return (
     <Stack spacing={2} flexDirection="column" sx={{ py: 3, px: 1 }}>
       {data?.length === 0 ? (
-        <DocumentNotFound />
+        <NoResults />
       ) : (
         data?.map((property, index) => (
           <PropertyInfo key={index} property={property} />

@@ -4,7 +4,7 @@ import useFetchRoadpoliceData from "../../hooks/useFetchRoadpoliceData";
 import ListScileton from "../listSceleton/ListScileton";
 import LicenseCard from "../LicenseCard/LicenseCard";
 import VehicleCard from "../VehicleCard/VehicleCard";
-import DocumentNotFound from "../family/DocumentNotFound";
+import NoResults from "../NoResults/NoResults";
 
 const RoadPoliceTab = ({ pnum }) => {
   const { data, isLoading, isError, error } = useFetchRoadpoliceData(pnum);
@@ -27,9 +27,7 @@ const RoadPoliceTab = ({ pnum }) => {
 
   return (
     <Stack direction="column" gap={4}>
-      {!showLicense && !showVehicleCards && (
-        <DocumentNotFound notification="Տվյալ անձի վերաբերյալ ՃՈ տվյալներ չեն հայտնաբերվել:" />
-      )}
+      {!showLicense && !showVehicleCards && <NoResults />}
       <Grid container>{showLicense && <LicenseCard license={license} />}</Grid>
       <Grid container spacing={2}>
         {showVehicleCards &&
