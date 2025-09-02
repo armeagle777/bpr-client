@@ -53,10 +53,10 @@ const FinanceTable = ({ employer }) => {
           </TableHead>
           <TableBody>
             <StyledTableRow>{TableData.salaryEquivPayments}</StyledTableRow>
-            <StyledTableRow>{TableData.incomeTax}</StyledTableRow>
             <StyledTableRow>
               {TableData.civilLowContractPayments}
             </StyledTableRow>
+            <StyledTableRow>{TableData.incomeTax}</StyledTableRow>
             <StyledTableRow>{TableData.socialpayments}</StyledTableRow>
             <StyledTableRow>{TableData.socialpaymentspaid}</StyledTableRow>
             <StyledTableRow>{TableData.workinghours}</StyledTableRow>
