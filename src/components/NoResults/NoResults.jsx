@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
 
 const NoResults = ({ message = "Տվյալներ չեն գտնվել" }) => {
   return (
@@ -8,22 +8,20 @@ const NoResults = ({ message = "Տվյալներ չեն գտնվել" }) => {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      textAlign="center"
+      p={4}
       sx={{
-        p: 4,
+        border: "1px dashed #ccc",
         borderRadius: 3,
-        bgcolor: "error.lighter", // MUI v6 has lighter/darker shades
-        boxShadow: 2,
-        border: "1px solid",
-        borderColor: "error.main",
+        bgcolor: "#fafafa",
+        minHeight: 200,
       }}
     >
-      <ErrorOutlineIcon sx={{ fontSize: 60, color: "error.main", mb: 2 }} />
-      <Typography variant="h6" gutterBottom color="error.main">
+      <SentimentDissatisfiedIcon
+        color="disabled"
+        sx={{ fontSize: 48, mb: 1 }}
+      />
+      <Typography variant="subtitle1" color="text.secondary">
         {message}
-      </Typography>
-      <Typography variant="body2" color="error.dark" sx={{ mb: 2 }}>
-        Ստուգեք մուտքագրված տվյալները կամ փորձեք կրկին
       </Typography>
     </Box>
   );

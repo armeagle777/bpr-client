@@ -4,7 +4,7 @@ import useFetchWeaponsData from "../../hooks/useFetchWeaponsData.js";
 import ListScileton from "../listSceleton/ListScileton";
 import WeaponsTable from "../WeaponsTable/WeaponsTable";
 
-import DocumentNotFound from "../family/DocumentNotFound";
+import NoResults from "../NoResults/NoResults.jsx";
 import { WEAPONS_NOT_FOUND_MESSAGE } from "./WeaponsTab.constants.js";
 
 const WeaponsTab = ({ ssn, tax_id, isTabActive = true }) => {
@@ -20,7 +20,7 @@ const WeaponsTab = ({ ssn, tax_id, isTabActive = true }) => {
     isTabActive,
   });
 
-  if (isLoading) {
+  if (isFetching) {
     return <ListScileton />;
   }
 
@@ -33,7 +33,7 @@ const WeaponsTab = ({ ssn, tax_id, isTabActive = true }) => {
   }
 
   return !data?.length ? (
-    <DocumentNotFound notification={WEAPONS_NOT_FOUND_MESSAGE} />
+    <NoResults />
   ) : (
     <WeaponsTable data={data} isFetching={isFetching} />
   );
