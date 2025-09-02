@@ -8,6 +8,7 @@ import {
   CardContent,
 } from "@mui/material";
 import { Phone, LocationOn as MapPin } from "@mui/icons-material";
+import activityCodes from "../../../utils/industryCodes";
 
 const CompanyLightDataRow = ({ company }) => {
   const { generalInfo, legalInfo } = company;
@@ -98,6 +99,25 @@ const CompanyLightDataRow = ({ company }) => {
               <Typography variant="subtitle1">
                 {legalInfo.legalTypeName}
               </Typography>
+            </Grid>
+          )}
+
+          {/* Classifiers */}
+          {generalInfo?.classifiers?.length > 0 && (
+            <Grid item xs={12}>
+              <Typography variant="body2" color="text.secondary">
+                Գործունեության տեսակներ
+              </Typography>
+              {generalInfo.classifiers.map((c, idx) => {
+                // remove all letters
+                const code = c.activity.replace(/[A-Za-z]/g, "");
+                const label = activityCodes[code] || code;
+                return (
+                  <Typography key={idx} variant="subtitle1">
+                    {label} ({c.activity_proportion}%)
+                  </Typography>
+                );
+              })}
             </Grid>
           )}
         </Grid>
