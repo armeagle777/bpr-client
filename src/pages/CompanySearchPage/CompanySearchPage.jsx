@@ -1,4 +1,3 @@
-import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Stack,
@@ -8,6 +7,7 @@ import {
   Container,
   Alert as MuiAlert,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import GrainIcon from "@mui/icons-material/Grain";
 
 import NoResults from "./components/NoResults";
@@ -16,6 +16,7 @@ import { companyTypes } from "./CompanySearchPage.constants";
 import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
 import DataLoader from "../../components/DataLoader/DataLoader";
 import useCompanySearchData from "../../hooks/useCompanySearchData";
+import CompanyLightDataRow from "./components/CompanyLightDataRow";
 
 const CompanySearchPage = () => {
   const {
@@ -98,9 +99,13 @@ const CompanySearchPage = () => {
         )}
         {!isError && !isFetching && data?.length > 0 && (
           <Box>
-            {data?.map((company) => (
-              <CompanyRow key={company.company_id} company={company} />
-            ))}
+            {data?.map((company, index) =>
+              company.isLightData ? (
+                <CompanyLightDataRow key={index} company={company} />
+              ) : (
+                <CompanyRow key={company.company_id} company={company} />
+              )
+            )}
           </Box>
         )}
       </Container>

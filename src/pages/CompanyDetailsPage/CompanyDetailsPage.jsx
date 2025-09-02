@@ -5,13 +5,13 @@ import { useParams } from "react-router-dom";
 import NoResults from "./components/NoResults";
 import { permissionsMap } from "../../utils/constants";
 import useFetchCompany from "../../hooks/useFetchCompany";
+import { tabsMap } from "./CompanyDetailsPage.constants";
 import DataLoader from "../../components/DataLoader/DataLoader";
-import CompanyMainTab from "../../components/CompanyMainTab/CompanyMainTab";
 import WeaponsTab from "../../components/WeaponsTab/WeaponsTab";
+import CompanyMainTab from "../../components/CompanyMainTab/CompanyMainTab";
+import MojCesDebtorTab from "../../components/MojCesDebtorTab/MojCesDebtorTab";
 import ScrollTabsLayout from "../../components/ScrollTabsLayout/ScrollTabsLayout";
 import PropertyTaxesTab from "../../components/PropertyTaxesTab/PropertyTaxesTab";
-import { tabsMap } from "./CompanyDetailsPage.constants";
-import MojCesDebtorTab from "../../components/MojCesDebtorTab/MojCesDebtorTab";
 
 const CompanyDetailsPage = () => {
   const [activeId, setActiveId] = useState("stateRegister");
