@@ -1,3 +1,5 @@
+import { Grid } from "@mui/material";
+
 import EmployerCard from "./EmployerCard";
 
 const EmployerList = ({ data }) => {

@@ -1,36 +1,57 @@
+import { useState } from "react";
 import {
   Box,
-  Grid,
   Card,
+  Grid,
+  List,
   Chip,
   Divider,
-  Accordion,
+  ListItem,
+  Collapse,
   Typography,
+  IconButton,
   CardContent,
-  AccordionSummary,
-  AccordionDetails,
+  ListItemText,
+  ListItemIcon,
 } from "@mui/material";
-import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
+import {
+  Work as WorkIcon,
+  LocationOn as LocationOnIcon,
+  ExpandMore as ExpandMoreIcon,
+  ExpandLess as ExpandLessIcon,
+  AccountBalance as AccountBalanceIcon,
+  MonetizationOn as MonetizationOnIcon,
+} from "@mui/icons-material";
+import { isNumeric } from "../TaxEmployersTab.helpers";
 
-const EmployerCard = ({ data }) => {
+const EmployerCard = ({ employer }) => {
+  const [openPositions, setOpenPositions] = useState(false);
+
   return (
-    <Grid item xs={12} key={idx}>
+    <Grid item sm={12}>
       <Card
         sx={{
-          borderRadius: 3,
-          boxShadow: 4,
+          borderRadius: 4,
+          boxShadow: 6,
           p: 2,
           transition: "0.3s",
-          "&:hover": { boxShadow: 8 },
+          "&:hover": { boxShadow: 10 },
+          bgcolor: "background.paper",
+          width: "100%",
         }}
       >
         <CardContent>
-          {/* Employer Header */}
-          <Typography variant="h6" color="primary" gutterBottom>
+          {/* Header */}
+          <Typography
+            variant="h6"
+            color="primary"
+            fontWeight="bold"
+            gutterBottom
+          >
             {employer.TP_NAME}
           </Typography>
 
-          <Grid container spacing={2}>
+          <Grid container spacing={2} sx={{ mb: 2 }}>
             <Grid item xs={12} sm={6}>
               <Typography variant="body2" color="text.secondary">
                 ՀՎՀՀ (TIN):
@@ -39,87 +60,122 @@ const EmployerCard = ({ data }) => {
             </Grid>
 
             <Grid item xs={12} sm={6}>
-              <Typography variant="body2" color="text.secondary">
-                Հասցե:
-              </Typography>
-              <Typography fontWeight="bold">
-                {employer.Address || "—"}
-              </Typography>
+              <Box display="flex" alignItems="center" gap={1}>
+                <LocationOnIcon color="action" fontSize="small" />
+                <Typography>{employer.Address || "—"}</Typography>
+              </Box>
             </Grid>
+          </Grid>
 
-            <Grid item xs={12} sm={4}>
-              <Chip
-                label={`Աշխատավարձ: ${employer.Salary?.sum || "—"} ${
-                  employer.Salary?.currency || ""
-                }`}
-                color="success"
-                variant="outlined"
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={4}>
-              <Chip
-                label={`Զուտ եկամուտ: ${employer.Net_income?.sum || "—"} ${
-                  employer.Net_income?.currency || ""
-                }`}
-                color="info"
-                variant="outlined"
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={4}>
-              <Chip
-                label={`Պայմանագրային եկամուտ: ${
-                  employer.Contract_revenue?.sum || "—"
-                }`}
-                color="warning"
-                variant="outlined"
-              />
-            </Grid>
+          {/* Chips Row */}
+          <Grid container spacing={2} sx={{ mb: 2 }}>
+            {isNumeric(employer.Salary?.sum) && (
+              <Grid item xs={12} sm={4}>
+                <Chip
+                  icon={<MonetizationOnIcon />}
+                  label={`Աշխատավարձ: ${employer.Salary?.sum || "—"} ${
+                    employer.Salary?.currency || ""
+                  }`}
+                  color="success"
+                  variant="outlined"
+                  sx={{ width: "100%" }}
+                />
+              </Grid>
+            )}
+            {isNumeric(employer.Net_income?.sum) && (
+              <Grid item xs={12} sm={4}>
+                <Chip
+                  icon={<AccountBalanceIcon />}
+                  label={`Զուտ եկամուտ: ${employer.Net_income?.sum || "—"} ${
+                    employer.Net_income?.currency || ""
+                  }`}
+                  color="info"
+                  variant="outlined"
+                  sx={{ width: "100%" }}
+                />
+              </Grid>
+            )}
+            {isNumeric(employer.Contract_revenue?.sum) && (
+              <Grid item xs={12} sm={4}>
+                <Chip
+                  icon={<WorkIcon />}
+                  label={`Պայմանագրային եկամուտ: ${
+                    employer.Contract_revenue?.sum || "—"
+                  }`}
+                  color="warning"
+                  variant="outlined"
+                  sx={{ width: "100%" }}
+                />
+              </Grid>
+            )}
           </Grid>
 
           <Divider sx={{ my: 2 }} />
 
-          {/* Positions */}
-          {employer.PositionInfo && employer.PositionInfo.length > 0 ? (
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography fontWeight="bold">
-                  Պաշտոններ ({employer.PositionInfo.length})
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                {employer.PositionInfo.map((pos, i) => (
-                  <Box
-                    key={i}
-                    sx={{
-                      mb: 2,
-                      p: 2,
-                      borderRadius: 2,
-                      bgcolor: "grey.50",
-                      boxShadow: 1,
-                    }}
-                  >
-                    <Typography>
-                      <strong>Պաշտոն:</strong> {pos.Position || "—"}
-                    </Typography>
-                    <Typography>
-                      <strong>Մուտք:</strong>{" "}
-                      {pos.Position_Start_Date ||
-                        pos.Civil_relations_StartDate ||
-                        "—"}
-                    </Typography>
-                    <Typography>
-                      <strong>Ելք:</strong>{" "}
-                      {pos.Position_End_Date ||
-                        pos.Civil_relations_EndDate ||
-                        "—"}
-                    </Typography>
-                  </Box>
-                ))}
-              </AccordionDetails>
-            </Accordion>
-          ) : (
+          {/* Positions Timeline Style */}
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={1}
+          >
+            <Typography variant="subtitle1" fontWeight="bold">
+              Պաշտոններ
+            </Typography>
+            {employer.PositionInfo?.length > 0 && (
+              <IconButton
+                onClick={() => setOpenPositions(!openPositions)}
+                size="small"
+              >
+                {openPositions ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              </IconButton>
+            )}
+          </Box>
+
+          <Collapse in={openPositions} timeout="auto" unmountOnExit>
+            <List>
+              {employer.PositionInfo?.map((pos, i) => (
+                <ListItem
+                  key={i}
+                  sx={{
+                    mb: 1,
+                    borderRadius: 2,
+                    bgcolor: "grey.50",
+                    boxShadow: 1,
+                  }}
+                >
+                  <ListItemIcon>
+                    <WorkIcon color="primary" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={pos.Position}
+                    secondary={
+                      <>
+                        <Typography variant="body2">
+                          Մուտք:{" "}
+                          <strong>
+                            {pos.Position_Start_Date ||
+                              pos.Civil_relations_StartDate ||
+                              "—"}
+                          </strong>
+                        </Typography>
+                        <Typography variant="body2">
+                          Ելք:{" "}
+                          <strong>
+                            {pos.Position_End_Date ||
+                              pos.Civil_relations_EndDate ||
+                              "—"}
+                          </strong>
+                        </Typography>
+                      </>
+                    }
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Collapse>
+
+          {!employer.PositionInfo?.length && (
             <Typography color="text.secondary" fontStyle="italic">
               Պաշտոններ չկան
             </Typography>

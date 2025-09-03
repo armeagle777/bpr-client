@@ -8,7 +8,7 @@ import EmployerList from "./components/EmployerList";
 const TaxEmployersTab = ({ ssn }) => {
   const { data, isFetching, isError, error } = useFetchPersonEmployers(ssn);
 
-  if (!data?.length) return <NoResults />;
+  if (data && !data?.length) return <NoResults />;
 
   if (isFetching) return <DataLoader />;
 
