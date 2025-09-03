@@ -12,6 +12,7 @@ import CompanyMainTab from "../../components/CompanyMainTab/CompanyMainTab";
 import MojCesDebtorTab from "../../components/MojCesDebtorTab/MojCesDebtorTab";
 import ScrollTabsLayout from "../../components/ScrollTabsLayout/ScrollTabsLayout";
 import PropertyTaxesTab from "../../components/PropertyTaxesTab/PropertyTaxesTab";
+import TaxObligationsTab from "../../components/TaxObligationsTab/TaxObligationsTab";
 
 const CompanyDetailsPage = () => {
   const [activeId, setActiveId] = useState("stateRegister");
@@ -62,6 +63,20 @@ const CompanyDetailsPage = () => {
         isTabActive: activeId === tabsMap.mojCesDebtor.id,
       },
       permissions: [permissionsMap.ADMIN.uid, permissionsMap.MOJ_CES.uid],
+    },
+    {
+      id: tabsMap.taxObligations.id,
+      label: tabsMap.taxObligations.label,
+      tabTitle: tabsMap.taxObligations.tabTitle,
+      Component: TaxObligationsTab,
+      props: {
+        tin: taxId,
+        isTabActive: activeId === tabsMap.taxObligations.id,
+      },
+      permissions: [
+        permissionsMap.ADMIN.uid,
+        permissionsMap.TAX_COMPANY_OBLIGATIONS.uid,
+      ],
     },
   ];
 

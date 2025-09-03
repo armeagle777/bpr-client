@@ -1,21 +1,23 @@
 import {
   Box,
   Card,
-  CardContent,
-  Typography,
-  Divider,
   Grid,
   Chip,
-  CircularProgress,
   Alert,
+  Divider,
+  Typography,
+  CardContent,
 } from "@mui/material";
-import GavelIcon from "@mui/icons-material/Gavel";
-import PersonIcon from "@mui/icons-material/Person";
-import HomeIcon from "@mui/icons-material/Home";
-import DataLoader from "../DataLoader/DataLoader";
-import useFetchMojCesData from "../../hooks/useFetchMojCesData";
+import {
+  Home as HomeIcon,
+  Gavel as GavelIcon,
+  Person as PersonIcon,
+} from "@mui/icons-material";
+
 import NoResults from "../NoResults/NoResults";
+import DataLoader from "../DataLoader/DataLoader";
 import { formatAmount } from "../../utils/helperFunctions";
+import useFetchMojCesData from "../../hooks/useFetchMojCesData";
 
 const MojCesDebtorTab = ({ psn, tax_id, isTabActive = true }) => {
   const {

@@ -15,4 +15,9 @@ export const tabsMap = {
     label: "ԴԱՀԿ",
     tabTitle: "ԴԱՀԿ Գործերի Վերաբերյալ Տեղեկատվություն",
   },
+  taxObligations: {
+    id: "taxObligations",
+    label: "Պարտավորություններ",
+    tabTitle: "ՊԵԿ Պարտավորությունների Վերաբերյալ Տեղեկատվություն",
+  },
 };

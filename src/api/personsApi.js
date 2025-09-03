@@ -257,6 +257,11 @@ export const getPersonEmployers = async (ssn) => {
   return response.data;
 };
 
+export const getCompanyObligations = async (tin) => {
+  const response = await personsApi.get(`/tax/company/${tin}/obligations`);
+  return response.data;
+};
+
 export const getSocialPayments = async (ssn) => {
   const response = await personsApi.get(`/mlsa/social-payments/${ssn}`);
   return response.data;
