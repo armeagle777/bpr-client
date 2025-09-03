@@ -194,6 +194,11 @@ export const permissionsMap = {
   },
   TAX_PERSON_ALL_INCOMES: {
     uid: "4200",
+    name: "Անձի եկամուտները",
+    description: "Անձի բոլոր գրանցված եկամուտները",
+  },
+  TAX_PERSON_ALL_EMPLOYERS: {
+    uid: "4300",
     name: "Անձի աշխատավայրերը",
     description: "Անձի բոլոր գրանցված աշխատավայրերը",
   },

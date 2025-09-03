@@ -7,21 +7,21 @@ import Tabs from "@mui/material/Tabs";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Kadastr from "../Kadastr/Kadastr";
-import PDFGenerator from "../PDFGenerator/PDFGenerator";
-import BusinessTab from "../businessTab/BusinessTab";
-import Documents from "../documents/Documents";
 import Family from "../family/Family";
-import Finances from "../finances/Finances";
 import BPR from "../pdf-templates/BPR";
+import Kadastr from "../Kadastr/Kadastr";
+import TabPanel from "../tabPanel/TabPanel";
+import Finances from "../finances/Finances";
+import Documents from "../documents/Documents";
+import PersonalInfoRow from "./PersonalInfoRow";
 import PhotoSlider from "../photoSlider/PhotoSlider";
 import SpeedDialButton from "../speedDial/SpeedDial";
-import TabPanel from "../tabPanel/TabPanel";
-import PersonalInfoRow from "./PersonalInfoRow";
+import BusinessTab from "../businessTab/BusinessTab";
+import PDFGenerator from "../PDFGenerator/PDFGenerator";
 
-import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import useLikesData from "../../hooks/useLikesData";
 import { permissionsMap } from "../../utils/constants";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import {
   filterImageSrcs,
   formatCountryName,
@@ -29,14 +29,15 @@ import {
   isPersonJpk,
   userHasPermission,
 } from "../../utils/helperFunctions";
-import RoadPoliceTab from "../RoadPoliceTab/RoadPoliceTab";
 import WpTab from "../WpTab/WpTab";
 import PoliceTab from "../policeTab/PoliceTab";
 import WeaponsTab from "../WeaponsTab/WeaponsTab";
-import RoadPoliceTransactionsTab from "../RoadPoliceTransactionsTab/RoadPoliceTransactionsTab";
-import PropertyTaxesTab from "../PropertyTaxesTab/PropertyTaxesTab";
+import RoadPoliceTab from "../RoadPoliceTab/RoadPoliceTab";
 import MojCesDebtorTab from "../MojCesDebtorTab/MojCesDebtorTab";
+import TaxEmployersTab from "../TaxEmployersTab/TaxEmployersTab";
+import PropertyTaxesTab from "../PropertyTaxesTab/PropertyTaxesTab";
 import SocialPaymentsTab from "../SocialPaymentsTab/SocialPaymentsTab";
+import RoadPoliceTransactionsTab from "../RoadPoliceTransactionsTab/RoadPoliceTransactionsTab";
 
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
@@ -301,11 +302,27 @@ const PersonInfoPage = ({ personInfo }) => {
                 </TabPanel>
               )}
               {userHasPermission(
-                [permissionsMap.TAX.uid, permissionsMap.ADMIN.uid],
+                [
+                  permissionsMap.TAX.uid,
+                  permissionsMap.ADMIN.uid,
+                  permissionsMap.TAX_PERSON_ALL_INCOMES.uid,
+                ],
                 user.permissions
               ) && (
                 <TabPanel value={value} index={index++}>
                   <Finances ssn={sanitizedPNum || Certificate_Number} />
+                </TabPanel>
+              )}
+              {userHasPermission(
+                [
+                  permissionsMap.TAX.uid,
+                  permissionsMap.ADMIN.uid,
+                  permissionsMap.TAX_PERSON_ALL_EMPLOYERS.uid,
+                ],
+                user.permissions
+              ) && (
+                <TabPanel value={value} index={index++}>
+                  <TaxEmployersTab ssn={sanitizedPNum || Certificate_Number} />
                 </TabPanel>
               )}
               {userHasPermission(
@@ -453,9 +470,25 @@ const PersonInfoPage = ({ personInfo }) => {
                 <Tab label="ԲՊՌ տվյալներ" aria-label="documents" />
               )}
               {userHasPermission(
-                [permissionsMap.TAX.uid, permissionsMap.ADMIN.uid],
+                [
+                  permissionsMap.TAX.uid,
+                  permissionsMap.ADMIN.uid,
+                  permissionsMap.TAX_PERSON_ALL_INCOMES.uid,
+                ],
                 user.permissions
-              ) && <Tab label="ՊԵԿ տվյալներ" aria-label="finances" />}
+              ) && (
+                <Tab label="Եկամուտների տվյալներ" aria-label="all-incomes" />
+              )}
+              {userHasPermission(
+                [
+                  permissionsMap.TAX.uid,
+                  permissionsMap.ADMIN.uid,
+                  permissionsMap.TAX_PERSON_ALL_EMPLOYERS.uid,
+                ],
+                user.permissions
+              ) && (
+                <Tab label="Աշխատատեղերի տվյալներ" aria-label="all-employers" />
+              )}
               {userHasPermission(
                 [permissionsMap.ZAQS.uid, permissionsMap.ADMIN.uid],
                 user.permissions

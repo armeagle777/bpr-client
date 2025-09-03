@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Box } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 
-import useFetchTax from "../../hooks/useFetchTax";
 import NoResults from "../NoResults/NoResults";
-import FinanceTable from "./components/FinanceTable";
 import FinanceCard from "./components/FinanceCard";
+import { pageViewsMap } from "./Finances.constants";
+import FinanceTable from "./components/FinanceTable";
 import TableScileton from "../tableScileton/TableScileton";
 import PageHeaderControls from "./components/PageHeaderControls";
-import { pageViewsMap } from "./Finances.constants";
+import useFetchPersonIncomes from "../../hooks/useFetchPersonIncomes";
 
 const Finances = ({ ssn }) => {
   const [view, setView] = useState(pageViewsMap.TABLE);
@@ -21,7 +21,7 @@ const Finances = ({ ssn }) => {
     isFetching,
     isError,
     error,
-  } = useFetchTax(ssn, "bpr");
+  } = useFetchPersonIncomes(ssn, "bpr");
 
   const handleChangeView = (e, newValue) => {
     setView(newValue);
@@ -40,7 +40,7 @@ const Finances = ({ ssn }) => {
       </MuiAlert>
     );
   }
-  console.log("View", view);
+
   return (
     <Box sx={{ mt: 3 }}>
       <PageHeaderControls

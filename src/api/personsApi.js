@@ -247,8 +247,13 @@ export const getVehiclesByParams = async (q, searchBase) => {
   return response.data;
 };
 
-export const getTaxBySsn = async (ssn) => {
+export const getPersonIncomes = async (ssn) => {
   const response = await personsApi.get(`/tax/person/${ssn}/income-info`);
+  return response.data;
+};
+
+export const getPersonEmployers = async (ssn) => {
+  const response = await personsApi.get(`/tax/person/${ssn}/employers`);
   return response.data;
 };
 
