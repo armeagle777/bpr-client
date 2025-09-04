@@ -2,13 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 
 import { getCompanyObligations } from "../api/personsApi";
 
-const useFetchCompanyObligations = ({ tin, isTabActive }) => {
+const useFetchCompanyObligations = ({ tin }) => {
   const { isLoading, isFetching, isError, error, data } = useQuery(
     ["company-obligations", tin],
     () => getCompanyObligations(tin),
     {
       keepPreviousData: true,
-      enabled: !!tin && isTabActive,
+      enabled: !!tin,
     }
   );
 

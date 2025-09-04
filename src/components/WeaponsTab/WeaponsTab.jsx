@@ -1,13 +1,12 @@
-import { Alert as MuiAlert } from "@mui/material";
+import { Alert as MuiAlert, Typography } from "@mui/material";
 
 import useFetchWeaponsData from "../../hooks/useFetchWeaponsData.js";
 import ListScileton from "../listSceleton/ListScileton";
 import WeaponsTable from "../WeaponsTable/WeaponsTable";
 
 import NoResults from "../NoResults/NoResults.jsx";
-import { WEAPONS_NOT_FOUND_MESSAGE } from "./WeaponsTab.constants.js";
 
-const WeaponsTab = ({ ssn, tax_id, isTabActive = true }) => {
+const WeaponsTab = ({ ssn, tax_id }) => {
   const {
     data = [],
     isLoading,
@@ -17,12 +16,7 @@ const WeaponsTab = ({ ssn, tax_id, isTabActive = true }) => {
   } = useFetchWeaponsData({
     ssn,
     tax_id,
-    isTabActive,
   });
-
-  if (isFetching) {
-    return <ListScileton />;
-  }
 
   if (isError) {
     return (
@@ -32,10 +26,25 @@ const WeaponsTab = ({ ssn, tax_id, isTabActive = true }) => {
     );
   }
 
-  return !data?.length ? (
-    <NoResults />
-  ) : (
-    <WeaponsTable data={data} isFetching={isFetching} />
+  return (
+    <>
+      <Typography
+        variant="h5"
+        color="primary"
+        fontWeight="bold"
+        gutterBottom
+        sx={{ mb: 2 }}
+      >
+        Հաշվառված Զենքերի Վերաբերյալ Տեղեկատվություն
+      </Typography>
+      {isFetching ? (
+        <ListScileton />
+      ) : !data?.length ? (
+        <NoResults />
+      ) : (
+        <WeaponsTable data={data} isFetching={isFetching} />
+      )}
+    </>
   );
 };
 

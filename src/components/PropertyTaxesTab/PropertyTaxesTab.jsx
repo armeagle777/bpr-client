@@ -9,18 +9,13 @@ import LegalPropertyCard from "./components/LegalPropertyCard";
 import useTerritorialMinPropertyTaxesData from "../../hooks/useTerritorialMinPropertyTaxesData";
 import LegalVehicleCard from "./components/LegalVehicleCard";
 
-const PropertyTaxesTab = ({
-  identificatorNumber,
-  personType = "PHYSICAL",
-  isTabActive,
-}) => {
+const PropertyTaxesTab = ({ identificatorNumber, personType = "PHYSICAL" }) => {
   const [serviceType, setServiceType] = useState("REAL_ESTATE");
 
   const { data, isFetching, error } = useTerritorialMinPropertyTaxesData({
     serviceType,
     identificator: identificatorNumber,
     personType,
-    isTabActive,
   });
 
   const handleTabChange = (e, newValue) => {
@@ -28,6 +23,15 @@ const PropertyTaxesTab = ({
   };
   return (
     <Box>
+      <Typography
+        variant="h5"
+        color="primary"
+        fontWeight="bold"
+        gutterBottom
+        sx={{ mb: 2 }}
+      >
+        Գույքահարկի Վճարների Վերաբերյալ Տեղեկատվություն
+      </Typography>
       {/* Tabs */}
       <Tabs
         textColor="primary"
