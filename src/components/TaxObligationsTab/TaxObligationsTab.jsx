@@ -14,8 +14,11 @@ import DataLoader from "../DataLoader/DataLoader";
 import { columns } from "./TaxObligationsTab.constants";
 import useFetchCompanyObligations from "../../hooks/useFetchCompanyObligations";
 
-const TaxObligationsTab = ({ tin }) => {
-  const { data, isError, error, isFetching } = useFetchCompanyObligations(tin);
+const TaxObligationsTab = ({ tin, isTabActive }) => {
+  const { data, isError, error, isFetching } = useFetchCompanyObligations({
+    tin,
+    isTabActive,
+  });
 
   if (isFetching) {
     return <DataLoader />;
@@ -31,6 +34,8 @@ const TaxObligationsTab = ({ tin }) => {
     return <NoResults />;
   }
 
+  if (data === undefined) return null;
+  console.log("data", data);
   const { taxInfo, declInfo, taxPayerInfo, singleAccountPayments } = data || {};
   const rowsWithKeys = taxInfo?.taxTypeList?.map((item, index) => ({
     id: index,
@@ -98,7 +103,7 @@ const TaxObligationsTab = ({ tin }) => {
           </Typography>
           <div style={{ height: 500, width: "100%" }}>
             <DataGrid
-              rows={rows}
+              rows={rowsWithKeys}
               columns={columns}
               pageSize={10}
               rowsPerPageOptions={[10]}

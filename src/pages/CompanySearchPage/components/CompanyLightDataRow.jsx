@@ -8,7 +8,7 @@ import {
   CardContent,
 } from "@mui/material";
 import { Phone, LocationOn as MapPin } from "@mui/icons-material";
-import activityCodes from "../../../utils/industryCodes";
+import { activityCodes } from "../../../utils/industryCodes";
 
 const CompanyLightDataRow = ({ company }) => {
   const { generalInfo, legalInfo } = company;
