@@ -78,6 +78,21 @@ const CompanyDetailsPage = () => {
         permissionsMap.TAX_COMPANY_OBLIGATIONS.uid,
       ],
     },
+    {
+      id: tabsMap.taxEmployees.id,
+      label: tabsMap.taxEmployees.label,
+      tabTitle: tabsMap.taxEmployees.tabTitle,
+      Component: TaxObligationsTab,
+      props: {
+        taxId: taxId,
+        isTabActive: activeId === tabsMap.taxEmployees.id,
+      },
+      permissions: [
+        permissionsMap.ADMIN.uid,
+        permissionsMap.TAX_COMPANY_EMPLOYEES.uid,
+        permissionsMap.TAX.uid,
+      ],
+    },
   ];
 
   return (

@@ -35,7 +35,7 @@ const TaxObligationsTab = ({ tin, isTabActive }) => {
   }
 
   if (data === undefined) return null;
-  console.log("data", data);
+
   const { taxInfo, declInfo, taxPayerInfo, singleAccountPayments } = data || {};
   const rowsWithKeys = taxInfo?.taxTypeList?.map((item, index) => ({
     id: index,
