@@ -35,7 +35,7 @@ const TaxObligationsTab = ({ tin, isTabActive }) => {
   }
 
   if (data === undefined) return null;
-  console.log("data", data);
+
   const { taxInfo, declInfo, taxPayerInfo, singleAccountPayments } = data || {};
   const rowsWithKeys = taxInfo?.taxTypeList?.map((item, index) => ({
     id: index,
@@ -44,7 +44,9 @@ const TaxObligationsTab = ({ tin, isTabActive }) => {
 
   return (
     <Box sx={{ p: 2 }}>
+      {/* TODO Add startDate, endDate filters */}
       {/* Taxpayer Info */}
+
       <Card sx={{ mb: 3, borderRadius: 3, boxShadow: 4 }}>
         <CardContent>
           <Typography variant="h5" color="primary" gutterBottom>

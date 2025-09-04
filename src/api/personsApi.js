@@ -262,6 +262,11 @@ export const getCompanyObligations = async (tin) => {
   return response.data;
 };
 
+export const getCompanyEmployees = async (taxId) => {
+  const response = await personsApi.get(`/tax/company/${taxId}/all-employees`);
+  return response.data;
+};
+
 export const getSocialPayments = async (ssn) => {
   const response = await personsApi.get(`/mlsa/social-payments/${ssn}`);
   return response.data;
