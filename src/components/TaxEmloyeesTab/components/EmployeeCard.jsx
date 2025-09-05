@@ -1,28 +1,48 @@
+import { memo, useMemo } from "react";
 import {
   Box,
   Card,
   Chip,
   Avatar,
   Divider,
+  Skeleton,
   Accordion,
   Typography,
   CardContent,
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import CircleIcon from "@mui/icons-material/Circle";
-import { memo } from "react";
+import {
+  Circle as CircleIcon,
+  Person as PersonIcon,
+  ExpandMore as ExpandMoreIcon,
+} from "@mui/icons-material";
+import { useInView } from "react-intersection-observer";
+
+import useFetchPerson from "../../../hooks/useFetchPerson";
+import { getBestPhoto } from "../TaxEmployeesTab.helpers";
 
 const EmployeeCard = ({ data }) => {
-  const { personalinfo, positions, isActiveEmployee } = data;
-  const { firstname, lastname, birthdate } = personalinfo;
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.2,
+  });
 
-  // later replace with actual fetched image url
-  const imageUrl = "";
+  const { personalinfo, positions, isActiveEmployee } = data;
+  const { firstname, lastname, birthdate, ssn } = personalinfo;
+
+  const {
+    data: personBprData,
+    isError,
+    isLoading,
+  } = useFetchPerson(ssn, inView);
+
+  const documents = personBprData?.documents;
+  const imageUrl = getBestPhoto(documents) || "";
 
   return (
     <Card
+      ref={ref}
       sx={{
         maxWidth: 340,
         borderRadius: 3,
@@ -35,14 +55,22 @@ const EmployeeCard = ({ data }) => {
     >
       {/* Profile Image */}
       <Box sx={{ p: 2, position: "relative" }}>
-        <Avatar
-          src={imageUrl}
-          alt={`${firstname} ${lastname}`}
-          sx={{ width: 150, height: 150, borderRadius: 2 }}
-        >
-          {firstname?.[0]}
-          {lastname?.[0]}
-        </Avatar>
+        {isLoading ? (
+          <Skeleton
+            variant="rounded"
+            width={150}
+            height={150}
+            sx={{ borderRadius: 2 }}
+          />
+        ) : (
+          <Avatar
+            src={imageUrl}
+            alt={`${firstname} ${lastname}`}
+            sx={{ width: 150, height: 150, borderRadius: 2 }}
+          >
+            {isError ? <PersonIcon /> : `${firstname?.[0]}${lastname?.[0]}`}
+          </Avatar>
+        )}
 
         {/* Status Indicator */}
         {isActiveEmployee && (
@@ -105,7 +133,7 @@ const EmployeeCard = ({ data }) => {
                 {pos.positionname}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                {pos.startdate} – {pos.enddate || "Present"}
+                {pos.startdate} – {pos.enddate || "Հիմա"}
               </Typography>
             </Box>
           ))}

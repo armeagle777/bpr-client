@@ -41,16 +41,18 @@ const TaxEmloyeesTab = ({ taxId }) => {
 
   return (
     <>
-      <Typography
-        variant="h5"
-        color="primary"
-        fontWeight="bold"
-        gutterBottom
-        sx={{ mb: 2 }}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between", // pushes buttons to the right
+          mb: 2,
+        }}
       >
-        Կազմակերպության Աշխատակիցների Վերաբերյալ Տեղեկատվություն
-      </Typography>
-      <Box sx={{ mb: 2 }}>
+        <Typography variant="h5" color="primary" fontWeight="bold">
+          Կազմակերպության Աշխատակիցների Վերաբերյալ Տեղեկատվություն
+        </Typography>
+
         <ToggleButtonGroup
           value={filter}
           exclusive
@@ -63,6 +65,7 @@ const TaxEmloyeesTab = ({ taxId }) => {
           <ToggleButton value="nonActive">Ոչ Ակտիվ</ToggleButton>
         </ToggleButtonGroup>
       </Box>
+
       {isFetching ? (
         <DataLoader />
       ) : data === null ? (

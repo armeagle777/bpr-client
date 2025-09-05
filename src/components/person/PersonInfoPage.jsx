@@ -268,17 +268,6 @@ const PersonInfoPage = ({ personInfo }) => {
                         text={Citizenship_StoppedDate}
                       />
                     )}
-                    {/* <Grid item>
-                  <PDFGenerator
-                    fileName={`bpr_${firstName}_${lastName}.pdf`}
-                    buttonText="Արտահանել"
-                    variant="contained"
-                    Icon={PictureAsPdfIcon}
-                    PDFTemplate={BPR}
-                    data={personInfo}
-                    userFullName={`${user.firstName} ${user.lastName}`}
-                  />
-                </Grid> */}
                   </Stack>
                 </Stack>
                 {isJpk && (
