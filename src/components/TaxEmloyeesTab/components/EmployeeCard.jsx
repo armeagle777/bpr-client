@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CircleIcon from "@mui/icons-material/Circle";
+import { memo } from "react";
 
 const EmployeeCard = ({ data }) => {
   const { personalinfo, positions, isActiveEmployee } = data;
@@ -116,4 +117,4 @@ const EmployeeCard = ({ data }) => {
   );
 };
 
-export default EmployeeCard;
+export default memo(EmployeeCard);

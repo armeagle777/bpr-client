@@ -1,13 +1,11 @@
-import { Grid, Box, Typography } from "@mui/material";
+import { Grid, Box } from "@mui/material";
 
-import NoResults from "../../NoResults/NoResults";
 import EmployeeCard from "./EmployeeCard";
+import { memo } from "react";
 
 const EmployeeList = ({ employees }) => {
   return (
     <Box sx={{ p: 3 }}>
-      {/* {employees === null && <NoResults />} */}
-
       {!!employees?.length && (
         <Grid container spacing={3} justifyContent="center">
           {employees?.map((emp, i) => (
@@ -21,4 +19,4 @@ const EmployeeList = ({ employees }) => {
   );
 };
 
-export default EmployeeList;
+export default memo(EmployeeList);
