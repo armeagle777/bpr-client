@@ -21,6 +21,7 @@ import { useInView } from "react-intersection-observer";
 
 import useFetchPerson from "../../../hooks/useFetchPerson";
 import { getBestPhoto } from "../TaxEmployeesTab.helpers";
+import { Link } from "react-router-dom";
 
 const EmployeeCard = ({ data }) => {
   const { ref, inView } = useInView({
@@ -39,6 +40,12 @@ const EmployeeCard = ({ data }) => {
 
   const documents = personBprData?.documents;
   const imageUrl = getBestPhoto(documents) || "";
+
+  const linkStyle = {
+    textDecoration: "none",
+    cursor: "pointer",
+    color: "inherit",
+  };
 
   return (
     <Card
@@ -99,20 +106,24 @@ const EmployeeCard = ({ data }) => {
 
       {/* Info */}
       <CardContent sx={{ textAlign: "center", pb: 1 }}>
-        <Typography
-          variant="h6"
-          fontWeight="bold"
-          sx={{ textTransform: "uppercase", mb: 1 }}
-        >
-          {firstname}
-        </Typography>
-        <Typography
-          variant="h6"
-          fontWeight="bold"
-          sx={{ textTransform: "uppercase", mb: 1 }}
-        >
-          {lastname}
-        </Typography>
+        <Link to={`/bpr/${ssn}`} style={linkStyle}>
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            sx={{ textTransform: "uppercase", mb: 1 }}
+          >
+            {firstname}
+          </Typography>
+        </Link>
+        <Link to={`/bpr/${ssn}`} style={linkStyle}>
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            sx={{ textTransform: "uppercase", mb: 1 }}
+          >
+            {lastname}
+          </Typography>
+        </Link>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
           Ծննդ ա/թ: {birthdate}
         </Typography>
