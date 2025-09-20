@@ -334,4 +334,35 @@ export const createLog = async (fileInfo = {}) => {
   return response.data;
 };
 
+export const getLogTypes = async () => {
+  const response = await personsApi.get("/logs/log-types");
+  return response.data;
+};
+
+export const filterLogsData = async (filters, page) => {
+  const response = await personsApi.post(`/logs/filter`, {
+    filters,
+    page,
+  });
+  return response.data;
+};
+
+export const getExcelFile = async (filters) => {
+  const mimeType = FILE_MIME_TYPES.EXCEL;
+
+  const fileUrl = `/files/excel/export/logs`;
+
+  const config = {
+    responseType: "blob",
+  };
+
+  const { data } = await personsApi.post(fileUrl, { filters }, config);
+
+  const blob = new Blob([data], {
+    type: mimeType,
+  });
+
+  return blob;
+};
+
 export default personsApi;

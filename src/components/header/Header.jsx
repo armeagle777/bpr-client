@@ -11,7 +11,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { Divider, ListItemIcon } from "@mui/material";
-import { PersonAdd, Save, Logout, Group } from "@mui/icons-material";
+import {
+  PersonAdd,
+  Save,
+  Logout,
+  Group,
+  History as HistoryIcon,
+} from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import useAuthData from "../../hooks/useAuthData";
 import useAuthUser from "react-auth-kit/hooks/useAuthUser";
@@ -207,6 +213,12 @@ const Header = () => {
                       <Group fontSize="small" />
                     </ListItemIcon>
                     Օգտատերեր
+                  </MenuItem>
+                  <MenuItem onClick={() => onUserMenuClick("/logs")}>
+                    <ListItemIcon>
+                      <HistoryIcon fontSize="small" />
+                    </ListItemIcon>
+                    Լոգեր
                   </MenuItem>
                   <MenuItem onClick={() => onUserMenuClick("/roles")}>
                     <ListItemIcon>

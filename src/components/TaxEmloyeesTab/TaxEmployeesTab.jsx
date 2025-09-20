@@ -45,7 +45,7 @@ const TaxEmloyeesTab = ({ taxId }) => {
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between", // pushes buttons to the right
+          justifyContent: "space-between",
           mb: 2,
         }}
       >
