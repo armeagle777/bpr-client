@@ -10,6 +10,7 @@ import PageLoader from "./components/PageLoader/PageLoader";
 import Home from "./pages/Home.page";
 import Login from "./pages/Login/Login";
 import NotFound from "./pages/NotFound.page";
+import LogsPage from "./pages/Logs/LogsPage";
 
 const LazyCompanySearch = lazy(() =>
   import("./pages/CompanySearchPage/CompanySearchPage")
@@ -228,6 +229,14 @@ function App() {
               <Suspense fallback={<PageLoader />}>
                 <LazyUsers />
               </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="logs"
+          element={
+            <RequirePermission permissions={[permissionsMap.ADMIN.uid]}>
+              <LogsPage />
             </RequirePermission>
           }
         />
