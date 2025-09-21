@@ -19,13 +19,13 @@ import DataLoader from "../DataLoader/DataLoader";
 import { formatAmount } from "../../utils/helperFunctions";
 import useFetchMojCesData from "../../hooks/useFetchMojCesData";
 
-const MojCesDebtorTab = ({ psn, tax_id, isTabActive = true }) => {
+const MojCesDebtorTab = ({ psn, tax_id }) => {
   const {
     data = [],
     isError,
     error,
     isFetching,
-  } = useFetchMojCesData({ psn, tax_id, isTabActive });
+  } = useFetchMojCesData({ psn, tax_id });
 
   if (isError) {
     return (

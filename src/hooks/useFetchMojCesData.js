@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getMojCesData } from "../api/personsApi";
 
-const useFetchMojCesData = ({ isTabActive = true, ...params }) => {
+const useFetchMojCesData = ({ ...params }) => {
   const { data, isFetching, isError, error } = useQuery(
     ["moj-ces", params],
     () => getMojCesData(params),
