@@ -318,6 +318,13 @@ export const getRoadPoliceTransactions = async (pnum) => {
   return response.data;
 };
 
+export const getRoadPoliceViolations = async (pnum) => {
+  const response = await personsApi.get(
+    `/road-police/persons/${pnum}/violations`
+  );
+  return response.data;
+};
+
 export const getTerritorialMinPropertyTaxes = async ({
   identificator,
   personType = "PHYSICAL", // LEGAL

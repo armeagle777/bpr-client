@@ -38,6 +38,7 @@ import TaxEmployersTab from "../TaxEmployersTab/TaxEmployersTab";
 import PropertyTaxesTab from "../PropertyTaxesTab/PropertyTaxesTab";
 import SocialPaymentsTab from "../SocialPaymentsTab/SocialPaymentsTab";
 import RoadPoliceTransactionsTab from "../RoadPoliceTransactionsTab/RoadPoliceTransactionsTab";
+import RoadPoliceViolationsTab from "../RoadPoliceViolationsTab/RoadPoliceViolationsTab";
 
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
@@ -383,6 +384,17 @@ const PersonInfoPage = ({ personInfo }) => {
               ) && (
                 <TabPanel value={value} index={index++}>
                   <RoadPoliceTransactionsTab pnum={sanitizedPNum} />
+                </TabPanel>
+              )}
+              {userHasPermission(
+                [
+                  permissionsMap.ROADPOLICE_VIOLATIONS.uid,
+                  permissionsMap.ADMIN.uid,
+                ],
+                user.permissions
+              ) && (
+                <TabPanel value={value} index={index++}>
+                  <RoadPoliceViolationsTab pnum={sanitizedPNum} />
                 </TabPanel>
               )}
               {userHasPermission(
