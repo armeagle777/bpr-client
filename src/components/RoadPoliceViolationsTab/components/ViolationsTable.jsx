@@ -17,16 +17,17 @@ const ViolationsTable = ({ violations }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Տեսակ</TableCell>
-              <TableCell>Աղմուկ / Խաչ</TableCell>
-              <TableCell>Ժամանակ</TableCell>
+              <TableCell align="center">Տ/Մ</TableCell>
+              <TableCell align="center">Սեփականատեր</TableCell>
+              <TableCell>Խախտման տեսակ</TableCell>
+              <TableCell>Ա/թ</TableCell>
               <TableCell align="right">Վճարվելիք</TableCell>
               <TableCell align="right">Տուգանք</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {violations.map((row) => (
-              <ViolationsTableRow row={row} />
+            {violations.map((row, index) => (
+              <ViolationsTableRow row={row} key={index} />
             ))}
           </TableBody>
         </Table>

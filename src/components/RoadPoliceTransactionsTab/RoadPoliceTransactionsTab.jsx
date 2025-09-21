@@ -17,7 +17,6 @@ import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import { OwnerCard } from "./components";
 import ListScileton from "../listSceleton/ListScileton";
 import { formatAmount } from "../../utils/helperFunctions";
-import { TRANSACTIONS_NOT_FOUND_MESSAGE } from "./RoadPoliceTransactionsTab.constants";
 import useFetchRoadPoliceTransactions from "../../hooks/useFetchRoadPoliceTransactions";
 import NoResults from "../NoResults/NoResults";
 
@@ -55,12 +54,12 @@ const RoadPoliceTransactionsTab = ({ pnum }) => {
               >
                 {/* Big Model Title */}
                 <Typography variant="h6" fontWeight={600}>
-                  {tx.model ?? "Unknown Model"}
+                  {tx.model ?? "N/A"}
                 </Typography>
 
                 {/* Year as a badge */}
                 <Chip
-                  label={tx.released ?? "Unknown Year"}
+                  label={tx.released ?? "N/A"}
                   color="primary"
                   size="small"
                   sx={{ fontWeight: 500 }}
@@ -81,13 +80,13 @@ const RoadPoliceTransactionsTab = ({ pnum }) => {
               {/* Badges */}
               <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mb: 2 }}>
                 <Chip
-                  label={tx.vehicle_type || "Unknown Type"}
+                  label={tx.vehicle_type || "N/A"}
                   color="secondary"
                   size="small"
                   variant="outlined"
                 />
                 <Chip
-                  label={tx.reason_type || "No Reason"}
+                  label={tx.reason_type || "N/A"}
                   color="info"
                   size="small"
                   variant="outlined"

@@ -222,6 +222,11 @@ export const permissionsMap = {
     name: "ԴԱՀԿ",
     description: "ԴԱՀԿ Համակարգի Որոնում",
   },
+  MOJ_CIVIL: {
+    uid: "6002",
+    name: "Արդարադատության նախ.",
+    description: "Արդարադատության նախ.",
+  },
   MLSA: {
     uid: "6100",
     name: "Սոցապ",

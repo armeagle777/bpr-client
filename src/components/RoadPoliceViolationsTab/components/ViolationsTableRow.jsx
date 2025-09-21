@@ -18,7 +18,7 @@ import { formatAmount } from "../../../utils/helperFunctions";
 
 const ViolationsTableRow = ({ row }) => {
   return (
-    <TableRow key={row.rp_violation_id} hover>
+    <TableRow hover>
       <TableCell>
         <Stack direction="row" spacing={1} alignItems="center">
           <Avatar sx={{ width: 32, height: 32 }}>
@@ -37,18 +37,11 @@ const ViolationsTableRow = ({ row }) => {
         <Typography variant="caption">{row.rp_violator_address}</Typography>
       </TableCell>
       <TableCell>
-        <Chip
-          icon={<ArticleIcon />}
-          label={row.rp_violation_type_article || "—"}
-          size="small"
-        />
-      </TableCell>
-      <TableCell>
         <Stack direction="row" spacing={1} alignItems="center">
           {row.rp_violation_type === "speed" ? (
             <Chip
               icon={<SpeedIcon />}
-              label={`Ամփոփ: ${row.rp_violation_speed} km/h`}
+              label={`Արագություն: ${row.rp_violation_speed} km/h`}
               size="small"
             />
           ) : (

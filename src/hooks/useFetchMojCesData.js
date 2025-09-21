@@ -8,7 +8,7 @@ const useFetchMojCesData = ({ ...params }) => {
     {
       keepPreviousData: false,
       cacheTime: 0,
-      enabled: (!!params?.psn || !!params?.tax_id) && isTabActive !== false,
+      enabled: !!params?.psn || !!params?.tax_id,
     }
   );
 

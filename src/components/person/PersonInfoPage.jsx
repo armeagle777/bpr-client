@@ -531,6 +531,13 @@ const PersonInfoPage = ({ personInfo }) => {
               )}
               {userHasPermission(
                 [
+                  permissionsMap.ROADPOLICE_VIOLATIONS.uid,
+                  permissionsMap.ADMIN.uid,
+                ],
+                user.permissions
+              ) && <Tab label="ՃՈ Տուգանքներ" aria-label="rp-violations" />}
+              {userHasPermission(
+                [
                   permissionsMap.MTA_PROPERTY_TAXES.uid,
                   permissionsMap.ADMIN.uid,
                 ],
