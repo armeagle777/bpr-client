@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getPoliceByPnum } from "../api/personsApi";
 
 const useFetchPolice = (pnum) => {
-  const { isLoading, isError, error, data } = useQuery(
+  const { isLoading, isError, error, data, isFetching } = useQuery(
     ["police", pnum],
     () => getPoliceByPnum(pnum),
     {
@@ -14,6 +14,7 @@ const useFetchPolice = (pnum) => {
   return {
     error,
     isError,
+    isFetching,
     isLoading,
     data,
   };

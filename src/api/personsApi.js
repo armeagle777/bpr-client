@@ -325,6 +325,11 @@ export const getRoadPoliceViolations = async (pnum) => {
   return response.data;
 };
 
+export const getCivilCases = async (pnum) => {
+  const response = await personsApi.get(`/moj-civil/cases/${pnum}`);
+  return response.data;
+};
+
 export const getTerritorialMinPropertyTaxes = async ({
   identificator,
   personType = "PHYSICAL", // LEGAL

@@ -39,6 +39,7 @@ import PropertyTaxesTab from "../PropertyTaxesTab/PropertyTaxesTab";
 import SocialPaymentsTab from "../SocialPaymentsTab/SocialPaymentsTab";
 import RoadPoliceTransactionsTab from "../RoadPoliceTransactionsTab/RoadPoliceTransactionsTab";
 import RoadPoliceViolationsTab from "../RoadPoliceViolationsTab/RoadPoliceViolationsTab";
+import MojCivilCasesTab from "../MojCivilCasesTab/MojCivilCasesTab";
 
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
@@ -424,6 +425,14 @@ const PersonInfoPage = ({ personInfo }) => {
                   <SocialPaymentsTab ssn={sanitizedPNum} />
                 </TabPanel>
               )}
+              {userHasPermission(
+                [permissionsMap.MOJ_CIVIL.uid, permissionsMap.ADMIN.uid],
+                user.permissions
+              ) && (
+                <TabPanel value={value} index={index++}>
+                  <MojCivilCasesTab psn={sanitizedPNum} />
+                </TabPanel>
+              )}
             </Box>
 
             <SpeedDialButton
@@ -556,6 +565,10 @@ const PersonInfoPage = ({ personInfo }) => {
                 [permissionsMap.MLSA.uid, permissionsMap.ADMIN.uid],
                 user.permissions
               ) && <Tab label="Սոց. Վճարումներ" aria-label="mlsa-payments" />}
+              {userHasPermission(
+                [permissionsMap.MOJ_CIVIL.uid, permissionsMap.ADMIN.uid],
+                user.permissions
+              ) && <Tab label="Քաղաքացիական գործեր" aria-label="civil-cases" />}
             </Tabs>
           </Box>
         </Grid>
