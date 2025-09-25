@@ -10,7 +10,7 @@ import PageLoader from "./components/PageLoader/PageLoader";
 import Home from "./pages/Home.page";
 import Login from "./pages/Login/Login";
 import NotFound from "./pages/NotFound.page";
-import LogsPage from "./pages/Logs/LogsPage";
+import LogsPage from "./pages/LogsPage/LogsPage";
 
 const LazyCompanySearch = lazy(() =>
   import("./pages/CompanySearchPage/CompanySearchPage")
