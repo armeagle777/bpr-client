@@ -4,6 +4,7 @@ import {
   PersonSearch as SearchIcon,
   AccountBox as AccountBoxIcon,
   DirectionsCar as DirectionsCarIcon,
+  CreditCard as CreditCardIcon,
 } from "@mui/icons-material";
 
 import {
@@ -99,6 +100,11 @@ const Header = ({
           <Tooltip title="Որոնում ըստ հաշվառման վկայագրի">
             <ToggleButton value="CERTIFICATE_NUMBER">
               <DirectionsCarIcon />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip title="Որոնում ըստ վարորդական վկ.">
+            <ToggleButton value="DRIVING_LICENSE">
+              <CreditCardIcon />
             </ToggleButton>
           </Tooltip>
         </ToggleButtonGroup>

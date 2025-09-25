@@ -40,6 +40,7 @@ import SocialPaymentsTab from "../SocialPaymentsTab/SocialPaymentsTab";
 import RoadPoliceTransactionsTab from "../RoadPoliceTransactionsTab/RoadPoliceTransactionsTab";
 import RoadPoliceViolationsTab from "../RoadPoliceViolationsTab/RoadPoliceViolationsTab";
 import MojCivilCasesTab from "../MojCivilCasesTab/MojCivilCasesTab";
+import MojCivilBeneficiaryTab from "../MojCivilBeneficiaryTab/MojCivilBeneficiaryTab";
 
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
@@ -429,9 +430,14 @@ const PersonInfoPage = ({ personInfo }) => {
                 [permissionsMap.MOJ_CIVIL.uid, permissionsMap.ADMIN.uid],
                 user.permissions
               ) && (
-                <TabPanel value={value} index={index++}>
-                  <MojCivilCasesTab psn={sanitizedPNum} />
-                </TabPanel>
+                <>
+                  <TabPanel value={value} index={index++}>
+                    <MojCivilCasesTab psn={sanitizedPNum} />
+                  </TabPanel>
+                  <TabPanel value={value} index={index++}>
+                    <MojCivilBeneficiaryTab psn={sanitizedPNum} />
+                  </TabPanel>
+                </>
               )}
             </Box>
 
@@ -568,7 +574,18 @@ const PersonInfoPage = ({ personInfo }) => {
               {userHasPermission(
                 [permissionsMap.MOJ_CIVIL.uid, permissionsMap.ADMIN.uid],
                 user.permissions
-              ) && <Tab label="Քաղաքացիական գործեր" aria-label="civil-cases" />}
+              ) && [
+                <Tab
+                  label="Քաղաքացիական գործեր"
+                  aria-label="civil-cases"
+                  key="civil-cases"
+                />,
+                <Tab
+                  label="Շահառուի տվյալներ"
+                  aria-label="civil-beneficiary"
+                  key="civil-beneficiary"
+                />,
+              ]}
             </Tabs>
           </Box>
         </Grid>

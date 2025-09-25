@@ -8,6 +8,8 @@ import PersonNotFound from "../components/notFound/PersonNotFound";
 import SearchHeader from "../components/search/SearchHeader";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
+import useLikesData from "../hooks/useLikesData";
+import { likeTypesMap } from "../utils/constants";
 
 const initialFilterProps = {
   ssn: "",
@@ -33,7 +35,11 @@ const Search = () => {
     setFilters,
     filterCounts,
   } = usePersons();
+
+  const { onLikeCreate } = useLikesData();
+
   const queryClient = useQueryClient();
+
   useEffect(() => {
     return () => {
       queryClient.refetchQueries(["search-persons", filters]);
@@ -59,6 +65,10 @@ const Search = () => {
     changePage(1);
   };
 
+  const handleSaveButton = () => {
+    onLikeCreate({ likeTypeName: likeTypesMap.bpr.name, fields: filterProps });
+  };
+
   return (
     <>
       <Stack
@@ -74,6 +84,7 @@ const Search = () => {
           filterProps={filterProps}
           setFilterProps={setFilterProps}
           onClearButton={handleClearButton}
+          onSaveButtonClick={handleSaveButton}
         />
       </Stack>
       {!persons ? null : persons?.length === 0 ? (

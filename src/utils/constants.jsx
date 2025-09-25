@@ -297,6 +297,44 @@ export const permissionsMap = {
   },
 };
 
+export const likeTypesMap = {
+  bpr: {
+    name: "ԲՊՌ Որոնում",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  stateRegister: {
+    name: "ԻԱՊՌ Որոնում",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  cadaster: {
+    name: "Կադաստրի Որոնում",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  weapon: {
+    name: "Զենքերի Բազայում Որոնում",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  wp: {
+    name: "Աշխ. Թույլտվության Բազայում Որոնում",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  roadPolice: {
+    name: "ՃՈ Որոնում",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  asylum: {
+    name: "Փախստականների Բազայում Որոնում",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+};
+
 export const documentStatusesMap = {
   PRIMARY_VALID: "Վավեր",
   VALID: "Վավեր",

@@ -182,8 +182,18 @@ export const checkEmail = async (email) => {
   return response.data;
 };
 
-export const getLikes = async () => {
-  const response = await personsApi.get(`/likes`);
+export const getLikes = async ({ likeTypeName } = {}) => {
+  const params = {};
+
+  if (likeTypeName !== undefined) {
+    params.likeTypeName = likeTypeName;
+  }
+  const response = await personsApi.get(`/likes`, { params });
+  return response.data;
+};
+
+export const createLike = async (body) => {
+  const response = await personsApi.post(`/likes`, body);
   return response.data;
 };
 
@@ -327,6 +337,11 @@ export const getRoadPoliceViolations = async (pnum) => {
 
 export const getCivilCases = async (pnum) => {
   const response = await personsApi.get(`/moj-civil/cases/${pnum}`);
+  return response.data;
+};
+
+export const getCivilBeneficiaryData = async (pnum) => {
+  const response = await personsApi.get(`/moj-civil/beneficiary/${pnum}`);
   return response.data;
 };
 

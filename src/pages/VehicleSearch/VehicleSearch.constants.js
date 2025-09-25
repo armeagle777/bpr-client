@@ -3,6 +3,7 @@ export const SEARCH_BASES = {
   SSN: "psn",
   VIN_CODE: "vehicle_vin",
   CERTIFICATE_NUMBER: "vehicle_registration_certificate_number",
+  DRIVING_LICENSE: "rp_license_reg_num",
 };
 
 export const PLACEHOLDERS = {
@@ -10,4 +11,5 @@ export const PLACEHOLDERS = {
   SSN: "ՀԾՀ / ՀՎՀՀ",
   VIN_CODE: "VIN",
   CERTIFICATE_NUMBER: "Վկայականի համաար",
+  DRIVING_LICENSE: "Վարորդական վկայական",
 };

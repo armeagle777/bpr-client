@@ -2,16 +2,16 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Button, Form, Popconfirm, message } from "antd";
 import { Link } from "react-router-dom";
-import { getLikes, toggleLike } from "../api/personsApi";
+import { createLike, getLikes, toggleLike } from "../api/personsApi";
 import { formatDate } from "../components/pdf-templates/templates.helpers";
 
-const useLikesData = () => {
+const useLikesData = ({ likeTypeName } = {}) => {
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
 
   const { isLoading, isError, error, data } = useQuery(
     ["likes"],
-    () => getLikes(),
+    () => getLikes({ likeTypeName }),
     {
       keepPreviousData: true,
     }
@@ -19,6 +19,19 @@ const useLikesData = () => {
 
   const toggleLikeMutation = useMutation(
     ({ uid, text }) => toggleLike({ uid, text }),
+    {
+      onSuccess: (data) => {
+        queryClient.invalidateQueries("likes");
+        message.success("Հաջողությամբ կատարվել է");
+      },
+      onError: (error, variables, context, mutation) => {
+        message.error("Ինչ-որ բան այնպես չէ");
+      },
+    }
+  );
+
+  const createLikeMutation = useMutation(
+    ({ fields, likeTypeName }) => createLike({ fields, likeTypeName }),
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries("likes");
@@ -87,6 +100,10 @@ const useLikesData = () => {
     toggleLikeMutation.mutate({ uid, text });
   };
 
+  const onLikeCreate = ({ fields, likeTypeName }) => {
+    createLikeMutation.mutate({ fields, likeTypeName });
+  };
+
   return {
     onLikeToggle,
     isLoading,
@@ -95,6 +112,7 @@ const useLikesData = () => {
     data: modifiedLikesData,
     columns,
     cancel,
+    onLikeCreate,
   };
 };
 

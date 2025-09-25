@@ -1,5 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { PersonSearch, RestartAlt } from "@mui/icons-material";
+import {
+  PersonSearch,
+  RestartAlt,
+  Save as SaveAltIcon,
+} from "@mui/icons-material";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -11,6 +15,7 @@ const SearchHeader = ({
   filterProps,
   setFilterProps,
   onClearButton,
+  onSaveButtonClick,
 }) => {
   const [isNameRowOpen, setIsNameRowOpen] = useState(
     !!filterProps.firstName.length
@@ -205,6 +210,17 @@ const SearchHeader = ({
         >
           <RestartAlt />
         </Button>
+        {/* <Button
+          size="large"
+          sx={{ py: 2, ml: 1 }}
+          color="warning"
+          title="Պահպանել"
+          variant="contained"
+          disabled={isResetBtnDisabled}
+          onClick={onSaveButtonClick}
+        >
+          <SaveAltIcon />
+        </Button> */}
       </Box>
     </Stack>
   );
