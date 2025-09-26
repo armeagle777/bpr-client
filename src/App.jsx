@@ -10,7 +10,8 @@ import PageLoader from "./components/PageLoader/PageLoader";
 import Home from "./pages/Home.page";
 import Login from "./pages/Login/Login";
 import NotFound from "./pages/NotFound.page";
-import LogsPage from "./pages/Logs/LogsPage";
+import LogsPage from "./pages/LogsPage/LogsPage";
+import PersonPage from "./pages/Person.page";
 
 const LazyCompanySearch = lazy(() =>
   import("./pages/CompanySearchPage/CompanySearchPage")
@@ -27,7 +28,6 @@ const LazyWpPersonSearch = lazy(() =>
   import("./pages/WpPersonSearch/WpPersonSearch")
 );
 const LazySearch = lazy(() => import("./pages/Search.page"));
-const LazyPersonPage = lazy(() => import("./pages/Person.page"));
 
 const LazyKadastrCertificate = lazy(() =>
   import("./pages/KadastrCertificate/KadastrCertificate")
@@ -81,7 +81,7 @@ function App() {
               permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}
             >
               <Suspense fallback={<PageLoader />}>
-                <LazyPersonPage />
+                <PersonPage />
               </Suspense>
             </RequirePermission>
           }
