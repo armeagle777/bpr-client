@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 
 import SearchBody from "../components/search/SearchBody";
@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import useLikesData from "../hooks/useLikesData";
 import { likeTypesMap } from "../utils/constants";
+import SavedSearchTag from "../components/SavedSearchTag/SavedSearchTag";
 
 const initialFilterProps = {
   ssn: "",
@@ -36,7 +37,9 @@ const Search = () => {
     filterCounts,
   } = usePersons();
 
-  const { onLikeCreate } = useLikesData();
+  const { onLikeCreate, data: likesData } = useLikesData({
+    likeTypeName: likeTypesMap.bpr.name,
+  });
 
   const queryClient = useQueryClient();
 
@@ -87,6 +90,24 @@ const Search = () => {
           onSaveButtonClick={handleSaveButton}
         />
       </Stack>
+      {likesData?.length > 0 && (
+        <Container>
+          <Stack
+            gap={2}
+            direction="row"
+            justifyContent="center"
+            flexWrap="wrap"
+          >
+            {likesData.map((searchProps, index) => (
+              <SavedSearchTag
+                key={index}
+                {...searchProps.fields}
+                onTagClick={() => setFilterProps(searchProps)}
+              />
+            ))}
+          </Stack>
+        </Container>
+      )}
       {!persons ? null : persons?.length === 0 ? (
         <PersonNotFound />
       ) : (

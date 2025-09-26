@@ -4,6 +4,7 @@ import { Button, Form, Popconfirm, message } from "antd";
 import { Link } from "react-router-dom";
 import { createLike, getLikes, toggleLike } from "../api/personsApi";
 import { formatDate } from "../components/pdf-templates/templates.helpers";
+import { formatFieldsLabel } from "../components/SavedSearchTag/SavedSearchTag.helpers";
 
 const useLikesData = ({ likeTypeName } = {}) => {
   const queryClient = useQueryClient();
@@ -58,12 +59,11 @@ const useLikesData = ({ likeTypeName } = {}) => {
     },
     {
       title: "ՀԾՀ / ՀՎՀՀ",
-      dataIndex: "uid",
+      dataIndex: "fields",
       render: (_, record) => {
-        const { uid } = record;
-        const destinationUrl =
-          uid.length === 10 ? `/bpr/${uid}` : `/register/${uid}`;
-        return <Link to={destinationUrl}>{uid}</Link>;
+        const label = formatFieldsLabel(record.fields);
+        const destinationUrl = `/bpr/`;
+        return <Link to={destinationUrl}>{label}</Link>;
       },
     },
     {

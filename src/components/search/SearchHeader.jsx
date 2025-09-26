@@ -210,17 +210,17 @@ const SearchHeader = ({
         >
           <RestartAlt />
         </Button>
-        {/* <Button
+        <Button
           size="large"
           sx={{ py: 2, ml: 1 }}
-          color="warning"
+          color="info"
           title="Պահպանել"
           variant="contained"
           disabled={isResetBtnDisabled}
           onClick={onSaveButtonClick}
         >
           <SaveAltIcon />
-        </Button> */}
+        </Button>
       </Box>
     </Stack>
   );
