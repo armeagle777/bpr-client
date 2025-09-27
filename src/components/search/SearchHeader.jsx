@@ -1,14 +1,15 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from 'react';
 import {
   PersonSearch,
   RestartAlt,
   Save as SaveAltIcon,
-} from "@mui/icons-material";
-import { Box, Button, Stack, TextField } from "@mui/material";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
-import ImageUploadField from "./ImageUploadFiled";
+  ImageSearch as ImageSearchIcon,
+} from '@mui/icons-material';
+import { Box, Button, IconButton, Stack, TextField } from '@mui/material';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
+import ImageSearchModal from './ImageSearchModal';
 
 const SearchHeader = ({
   setSearchParams,
@@ -18,9 +19,8 @@ const SearchHeader = ({
   onClearButton,
   onSaveButtonClick,
 }) => {
-  const [isNameRowOpen, setIsNameRowOpen] = useState(
-    !!filterProps.firstName.length
-  );
+  const [isNameRowOpen, setIsNameRowOpen] = useState(!!filterProps.firstName.length);
+  const [isImageEditorOpen, setIsImageEditorOpen] = useState(false);
 
   const onNameFocus = () => {
     setIsNameRowOpen(true);
@@ -40,36 +40,29 @@ const SearchHeader = ({
     }
   }, [filterProps.firstName]);
 
-  const {
-    ssnDisabled,
-    nameDisabled,
-    docnumDisabled,
-    isSearchBtnActive,
-    isResetBtnDisabled,
-  } = useMemo(() => {
-    const { ssn, lastName, firstName, documentNumber } = filterProps;
+  const { ssnDisabled, nameDisabled, docnumDisabled, isSearchBtnActive, isResetBtnDisabled } =
+    useMemo(() => {
+      const { ssn, lastName, firstName, documentNumber } = filterProps;
 
-    const isResetBtnDisabled = !Object.values(filterProps).filter(
-      (value) => !!value
-    ).length;
+      const isResetBtnDisabled = !Object.values(filterProps).filter((value) => !!value).length;
 
-    const isSearchBtnActive =
-      (ssn && ssn.length === 10) ||
-      (!!documentNumber && documentNumber.length >= 8) ||
-      (!!firstName && !!lastName);
+      const isSearchBtnActive =
+        (ssn && ssn.length === 10) ||
+        (!!documentNumber && documentNumber.length >= 8) ||
+        (!!firstName && !!lastName);
 
-    const nameDisabled = !!ssn || !!documentNumber;
-    const docnumDisabled = !!firstName || !!ssn;
-    const ssnDisabled = !!firstName || !!documentNumber;
+      const nameDisabled = !!ssn || !!documentNumber;
+      const docnumDisabled = !!firstName || !!ssn;
+      const ssnDisabled = !!firstName || !!documentNumber;
 
-    return {
-      ssnDisabled,
-      nameDisabled,
-      docnumDisabled,
-      isSearchBtnActive,
-      isResetBtnDisabled,
-    };
-  }, [filterProps]);
+      return {
+        ssnDisabled,
+        nameDisabled,
+        docnumDisabled,
+        isSearchBtnActive,
+        isResetBtnDisabled,
+      };
+    }, [filterProps]);
 
   const onInputChange = (event) => {
     const { name, value } = event.target;
@@ -85,17 +78,17 @@ const SearchHeader = ({
     <Stack
       spacing={2}
       sx={{
-        width: "100%",
-        alignItems: "center",
-        pt: "20px",
+        width: '100%',
+        alignItems: 'center',
+        pt: '20px',
       }}
     >
       <Box
         component="form"
         sx={{
-          display: "flex",
-          alignItems: "center",
-          "& .MuiTextField-root": { m: 1, width: "18ch" },
+          display: 'flex',
+          alignItems: 'center',
+          '& .MuiTextField-root': { m: 1, width: '18ch' },
         }}
         noValidate
         autoComplete="off"
@@ -114,11 +107,11 @@ const SearchHeader = ({
 
         <Box
           sx={{
-            width: isNameRowOpen ? "540px" : 0,
-            display: "flex",
-            flexDirection: "row",
-            overflow: "hidden",
-            transition: "width 1.3s ease-in-out",
+            width: isNameRowOpen ? '540px' : 0,
+            display: 'flex',
+            flexDirection: 'row',
+            overflow: 'hidden',
+            transition: 'width 1.3s ease-in-out',
           }}
         >
           <TextField
@@ -140,17 +133,11 @@ const SearchHeader = ({
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Ծննդ․ թիվ"
-              value={
-                filterProps.birthDate
-                  ? dayjs(filterProps.birthDate, "DD/MM/YYYY")
-                  : null
-              }
+              value={filterProps.birthDate ? dayjs(filterProps.birthDate, 'DD/MM/YYYY') : null}
               onChange={(newValue) => {
-                const formattedDate = newValue
-                  ? dayjs(newValue).format("DD/MM/YYYY")
-                  : "";
+                const formattedDate = newValue ? dayjs(newValue).format('DD/MM/YYYY') : '';
                 onInputChange({
-                  target: { name: "birthDate", value: formattedDate },
+                  target: { name: 'birthDate', value: formattedDate },
                 });
               }}
               format="DD/MM/YYYY"
@@ -190,7 +177,16 @@ const SearchHeader = ({
           disabled={ssnDisabled}
           inputProps={{ minLength: 10, maxLength: 10 }}
         />
-        <ImageUploadField />
+        <Button
+          size="large"
+          sx={{ py: 2, mr: 1 }}
+          color="info"
+          title="Պահպանել"
+          variant="contained"
+          onClick={() => setIsImageEditorOpen(true)}
+        >
+          <ImageSearchIcon /> {/* from @mui/icons-material */}
+        </Button>
         <Button
           size="large"
           sx={{ py: 2 }}
@@ -224,6 +220,7 @@ const SearchHeader = ({
           <SaveAltIcon />
         </Button>
       </Box>
+      <ImageSearchModal open={isImageEditorOpen} onClose={() => setIsImageEditorOpen(false)} />
     </Stack>
   );
 };

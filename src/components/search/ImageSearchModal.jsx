@@ -1,6 +1,5 @@
-import React, { useState, useRef } from "react";
-import AvatarEditor from "react-avatar-editor";
-import axios from "axios";
+import { useState, useRef } from 'react';
+import AvatarEditor from 'react-avatar-editor';
 import {
   Dialog,
   DialogTitle,
@@ -11,16 +10,11 @@ import {
   Slider,
   Typography,
   Stack,
-} from "@mui/material";
+} from '@mui/material';
 
-const ImageEditorModal = ({
-  open = true,
-  onClose,
-  uploadUrl,
-  initialImage,
-}) => {
+const ImageSearchModal = ({ open, onClose, initialImage }) => {
   const [image, setImage] = useState(initialImage || null);
-  const [scale, setScale] = useState(1.2);
+  const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
   const editorRef = useRef();
 
@@ -33,26 +27,24 @@ const ImageEditorModal = ({
     if (!editorRef.current) return;
 
     const canvas = editorRef.current.getImageScaledToCanvas();
-    canvas.toBlob(async (blob) => {
-      const formData = new FormData();
-      formData.append("file", blob, "edited-image.jpg");
+    const base64 = canvas.toDataURL('image/jpeg');
 
-      try {
-        const response = await axios.post(uploadUrl, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        alert("Upload successful!");
-        console.log(response.data);
-        onClose();
-      } catch (error) {
-        console.error("Upload failed:", error);
-      }
-    }, "image/jpeg");
+    try {
+      const uploadUrl = 'https://example.com';
+
+      // const response = await axios.post(uploadUrl, {
+      //   file: base64,
+      //   filename: 'edited-image.jpg',
+      // });
+      onClose();
+    } catch (error) {
+      console.error('Upload failed:', error);
+    }
   };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle>Խմբագրել նկարը</DialogTitle>
+      <DialogTitle>Որոնում Նկարով</DialogTitle>
       <DialogContent>
         <Box display="flex" gap={3} alignItems="center">
           {/* Left side: image */}
@@ -63,7 +55,7 @@ const ImageEditorModal = ({
                 image={image}
                 width={256}
                 height={256}
-                border={50}
+                border={10}
                 borderRadius={20}
                 scale={scale}
                 rotate={rotate}
@@ -71,12 +63,7 @@ const ImageEditorModal = ({
             ) : (
               <Button variant="outlined" component="label">
                 Ներբեռնել
-                <input
-                  type="file"
-                  hidden
-                  accept="image/*"
-                  onChange={handleFileChange}
-                />
+                <input type="file" hidden accept="image/*" onChange={handleFileChange} />
               </Button>
             )}
           </Box>
@@ -106,11 +93,7 @@ const ImageEditorModal = ({
                 />
               </Box>
 
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={() => setImage(null)}
-              >
+              <Button variant="outlined" color="secondary" onClick={() => setImage(null)}>
                 Հեռացնել
               </Button>
             </Stack>
@@ -122,7 +105,7 @@ const ImageEditorModal = ({
         <Button onClick={onClose}>Չեղարկել</Button>
         {image && (
           <Button variant="contained" onClick={handleSave}>
-            Պահպանել
+            Որոնել
           </Button>
         )}
       </DialogActions>
@@ -130,4 +113,4 @@ const ImageEditorModal = ({
   );
 };
 
-export default ImageEditorModal;
+export default ImageSearchModal;

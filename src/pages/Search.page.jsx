@@ -1,24 +1,25 @@
-import { Container, Stack } from "@mui/material";
-import MuiAlert from "@mui/material/Alert";
+import { Container, Stack } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
 
-import SearchBody from "../components/search/SearchBody";
-import SearchPageSkileton from "../components/searchPageSkileton/SearchPageSkileton";
-import { usePersons } from "../components/context/persons";
-import PersonNotFound from "../components/notFound/PersonNotFound";
-import SearchHeader from "../components/search/SearchHeader";
-import { useEffect, useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import useLikesData from "../hooks/useLikesData";
-import { likeTypesMap } from "../utils/constants";
-import SavedSearchTag from "../components/SavedSearchTag/SavedSearchTag";
+import SearchBody from '../components/search/SearchBody';
+import SearchPageSkileton from '../components/searchPageSkileton/SearchPageSkileton';
+import { usePersons } from '../components/context/persons';
+import PersonNotFound from '../components/notFound/PersonNotFound';
+import SearchHeader from '../components/search/SearchHeader';
+import { useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import useLikesData from '../hooks/useLikesData';
+import { likeTypesMap } from '../utils/constants';
+import SavedSearchTag from '../components/SavedSearchTag/SavedSearchTag';
+import ImageEditorModal from '../components/search/ImageSearchModal';
 
 const initialFilterProps = {
-  ssn: "",
-  firstName: "",
-  lastName: "",
-  birthDate: "",
-  patronomicName: "",
-  documentNumber: "",
+  ssn: '',
+  firstName: '',
+  lastName: '',
+  birthDate: '',
+  patronomicName: '',
+  documentNumber: '',
 };
 
 const Search = () => {
@@ -45,7 +46,7 @@ const Search = () => {
 
   useEffect(() => {
     return () => {
-      queryClient.refetchQueries(["search-persons", filters]);
+      queryClient.refetchQueries(['search-persons', filters]);
       setSearchParams({});
     };
   }, [setSearchParams, queryClient, filters]);
@@ -55,11 +56,7 @@ const Search = () => {
   }
 
   if (isError) {
-    return (
-      <MuiAlert severity="error">
-        {error.response?.data?.message || error.message}
-      </MuiAlert>
-    );
+    return <MuiAlert severity="error">{error.response?.data?.message || error.message}</MuiAlert>;
   }
 
   const handleClearButton = () => {
@@ -76,8 +73,8 @@ const Search = () => {
     <>
       <Stack
         sx={{
-          width: "100%",
-          alignItems: "center",
+          width: '100%',
+          alignItems: 'center',
           pt: 2,
         }}
       >
@@ -92,12 +89,7 @@ const Search = () => {
       </Stack>
       {likesData?.length > 0 && (
         <Container>
-          <Stack
-            gap={2}
-            direction="row"
-            justifyContent="center"
-            flexWrap="wrap"
-          >
+          <Stack gap={2} direction="row" justifyContent="center" flexWrap="wrap">
             {likesData.map((searchProps, index) => (
               <SavedSearchTag
                 key={index}

@@ -1,8 +1,8 @@
-import axios from "axios";
-import { DOWNLOAD_FILE_TYPES, FILE_MIME_TYPES } from "../utils/constants";
+import axios from 'axios';
+import { DOWNLOAD_FILE_TYPES, FILE_MIME_TYPES } from '../utils/constants';
 
-const baseUrl = !!localStorage.getItem("serverUrl")
-  ? localStorage.getItem("serverUrl")
+const baseUrl = !!localStorage.getItem('serverUrl')
+  ? localStorage.getItem('serverUrl')
   : import.meta.env.VITE_SERVER_URL;
 
 const personsApi = axios.create({
@@ -17,16 +17,16 @@ export const checkMyIp = async () => {
 
   const requests = urls.map((url) =>
     axios
-      .get(url + "/utils/get-ip")
+      .get(url + '/utils/get-ip')
       .then((res) => ({ url, data: res.data }))
-      .catch((error) => console.log("Error getting server ip"))
+      .catch((error) => console.log('Error getting server ip'))
   );
   const result = await Promise.any(requests);
   return result.url;
 };
 
 personsApi.interceptors.request.use((config) => {
-  config.headers.authorization = `Bearer ${localStorage.getItem("_auth")}`;
+  config.headers.authorization = `Bearer ${localStorage.getItem('_auth')}`;
   return config;
 });
 
@@ -38,12 +38,12 @@ personsApi.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       // If the server responds with 401 (Unauthorized), clear the token
-      localStorage.removeItem("_auth"); // Clear the token from localStorage
+      localStorage.removeItem('_auth'); // Clear the token from localStorage
 
       // Optionally clear any refresh token or cookies as well if stored
 
       // Redirect the user to the login page
-      window.location.href = "/login";
+      window.location.href = '/login';
     }
     return Promise.reject(error); // Reject other errors
   }
@@ -110,40 +110,38 @@ export const filterAsylumPersonData = async (filters, page) => {
 
 export const getAsylumPersonFullData = async (props) => {
   const { personal_id } = props;
-  const response = await personsApi.get(
-    `/asylum/person/${personal_id}/asylum-data`
-  );
+  const response = await personsApi.get(`/asylum/person/${personal_id}/asylum-data`);
   return response.data;
 };
 
 // Auth endpoints
 export const login = async (credentials) => {
-  const response = await personsApi.post("/users/login", credentials);
+  const response = await personsApi.post('/users/login', credentials);
   return response.data;
 };
 
 export const logOut = async () => {
-  const response = await personsApi.post("/users/logout");
+  const response = await personsApi.post('/users/logout');
   return response.data;
 };
 
 export const getUsers = async () => {
-  const response = await personsApi.get("/users");
+  const response = await personsApi.get('/users');
   return response.data;
 };
 
 export const getRoles = async () => {
-  const response = await personsApi.get("/roles");
+  const response = await personsApi.get('/roles');
   return response.data;
 };
 
 export const getPermissions = async () => {
-  const response = await personsApi.get("/permissions");
+  const response = await personsApi.get('/permissions');
   return response.data;
 };
 
 export const getLightUsers = async () => {
-  const response = await personsApi.get("/users/light");
+  const response = await personsApi.get('/users/light');
   return response.data;
 };
 
@@ -251,9 +249,7 @@ export const getMojCesData = async (params) => {
 };
 
 export const getVehiclesByParams = async (q, searchBase) => {
-  const response = await personsApi.get(
-    `/persons/${q}/vehicle?searchBase=${searchBase}`
-  );
+  const response = await personsApi.get(`/persons/${q}/vehicle?searchBase=${searchBase}`);
   return response.data;
 };
 
@@ -297,7 +293,7 @@ export const filterCompanies = async (params) => {
   const cleanedParams = Object.fromEntries(
     Object.entries(params).filter(([_, value]) => Boolean(value))
   );
-  const response = await personsApi.get("/petregistr/search", {
+  const response = await personsApi.get('/petregistr/search', {
     params: cleanedParams,
   });
 
@@ -305,9 +301,7 @@ export const filterCompanies = async (params) => {
 };
 
 export const getKadastrCertByNumber = async (q, searchBase) => {
-  const response = await personsApi.get(
-    `/kadastr/${q}/document?searchBase=${searchBase}`
-  );
+  const response = await personsApi.get(`/kadastr/${q}/document?searchBase=${searchBase}`);
   return response.data;
 };
 
@@ -322,16 +316,12 @@ export const getPoliceByPnum = async (pnum) => {
 };
 
 export const getRoadPoliceTransactions = async (pnum) => {
-  const response = await personsApi.get(
-    `/road-police/persons/${pnum}/transactions`
-  );
+  const response = await personsApi.get(`/road-police/persons/${pnum}/transactions`);
   return response.data;
 };
 
 export const getRoadPoliceViolations = async (pnum) => {
-  const response = await personsApi.get(
-    `/road-police/persons/${pnum}/violations`
-  );
+  const response = await personsApi.get(`/road-police/persons/${pnum}/violations`);
   return response.data;
 };
 
@@ -347,8 +337,8 @@ export const getCivilBeneficiaryData = async (pnum) => {
 
 export const getTerritorialMinPropertyTaxes = async ({
   identificator,
-  personType = "PHYSICAL", // LEGAL
-  serviceType = "VEHICLES", // REAL_ESTATE
+  personType = 'PHYSICAL', // LEGAL
+  serviceType = 'VEHICLES', // REAL_ESTATE
 }) => {
   const response = await personsApi.get(
     `/territorial-ministry/property-taxes/${identificator}?personType=${personType}&serviceType=${serviceType}`
@@ -362,7 +352,12 @@ export const createLog = async (fileInfo = {}) => {
 };
 
 export const getLogTypes = async () => {
-  const response = await personsApi.get("/logs/log-types");
+  const response = await personsApi.get('/logs/log-types');
+  return response.data;
+};
+
+export const searchPersonByImage = async (imageBase64) => {
+  const response = await personsApi.post('/logs/log-types', { imageBase64 });
   return response.data;
 };
 
@@ -380,7 +375,7 @@ export const getExcelFile = async (filters) => {
   const fileUrl = `/files/excel/export/logs`;
 
   const config = {
-    responseType: "blob",
+    responseType: 'blob',
   };
 
   const { data } = await personsApi.post(fileUrl, { filters }, config);
