@@ -8,6 +8,7 @@ import { Box, Button, Stack, TextField } from "@mui/material";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import ImageUploadField from "./ImageUploadFiled";
 
 const SearchHeader = ({
   setSearchParams,
@@ -189,6 +190,7 @@ const SearchHeader = ({
           disabled={ssnDisabled}
           inputProps={{ minLength: 10, maxLength: 10 }}
         />
+        <ImageUploadField />
         <Button
           size="large"
           sx={{ py: 2 }}
