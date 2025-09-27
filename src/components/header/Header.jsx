@@ -1,28 +1,22 @@
-import { useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import { Divider, ListItemIcon } from "@mui/material";
-import {
-  PersonAdd,
-  Save,
-  Logout,
-  Group,
-  History as HistoryIcon,
-} from "@mui/icons-material";
-import { Link, useNavigate } from "react-router-dom";
-import useAuthData from "../../hooks/useAuthData";
-import useAuthUser from "react-auth-kit/hooks/useAuthUser";
-import { userHasPermission } from "../../utils/helperFunctions";
-import { permissionsMap } from "../../utils/constants";
+import { useState } from 'react';
+import AppBar from '@mui/material/AppBar';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { Divider, ListItemIcon } from '@mui/material';
+import { PersonAdd, Save, Logout, Group, History as HistoryIcon } from '@mui/icons-material';
+import { Link, useNavigate } from 'react-router-dom';
+import useAuthData from '../../hooks/useAuthData';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import { userHasPermission } from '../../utils/helperFunctions';
+import { permissionsMap } from '../../utils/constants';
 
 const Header = () => {
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -48,7 +42,7 @@ const Header = () => {
 
   const onUserMenuClick = (path) => {
     setAnchorElUser(null);
-    navigate(path || "/");
+    navigate(path || '/');
   };
 
   return (
@@ -64,10 +58,10 @@ const Header = () => {
               width: 200,
               mr: 2,
               ml: 2,
-              display: { xs: "none", md: "flex" },
+              display: { xs: 'none', md: 'flex' },
               fontWeight: 300,
-              color: "inherit",
-              textDecoration: "none",
+              color: 'inherit',
+              textDecoration: 'none',
             }}
           >
             Համակարգ
@@ -75,45 +69,47 @@ const Header = () => {
           <Box
             sx={{
               flexGrow: 1,
-              display: { xs: "flex", md: "flex" },
-              justifyContent: "center",
+              display: { xs: 'flex', md: 'flex' },
+              justifyContent: 'center',
             }}
           >
             {userHasPermission(
               [permissionsMap.BPR.uid, permissionsMap.ADMIN.uid],
               user.permissions
             ) && (
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
                 <Link to="/">Անձի Որոնում</Link>
+              </Button>
+            )}
+            {userHasPermission(
+              [permissionsMap.SEARCH_PERSON_BY_IMAGE.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
+                <Link to="/search-by-image">Որոնում Լուսանկարով</Link>
               </Button>
             )}
             {userHasPermission(
               [permissionsMap.PETREGISTER.uid, permissionsMap.ADMIN.uid],
               user.permissions
             ) && (
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
                 <Link to="companies">ԻԱՊՌ</Link>
               </Button>
             )}
             {userHasPermission(
-              [
-                permissionsMap.KADASTR_CERTIFICATE.uid,
-                permissionsMap.ADMIN.uid,
-              ],
+              [permissionsMap.KADASTR_CERTIFICATE.uid, permissionsMap.ADMIN.uid],
               user.permissions
             ) && (
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
                 <Link to="kadastr-certificates">Կադաստր</Link>
               </Button>
             )}
             {userHasPermission(
-              [
-                permissionsMap.ROADPOLICE_FULL_SEARCH.uid,
-                permissionsMap.ADMIN.uid,
-              ],
+              [permissionsMap.ROADPOLICE_FULL_SEARCH.uid, permissionsMap.ADMIN.uid],
               user.permissions
             ) && (
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
                 <Link to="vehicle-search">ՃՈ</Link>
               </Button>
             )}
@@ -121,7 +117,7 @@ const Header = () => {
               [permissionsMap.WP_PERSON_SEARCH.uid, permissionsMap.ADMIN.uid],
               user.permissions
             ) && (
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
                 <Link to="wp-person-search">WP Որոնում</Link>
               </Button>
             )}
@@ -129,7 +125,7 @@ const Header = () => {
               [permissionsMap.ASYLUM.uid, permissionsMap.ADMIN.uid],
               user.permissions
             ) && (
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
                 <Link to="asylum-search">Փախստականների Որոնում</Link>
               </Button>
             )}
@@ -137,21 +133,21 @@ const Header = () => {
               [permissionsMap.WEAPON.uid, permissionsMap.ADMIN.uid],
               user.permissions
             ) && (
-              <Button sx={{ my: 2, color: "white", display: "block" }}>
+              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
                 <Link to="weapon-search">Զենք</Link>
               </Button>
             )}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title={`${user.firstName || ""} ${user.lastName || ""}`}>
+            <Tooltip title={`${user.firstName || ''} ${user.lastName || ''}`}>
               <IconButton
                 onClick={handleOpenUserMenu}
                 size="small"
                 sx={{ ml: 2 }}
-                aria-controls={open ? "account-menu" : undefined}
+                aria-controls={open ? 'account-menu' : undefined}
                 aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
+                aria-expanded={open ? 'true' : undefined}
               >
                 <Avatar
                   sx={{ width: 32, height: 32 }}
@@ -172,55 +168,52 @@ const Header = () => {
               PaperProps={{
                 elevation: 0,
                 sx: {
-                  overflow: "visible",
-                  filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                  overflow: 'visible',
+                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                   mt: 1.5,
-                  "& .MuiAvatar-root": {
+                  '& .MuiAvatar-root': {
                     width: 32,
                     height: 32,
                     ml: -0.5,
                     mr: 1,
                   },
-                  "&::before": {
+                  '&::before': {
                     content: '""',
-                    display: "block",
-                    position: "absolute",
+                    display: 'block',
+                    position: 'absolute',
                     top: 0,
                     right: 14,
                     width: 10,
                     height: 10,
-                    bgcolor: "background.paper",
-                    transform: "translateY(-50%) rotate(45deg)",
+                    bgcolor: 'background.paper',
+                    transform: 'translateY(-50%) rotate(45deg)',
                     zIndex: 0,
                   },
                 },
               }}
-              transformOrigin={{ horizontal: "right", vertical: "top" }}
-              anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-              <MenuItem onClick={() => onUserMenuClick("/profile")}>
+              <MenuItem onClick={() => onUserMenuClick('/profile')}>
                 <Avatar />
                 Օգտահաշիվ
               </MenuItem>
               <Divider />
-              {userHasPermission(
-                [permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
+              {userHasPermission([permissionsMap.ADMIN.uid], user.permissions) && (
                 <div>
-                  <MenuItem onClick={() => onUserMenuClick("/users")}>
+                  <MenuItem onClick={() => onUserMenuClick('/users')}>
                     <ListItemIcon>
                       <Group fontSize="small" />
                     </ListItemIcon>
                     Օգտատերեր
                   </MenuItem>
-                  <MenuItem onClick={() => onUserMenuClick("/logs")}>
+                  <MenuItem onClick={() => onUserMenuClick('/logs')}>
                     <ListItemIcon>
                       <HistoryIcon fontSize="small" />
                     </ListItemIcon>
                     Լոգեր
                   </MenuItem>
-                  <MenuItem onClick={() => onUserMenuClick("/roles")}>
+                  <MenuItem onClick={() => onUserMenuClick('/roles')}>
                     <ListItemIcon>
                       <PersonAdd fontSize="small" />
                     </ListItemIcon>
@@ -229,7 +222,7 @@ const Header = () => {
                 </div>
               )}
 
-              <MenuItem onClick={() => onUserMenuClick("/likes")}>
+              <MenuItem onClick={() => onUserMenuClick('/likes')}>
                 <ListItemIcon>
                   <Save fontSize="small" />
                 </ListItemIcon>

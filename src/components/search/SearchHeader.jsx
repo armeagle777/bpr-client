@@ -1,15 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
-import {
-  PersonSearch,
-  RestartAlt,
-  Save as SaveAltIcon,
-  ImageSearch as ImageSearchIcon,
-} from '@mui/icons-material';
-import { Box, Button, IconButton, Stack, TextField } from '@mui/material';
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import ImageSearchModal from './ImageSearchModal';
+import { useEffect, useMemo, useState } from 'react';
+import { Box, Button, Stack, TextField } from '@mui/material';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import { PersonSearch, RestartAlt, Save as SaveAltIcon } from '@mui/icons-material';
 
 const SearchHeader = ({
   setSearchParams,
@@ -20,7 +14,6 @@ const SearchHeader = ({
   onSaveButtonClick,
 }) => {
   const [isNameRowOpen, setIsNameRowOpen] = useState(!!filterProps.firstName.length);
-  const [isImageEditorOpen, setIsImageEditorOpen] = useState(false);
 
   const onNameFocus = () => {
     setIsNameRowOpen(true);
@@ -179,16 +172,6 @@ const SearchHeader = ({
         />
         <Button
           size="large"
-          sx={{ py: 2, mr: 1 }}
-          color="info"
-          title="Պահպանել"
-          variant="contained"
-          onClick={() => setIsImageEditorOpen(true)}
-        >
-          <ImageSearchIcon /> {/* from @mui/icons-material */}
-        </Button>
-        <Button
-          size="large"
           sx={{ py: 2 }}
           color="primary"
           variant="contained"
@@ -220,7 +203,6 @@ const SearchHeader = ({
           <SaveAltIcon />
         </Button>
       </Box>
-      <ImageSearchModal open={isImageEditorOpen} onClose={() => setIsImageEditorOpen(false)} />
     </Stack>
   );
 };

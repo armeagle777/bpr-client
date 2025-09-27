@@ -11,7 +11,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import useLikesData from '../hooks/useLikesData';
 import { likeTypesMap } from '../utils/constants';
 import SavedSearchTag from '../components/SavedSearchTag/SavedSearchTag';
-import ImageEditorModal from '../components/search/ImageSearchModal';
 
 const initialFilterProps = {
   ssn: '',

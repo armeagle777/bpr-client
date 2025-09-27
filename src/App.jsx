@@ -1,46 +1,33 @@
-import React, { lazy, Suspense } from "react";
-import { Route, Routes } from "react-router-dom";
-import RequireAuth from "@auth-kit/react-router/RequireAuth";
+import React, { lazy, Suspense } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import RequireAuth from '@auth-kit/react-router/RequireAuth';
 
-import Layout from "./components/layout/Layout";
-import { permissionsMap } from "./utils/constants";
-import RequirePermission from "./components/requirePermission/RequirePermission";
-import PageLoader from "./components/PageLoader/PageLoader";
+import Layout from './components/layout/Layout';
+import { permissionsMap } from './utils/constants';
+import RequirePermission from './components/requirePermission/RequirePermission';
+import PageLoader from './components/PageLoader/PageLoader';
 
-import Home from "./pages/Home.page";
-import Login from "./pages/Login/Login";
-import NotFound from "./pages/NotFound.page";
-import LogsPage from "./pages/LogsPage/LogsPage";
-import PersonPage from "./pages/Person.page";
+import Home from './pages/Home.page';
+import Login from './pages/Login/Login';
+import NotFound from './pages/NotFound.page';
+import LogsPage from './pages/LogsPage/LogsPage';
+import PersonPage from './pages/Person.page';
+import SearchByImage from './pages/SearchByImage/SearchByImage';
 
-const LazyCompanySearch = lazy(() =>
-  import("./pages/CompanySearchPage/CompanySearchPage")
-);
-const LazyCompanyDetailPge = lazy(() =>
-  import("./pages/CompanyDetailsPage/CompanyDetailsPage")
-);
-const LazyRoles = lazy(() => import("./pages/Roles/Roles"));
-const LazyPdf = lazy(() => import("./pages/Pdf.page"));
-const LazyProfile = lazy(() => import("./pages/Profile/Profile"));
-const LazyLikes = lazy(() => import("./pages/Likes/Likes"));
-const LazyUsers = lazy(() => import("./pages/Users/Users"));
-const LazyWpPersonSearch = lazy(() =>
-  import("./pages/WpPersonSearch/WpPersonSearch")
-);
-const LazySearch = lazy(() => import("./pages/Search.page"));
+const LazyCompanySearch = lazy(() => import('./pages/CompanySearchPage/CompanySearchPage'));
+const LazyCompanyDetailPge = lazy(() => import('./pages/CompanyDetailsPage/CompanyDetailsPage'));
+const LazyRoles = lazy(() => import('./pages/Roles/Roles'));
+const LazyPdf = lazy(() => import('./pages/Pdf.page'));
+const LazyProfile = lazy(() => import('./pages/Profile/Profile'));
+const LazyLikes = lazy(() => import('./pages/Likes/Likes'));
+const LazyUsers = lazy(() => import('./pages/Users/Users'));
+const LazyWpPersonSearch = lazy(() => import('./pages/WpPersonSearch/WpPersonSearch'));
+const LazySearch = lazy(() => import('./pages/Search.page'));
 
-const LazyKadastrCertificate = lazy(() =>
-  import("./pages/KadastrCertificate/KadastrCertificate")
-);
-const LazyVehicleSearch = lazy(() =>
-  import("./pages/VehicleSearch/VehicleSearch")
-);
-const LazyAsylumSearch = lazy(() =>
-  import("./pages/AsylumSearch/AsylumSearch")
-);
-const LazyWeaponSearch = lazy(() =>
-  import("./pages/WeaponSearch/WeaponSearch")
-);
+const LazyKadastrCertificate = lazy(() => import('./pages/KadastrCertificate/KadastrCertificate'));
+const LazyVehicleSearch = lazy(() => import('./pages/VehicleSearch/VehicleSearch'));
+const LazyAsylumSearch = lazy(() => import('./pages/AsylumSearch/AsylumSearch'));
+const LazyWeaponSearch = lazy(() => import('./pages/WeaponSearch/WeaponSearch'));
 
 function App() {
   return (
@@ -49,7 +36,7 @@ function App() {
       <Route
         path="/"
         element={
-          <RequireAuth fallbackPath={"/login"}>
+          <RequireAuth fallbackPath={'/login'}>
             <Layout />
           </RequireAuth>
         }
@@ -65,9 +52,7 @@ function App() {
         <Route
           index
           element={
-            <RequirePermission
-              permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}
-            >
+            <RequirePermission permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}>
               <Suspense fallback={<PageLoader />}>
                 <LazySearch />
               </Suspense>
@@ -77,11 +62,21 @@ function App() {
         <Route
           path="bpr/:ssn"
           element={
-            <RequirePermission
-              permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}
-            >
+            <RequirePermission permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}>
               <Suspense fallback={<PageLoader />}>
                 <PersonPage />
+              </Suspense>
+            </RequirePermission>
+          }
+        />
+        <Route
+          path="search-by-image"
+          element={
+            <RequirePermission
+              permissions={[permissionsMap.SEARCH_PERSON_BY_IMAGE.uid, permissionsMap.ADMIN.uid]}
+            >
+              <Suspense fallback={<PageLoader />}>
+                <SearchByImage />
               </Suspense>
             </RequirePermission>
           }
@@ -90,10 +85,7 @@ function App() {
           path="companies"
           element={
             <RequirePermission
-              permissions={[
-                permissionsMap.PETREGISTER.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
+              permissions={[permissionsMap.PETREGISTER.uid, permissionsMap.ADMIN.uid]}
             >
               <Suspense fallback={<PageLoader />}>
                 <LazyCompanySearch />
@@ -105,10 +97,7 @@ function App() {
           path="companies/:taxId"
           element={
             <RequirePermission
-              permissions={[
-                permissionsMap.PETREGISTER.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
+              permissions={[permissionsMap.PETREGISTER.uid, permissionsMap.ADMIN.uid]}
             >
               <Suspense fallback={<PageLoader />}>
                 <LazyCompanyDetailPge />
@@ -120,10 +109,7 @@ function App() {
           path="kadastr-certificates"
           element={
             <RequirePermission
-              permissions={[
-                permissionsMap.KADASTR_CERTIFICATE.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
+              permissions={[permissionsMap.KADASTR_CERTIFICATE.uid, permissionsMap.ADMIN.uid]}
             >
               <Suspense fallback={<PageLoader />}>
                 <LazyKadastrCertificate />
@@ -135,10 +121,7 @@ function App() {
           path="vehicle-search"
           element={
             <RequirePermission
-              permissions={[
-                permissionsMap.ROADPOLICE_FULL_SEARCH.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
+              permissions={[permissionsMap.ROADPOLICE_FULL_SEARCH.uid, permissionsMap.ADMIN.uid]}
             >
               <Suspense fallback={<PageLoader />}>
                 <LazyVehicleSearch />
@@ -165,10 +148,7 @@ function App() {
           path="wp-person-search"
           element={
             <RequirePermission
-              permissions={[
-                permissionsMap.WP_PERSON_SEARCH.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
+              permissions={[permissionsMap.WP_PERSON_SEARCH.uid, permissionsMap.ADMIN.uid]}
             >
               <Suspense fallback={<PageLoader />}>
                 <LazyWpPersonSearch />
@@ -179,12 +159,7 @@ function App() {
         <Route
           path="asylum-search"
           element={
-            <RequirePermission
-              permissions={[
-                permissionsMap.ASYLUM.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
-            >
+            <RequirePermission permissions={[permissionsMap.ASYLUM.uid, permissionsMap.ADMIN.uid]}>
               <Suspense fallback={<PageLoader />}>
                 <LazyAsylumSearch />
               </Suspense>
@@ -194,12 +169,7 @@ function App() {
         <Route
           path="weapon-search"
           element={
-            <RequirePermission
-              permissions={[
-                permissionsMap.WEAPON.uid,
-                permissionsMap.ADMIN.uid,
-              ]}
-            >
+            <RequirePermission permissions={[permissionsMap.WEAPON.uid, permissionsMap.ADMIN.uid]}>
               <Suspense fallback={<PageLoader />}>
                 <LazyWeaponSearch />
               </Suspense>
