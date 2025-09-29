@@ -1,5 +1,5 @@
-import { Button } from "@mui/material";
-import { formatFieldsLabel } from "./SavedSearchTag.helpers";
+import { Button } from '@mui/material';
+import { formatFieldsLabel } from './SavedSearchTag.helpers';
 
 const SavedSearchTag = ({ onTagClick, ...labelProps }) => {
   const label = formatFieldsLabel(labelProps);
@@ -9,10 +9,10 @@ const SavedSearchTag = ({ onTagClick, ...labelProps }) => {
       variant="outlined"
       sx={{
         borderRadius: 3,
-        textTransform: "none",
+        textTransform: 'none',
         px: 2,
         py: 1,
-        textWrap: "nowrap",
+        textWrap: 'nowrap',
       }}
       onClick={onTagClick}
     >

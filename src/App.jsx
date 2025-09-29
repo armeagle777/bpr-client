@@ -12,7 +12,6 @@ import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound.page';
 import LogsPage from './pages/LogsPage/LogsPage';
 import PersonPage from './pages/Person.page';
-import SearchByImage from './pages/SearchByImage/SearchByImage';
 
 const LazyCompanySearch = lazy(() => import('./pages/CompanySearchPage/CompanySearchPage'));
 const LazyCompanyDetailPge = lazy(() => import('./pages/CompanyDetailsPage/CompanyDetailsPage'));
@@ -22,7 +21,7 @@ const LazyProfile = lazy(() => import('./pages/Profile/Profile'));
 const LazyLikes = lazy(() => import('./pages/Likes/Likes'));
 const LazyUsers = lazy(() => import('./pages/Users/Users'));
 const LazyWpPersonSearch = lazy(() => import('./pages/WpPersonSearch/WpPersonSearch'));
-const LazySearch = lazy(() => import('./pages/Search.page'));
+const LazySearchPage = lazy(() => import('./pages/SearchPage/SearchPage'));
 
 const LazyKadastrCertificate = lazy(() => import('./pages/KadastrCertificate/KadastrCertificate'));
 const LazyVehicleSearch = lazy(() => import('./pages/VehicleSearch/VehicleSearch'));
@@ -54,7 +53,7 @@ function App() {
           element={
             <RequirePermission permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}>
               <Suspense fallback={<PageLoader />}>
-                <LazySearch />
+                <LazySearchPage />
               </Suspense>
             </RequirePermission>
           }
@@ -65,18 +64,6 @@ function App() {
             <RequirePermission permissions={[permissionsMap.BPR.uid, permissionsMap.ADMIN.uid]}>
               <Suspense fallback={<PageLoader />}>
                 <PersonPage />
-              </Suspense>
-            </RequirePermission>
-          }
-        />
-        <Route
-          path="search-by-image"
-          element={
-            <RequirePermission
-              permissions={[permissionsMap.SEARCH_PERSON_BY_IMAGE.uid, permissionsMap.ADMIN.uid]}
-            >
-              <Suspense fallback={<PageLoader />}>
-                <SearchByImage />
               </Suspense>
             </RequirePermission>
           }

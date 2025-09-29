@@ -5,7 +5,8 @@ import {
   AccountBox as AccountBoxIcon,
   DirectionsCar as DirectionsCarIcon,
   CreditCard as CreditCardIcon,
-} from "@mui/icons-material";
+  Save as SaveAltIcon,
+} from '@mui/icons-material';
 
 import {
   Box,
@@ -14,11 +15,15 @@ import {
   TextField,
   ToggleButton,
   ToggleButtonGroup,
-} from "@mui/material";
+  Container,
+} from '@mui/material';
 
-import { LoadingButton } from "@mui/lab";
+import { LoadingButton } from '@mui/lab';
 
-import { PLACEHOLDERS, SEARCH_BASES } from "../VehicleSearch.constants";
+import { PLACEHOLDERS, SEARCH_BASES } from '../VehicleSearch.constants';
+import SavedSearchTag from '../../../components/SavedSearchTag/SavedSearchTag';
+import useLikesData from '../../../hooks/useLikesData';
+import { likeTypesMap } from '../../../utils/constants';
 
 const Header = ({
   searchBase,
@@ -28,50 +33,77 @@ const Header = ({
   setCertNumberInput,
   handleSubmitSearch,
 }) => {
+  const {
+    onLikeCreate,
+    data: likesData,
+    isFetchingCreateLike,
+  } = useLikesData({
+    likeTypeName: likeTypesMap.roadPolice.name,
+  });
+
+  const handleSaveButton = () => {
+    onLikeCreate({
+      likeTypeName: likeTypesMap.roadPolice.name,
+      fields: { [searchBase]: certNumberInput },
+    });
+  };
+  const buttonDisabled = !certNumberInput;
+
   return (
     <Stack
       spacing={2}
       sx={{
-        width: "100%",
-        alignItems: "center",
-        pt: "20px",
+        width: '100%',
+        alignItems: 'center',
+        pt: '20px',
         mb: 2,
       }}
     >
       <Box
         component="form"
         sx={{
-          display: "flex",
-          alignItems: "center",
-          "& .MuiTextField-root": { m: 1, width: "24ch" },
+          display: 'flex',
+          alignItems: 'center',
+          '& .MuiTextField-root': { m: 1, width: '24ch' },
         }}
         noValidate
         autoComplete="off"
       >
         <TextField
-          label={PLACEHOLDERS[searchBase] || "Հաշվառման համարանիշ"}
+          label={PLACEHOLDERS[searchBase] || 'Հաշվառման համարանիշ'}
           type="search"
           value={certNumberInput}
           onChange={(e) => setCertNumberInput(e.target.value)}
           autoFocus
         />
         <LoadingButton
-          onClick={() =>
-            handleSubmitSearch(certNumberInput, SEARCH_BASES[searchBase])
-          }
+          onClick={() => handleSubmitSearch(certNumberInput, SEARCH_BASES[searchBase])}
           variant="contained"
           size="large"
           color="primary"
           sx={{ py: 2 }}
           loading={isFetching}
+          disabled={buttonDisabled}
         >
           <SearchIcon />
+        </LoadingButton>
+        <LoadingButton
+          size="large"
+          sx={{ py: 2, ml: 1 }}
+          color="info"
+          title="Պահպանել"
+          variant="contained"
+          disabled={buttonDisabled}
+          onClick={handleSaveButton}
+          loading={isFetchingCreateLike}
+        >
+          <SaveAltIcon />
         </LoadingButton>
       </Box>
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
+          display: 'flex',
+          alignItems: 'center',
         }}
       >
         <ToggleButtonGroup
@@ -109,6 +141,21 @@ const Header = ({
           </Tooltip>
         </ToggleButtonGroup>
       </Box>
+      {likesData?.length > 0 && (
+        <Container>
+          <Stack gap={2} direction="row" justifyContent="center" flexWrap="wrap">
+            {likesData.map((searchProps, index) => {
+              return (
+                <SavedSearchTag
+                  key={index}
+                  {...searchProps.fields}
+                  onTagClick={() => setFilterProps(searchProps)}
+                />
+              );
+            })}
+          </Stack>
+        </Container>
+      )}
     </Stack>
   );
 };

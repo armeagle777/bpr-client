@@ -357,7 +357,7 @@ export const getLogTypes = async () => {
 };
 
 export const searchPersonByImage = async (imageBase64) => {
-  const response = await personsApi.post('/logs/log-types', { imageBase64 });
+  const response = await personsApi.post('/ic/persons/by-image', { imageBase64 });
   return response.data;
 };
 

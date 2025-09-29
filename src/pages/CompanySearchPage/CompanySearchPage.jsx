@@ -6,17 +6,20 @@ import {
   TextField,
   Container,
   Alert as MuiAlert,
-} from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import GrainIcon from "@mui/icons-material/Grain";
+} from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Grain as GrainIcon, Save as SaveAltIcon } from '@mui/icons-material';
 
-import NoResults from "./components/NoResults";
-import CompanyRow from "./components/CompanyRow";
-import { companyTypes } from "./CompanySearchPage.constants";
-import BreadCrumb from "../../components/BreadCrumb/BreadCrumb";
-import DataLoader from "../../components/DataLoader/DataLoader";
-import useCompanySearchData from "../../hooks/useCompanySearchData";
-import CompanyLightDataRow from "./components/CompanyLightDataRow";
+import NoResults from './components/NoResults';
+import CompanyRow from './components/CompanyRow';
+import { companyTypes } from './CompanySearchPage.constants';
+import BreadCrumb from '../../components/BreadCrumb/BreadCrumb';
+import DataLoader from '../../components/DataLoader/DataLoader';
+import useCompanySearchData from '../../hooks/useCompanySearchData';
+import CompanyLightDataRow from './components/CompanyLightDataRow';
+import useLikesData from '../../hooks/useLikesData';
+import { likeTypesMap } from '../../utils/constants';
+import SavedSearchTag from '../../components/SavedSearchTag/SavedSearchTag';
 
 const CompanySearchPage = () => {
   const {
@@ -30,16 +33,26 @@ const CompanySearchPage = () => {
     handleFieldChange,
   } = useCompanySearchData();
 
+  const {
+    onLikeCreate,
+    data: likesData,
+    isFetchingCreateLike,
+  } = useLikesData({
+    likeTypeName: likeTypesMap.stateRegister.name,
+  });
+
+  const handleSaveButton = () => {
+    onLikeCreate({ likeTypeName: likeTypesMap.stateRegister.name, fields: filters });
+  };
+
   const buttonsDisabled = !filters.name && !filters.taxId && !filters.type;
   const typesSelectDisabled = !filters?.name;
-  const breadCrumbsItems = [
-    { label: "Կազմակերպության Որոնում", Icon: GrainIcon },
-  ];
+  const breadCrumbsItems = [{ label: 'Կազմակերպության Որոնում', Icon: GrainIcon }];
   return (
     <Box p={3}>
       <BreadCrumb items={breadCrumbsItems} />
       <Container>
-        <Stack spacing={2} direction="row" justifyContent={"center"} mb={2}>
+        <Stack spacing={2} direction="row" justifyContent={'center'} mb={2}>
           <TextField
             autoFocus
             id="taxId"
@@ -80,18 +93,39 @@ const CompanySearchPage = () => {
           >
             Որոնել
           </LoadingButton>
-          <Button
-            variant="outlined"
-            onClick={handleReset}
-            disabled={buttonsDisabled}
-          >
+          <Button variant="outlined" onClick={handleReset} disabled={buttonsDisabled}>
             Մաքրել
           </Button>
+          <LoadingButton
+            size="large"
+            sx={{ py: 2, ml: 1 }}
+            color="info"
+            title="Պահպանել"
+            variant="contained"
+            disabled={buttonsDisabled}
+            onClick={handleSaveButton}
+            loading={isFetchingCreateLike}
+          >
+            <SaveAltIcon />
+          </LoadingButton>
         </Stack>
+        {likesData?.length > 0 && (
+          <Container>
+            <Stack gap={2} direction="row" justifyContent="center" flexWrap="wrap">
+              {likesData.map((searchProps, index) => {
+                return (
+                  <SavedSearchTag
+                    key={index}
+                    {...searchProps.fields}
+                    onTagClick={() => setFilterProps(searchProps)}
+                  />
+                );
+              })}
+            </Stack>
+          </Container>
+        )}
         {isError && (
-          <MuiAlert severity="error">
-            {error.response?.data?.message || error.message}
-          </MuiAlert>
+          <MuiAlert severity="error">{error.response?.data?.message || error.message}</MuiAlert>
         )}
         {isFetching && <DataLoader />}
         {data && data.length === 0 && !isFetching && !isError && (

@@ -1,11 +1,9 @@
-import Divider from "@mui/material/Divider";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
+import { Stack, Pagination, Divider } from '@mui/material';
 
-import { perPageCount } from "../../utils/constants";
-import SearchAside from "./SearchAside";
-import SearchRow from "./SearchRow";
-import { countForFilter } from "../../utils/configs";
+import { perPageCount } from '../../utils/constants';
+import SearchAside from './SearchAside';
+import SearchRow from './SearchRow';
+import { countForFilter } from '../../utils/configs';
 
 const SearchBody = ({
   persons,
@@ -19,7 +17,7 @@ const SearchBody = ({
   const filtersDisabled = !persons || persons.length < 2;
   const showExtended = totalCount >= countForFilter;
   return (
-    <Stack direction="row" spacing={1} sx={{ justifyContent: "center", pt: 2 }}>
+    <Stack direction="row" spacing={1} sx={{ justifyContent: 'center', pt: 2 }}>
       <SearchAside
         filters={filters}
         setFilters={setFilters}
@@ -29,10 +27,7 @@ const SearchBody = ({
         disabled={filtersDisabled}
       />
       <Divider orientation="vertical" variant="middle" flexItem />
-      <Stack
-        spacing={1}
-        sx={{ width: "80%", px: 2, pb: 4, alignItems: "center" }}
-      >
+      <Stack spacing={1} sx={{ width: '80%', px: 2, pb: 4, alignItems: 'center' }}>
         {persons.map((person, index) => (
           <Stack width="100%" key={person.PNum} spacing={1} direction="column">
             <SearchRow personInfo={person} />

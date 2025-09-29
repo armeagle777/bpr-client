@@ -82,14 +82,6 @@ const Header = () => {
               </Button>
             )}
             {userHasPermission(
-              [permissionsMap.SEARCH_PERSON_BY_IMAGE.uid, permissionsMap.ADMIN.uid],
-              user.permissions
-            ) && (
-              <Button sx={{ my: 2, color: 'white', display: 'block' }}>
-                <Link to="/search-by-image">Որոնում Լուսանկարով</Link>
-              </Button>
-            )}
-            {userHasPermission(
               [permissionsMap.PETREGISTER.uid, permissionsMap.ADMIN.uid],
               user.permissions
             ) && (

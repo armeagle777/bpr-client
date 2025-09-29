@@ -1,12 +1,50 @@
-import { useState, useRef } from 'react';
-import { Box, Button, Slider, Stack, Typography, Container, Paper } from '@mui/material';
 import AvatarEditor from 'react-avatar-editor';
+import { useState, useRef, useCallback } from 'react';
+import {
+  Box,
+  Button,
+  Slider,
+  Stack,
+  Typography,
+  Container,
+  Paper,
+  Alert as MuiAlert,
+} from '@mui/material';
 
-const SearchByImage = () => {
-  const [image, setImage] = useState(initialImage || null);
+import useSearchByImageData from '../../../hooks/useSearchByImageData';
+import DataLoader from '../../../components/DataLoader/DataLoader';
+import PersonLightDataCard from './PersonLightDataCard';
+
+const fakeData = [
+  {
+    psn: '2701850401',
+    firstName: 'Tigran',
+    lastName: 'Yeranyan',
+    middleName: 'Ashot',
+    birthdate: '17/01/1985',
+    imageBase64: '',
+    probability: 0.3,
+    registrationAddress: 'Yerevan nice Address',
+  },
+  {
+    psn: '2702350401',
+    firstName: 'Tigr',
+    lastName: 'Vardyan',
+    middleName: '',
+    birthdate: '20/01/1985',
+    imageBase64: '',
+    probability: 0.9,
+    registrationAddress: 'Yerevan nice Address',
+  },
+];
+
+const SearchByImageTab = () => {
+  const [image, setImage] = useState(null);
+  const [imageBase64, setImageBase64] = useState(null);
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
   const editorRef = useRef();
+  const { data, isError, error, isFetching, isLoading } = useSearchByImageData(imageBase64);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -19,23 +57,19 @@ const SearchByImage = () => {
     const canvas = editorRef.current.getImageScaledToCanvas();
     const base64 = canvas.toDataURL('image/jpeg');
 
-    try {
-      const uploadUrl = 'https://example.com';
-
-      // const response = await axios.post(uploadUrl, {
-      //   file: base64,
-      //   filename: 'edited-image.jpg',
-      // });
-
-      console.log('Image ready for upload:', base64);
-    } catch (error) {
-      console.error('Upload failed:', error);
-    }
+    setImageBase64(base64);
   };
+
+  const handleRemoveImage = useCallback(() => {
+    setImage(null);
+    setScale(1);
+    setImageBase64(null);
+    setRotate(1);
+  }, []);
 
   return (
     <Container maxWidth="md" sx={{ py: 5 }}>
-      <Paper sx={{ p: 3, borderRadius: 3, boxShadow: 3 }}>
+      <Paper sx={{ p: 3, borderRadius: 3, boxShadow: 3, mb: 2 }}>
         <Typography variant="h5" gutterBottom>
           Որոնում Լուսանկարով
         </Typography>
@@ -103,7 +137,7 @@ const SearchByImage = () => {
                 />
               </Box>
 
-              <Button variant="outlined" color="secondary" onClick={() => setImage(null)}>
+              <Button variant="outlined" color="secondary" onClick={handleRemoveImage}>
                 Հեռացնել
               </Button>
             </Stack>
@@ -113,7 +147,7 @@ const SearchByImage = () => {
         {/* Actions */}
         {image && (
           <Box display="flex" justifyContent="flex-end" mt={3} gap={2}>
-            <Button variant="outlined" onClick={() => setImage(null)}>
+            <Button variant="outlined" onClick={handleRemoveImage}>
               Չեղարկել
             </Button>
             <Button variant="contained" onClick={handleSave}>
@@ -122,8 +156,17 @@ const SearchByImage = () => {
           </Box>
         )}
       </Paper>
+
+      <Stack spacing={2}>
+        {isError ? (
+          <MuiAlert severity="error">{error.response?.data?.message || error.message}</MuiAlert>
+        ) : isFetching ? (
+          <DataLoader />
+        ) : null}
+        {!!data?.length && data.map((person) => <PersonLightDataCard data={person} />)}
+      </Stack>
     </Container>
   );
 };
 
-export default SearchByImage;
+export default SearchByImageTab;
