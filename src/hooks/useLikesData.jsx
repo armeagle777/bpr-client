@@ -2,17 +2,19 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button, Form, Popconfirm, message } from 'antd';
 import { Link } from 'react-router-dom';
-import { createLike, getLikes, toggleLike } from '../api/personsApi';
+import { createLike, deleteLike, getLikes, toggleLike } from '../api/personsApi';
 import { formatDate } from '../components/pdf-templates/templates.helpers';
 import { formatFieldsLabel } from '../components/SavedSearchTag/SavedSearchTag.helpers';
+import { useState } from 'react';
 
-const useLikesData = ({ likeTypeName } = {}) => {
+const useLikesData = ({ likeTypeName, pageSize } = {}) => {
+  const [page, setPage] = useState(1);
   const queryClient = useQueryClient();
   const [form] = Form.useForm();
 
-  const { isLoading, isError, error, data } = useQuery(
-    ['likes'],
-    () => getLikes({ likeTypeName }),
+  const { isLoading, isError, error, data, isFetching } = useQuery(
+    ['likes', likeTypeName, pageSize, page],
+    () => getLikes({ likeTypeName, pageSize, page }),
     {
       keepPreviousData: true,
     }
@@ -22,6 +24,16 @@ const useLikesData = ({ likeTypeName } = {}) => {
     onSuccess: (data) => {
       queryClient.invalidateQueries('likes');
       message.success('Հաջողությամբ կատարվել է');
+    },
+    onError: (error, variables, context, mutation) => {
+      message.error('Ինչ-որ բան այնպես չէ');
+    },
+  });
+
+  const deleteLikeMutation = useMutation((id) => deleteLike(id), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries('likes');
+      message.success('Հաջողությամբ Հեռացվել է');
     },
     onError: (error, variables, context, mutation) => {
       message.error('Ինչ-որ բան այնպես չէ');
@@ -41,7 +53,7 @@ const useLikesData = ({ likeTypeName } = {}) => {
     }
   );
 
-  const modifiedLikesData = data?.likes?.map((likeRow) => ({
+  const modifiedLikesData = data?.data?.map((likeRow) => ({
     ...likeRow,
     key: likeRow.id.toString(),
   }));
@@ -51,11 +63,7 @@ const useLikesData = ({ likeTypeName } = {}) => {
   };
   const columns = [
     {
-      title: '#',
-      dataIndex: 'id',
-    },
-    {
-      title: 'ՀԾՀ / ՀՎՀՀ',
+      title: 'Որոնման Պարամետրեր',
       dataIndex: 'fields',
       render: (_, record) => {
         const label = formatFieldsLabel(record.fields);
@@ -64,8 +72,11 @@ const useLikesData = ({ likeTypeName } = {}) => {
       },
     },
     {
-      title: 'Տվյալներ',
-      dataIndex: 'text',
+      title: 'Որոնման Տեսակը',
+      dataIndex: 'LikeType',
+      render: (_, record) => {
+        return record.LikeType.name;
+      },
     },
     {
       title: 'Ստեղծման ա/թ',
@@ -80,7 +91,7 @@ const useLikesData = ({ likeTypeName } = {}) => {
           <Popconfirm
             title="Հեռացնել պահպանված որոնման տողը"
             description="Համոզվա՞ծ եք"
-            onConfirm={() => onLikeToggle({ uid: record.uid })}
+            onConfirm={() => deleteLikeMutation.mutate(record.id)}
             onCancel={cancel}
             okText="Հեռացնել"
             cancelText="Չեղարկել"
@@ -101,16 +112,24 @@ const useLikesData = ({ likeTypeName } = {}) => {
     createLikeMutation.mutate({ fields, likeTypeName });
   };
 
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+
   return {
     onLikeToggle,
     isLoading,
+    isFetching,
     isError,
     error,
     data: modifiedLikesData,
     columns,
+    page,
+    pagination: data?.pagination,
     cancel,
     onLikeCreate,
     isFetchingCreateLike: createLikeMutation.isLoading,
+    handlePageChange,
   };
 };
 

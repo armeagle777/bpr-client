@@ -180,11 +180,19 @@ export const checkEmail = async (email) => {
   return response.data;
 };
 
-export const getLikes = async ({ likeTypeName } = {}) => {
+export const getLikes = async ({ likeTypeName, pageSize, page } = {}) => {
   const params = {};
 
   if (likeTypeName !== undefined) {
     params.likeTypeName = likeTypeName;
+  }
+
+  if (pageSize !== undefined) {
+    params.pageSize = pageSize;
+  }
+
+  if (page !== undefined) {
+    params.page = page;
   }
   const response = await personsApi.get(`/likes`, { params });
   return response.data;
@@ -197,6 +205,11 @@ export const createLike = async (body) => {
 
 export const toggleLike = async ({ uid, text }) => {
   const response = await personsApi.post(`/likes/like/${uid}`, { text });
+  return response.data;
+};
+
+export const deleteLike = async (id) => {
+  const response = await personsApi.delete(`/likes/${id}`);
   return response.data;
 };
 
