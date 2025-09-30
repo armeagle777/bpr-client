@@ -14,29 +14,7 @@ import {
 import useSearchByImageData from '../../../hooks/useSearchByImageData';
 import DataLoader from '../../../components/DataLoader/DataLoader';
 import PersonLightDataCard from './PersonLightDataCard';
-
-const fakeData = [
-  {
-    psn: '2701850401',
-    firstName: 'Tigran',
-    lastName: 'Yeranyan',
-    middleName: 'Ashot',
-    birthdate: '17/01/1985',
-    imageBase64: '',
-    probability: 0.3,
-    registrationAddress: 'Yerevan nice Address',
-  },
-  {
-    psn: '2702350401',
-    firstName: 'Tigr',
-    lastName: 'Vardyan',
-    middleName: '',
-    birthdate: '20/01/1985',
-    imageBase64: '',
-    probability: 0.9,
-    registrationAddress: 'Yerevan nice Address',
-  },
-];
+import { LoadingButton } from '@mui/lab';
 
 const SearchByImageTab = () => {
   const [image, setImage] = useState(null);
@@ -68,7 +46,7 @@ const SearchByImageTab = () => {
   }, []);
 
   return (
-    <Container maxWidth="md" sx={{ py: 5 }}>
+    <Container sx={{ py: 5 }}>
       <Paper sx={{ p: 3, borderRadius: 3, boxShadow: 3, mb: 2 }}>
         <Typography variant="h5" gutterBottom>
           Որոնում Լուսանկարով
@@ -76,39 +54,56 @@ const SearchByImageTab = () => {
 
         <Box display="flex" gap={3} alignItems="center">
           {/* Left side: image */}
-          <Box flex={1} display="flex" flexDirection="column" alignItems="center">
+          <Box flex={1} display="flex" flexDirection="row" alignItems="center">
             {image ? (
               <>
-                <AvatarEditor
-                  ref={editorRef}
-                  image={image}
-                  width={256}
-                  height={256}
-                  border={10}
-                  borderRadius={20}
-                  scale={scale}
-                  rotate={rotate}
-                />
-                {/* Show uploaded image below the editor */}
-                <Box mt={2}>
-                  <Typography variant="subtitle1">Ներբեռնված Նկարը</Typography>
-                  <img
-                    src={image}
-                    alt="Uploaded preview"
-                    style={{
-                      marginTop: 8,
-                      width: 150,
-                      height: 'auto',
-                      borderRadius: 12,
-                    }}
+                <Stack
+                  mt={2}
+                  sx={{ width: '100%' }}
+                  direction="row"
+                  justifyContent={'space-between'}
+                  alignItems={'flex-end'}
+                >
+                  <Box>
+                    <Typography variant="subtitle1">Ներբեռնված Նկարը</Typography>
+                    <img
+                      src={image}
+                      alt="Uploaded preview"
+                      style={{
+                        marginTop: 8,
+                        width: 150,
+                        height: 'auto',
+                        borderRadius: 12,
+                      }}
+                    />
+                  </Box>
+                  <AvatarEditor
+                    ref={editorRef}
+                    image={image}
+                    width={256}
+                    height={256}
+                    border={10}
+                    borderRadius={20}
+                    scale={scale}
+                    rotate={rotate}
                   />
-                </Box>
+                </Stack>
+
+                {/* Show uploaded image below the editor */}
               </>
             ) : (
-              <Button variant="outlined" component="label">
-                Ներբեռնել
-                <input type="file" hidden accept="image/*" onChange={handleFileChange} />
-              </Button>
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <Button variant="outlined" component="label">
+                  Ներբեռնել
+                  <input type="file" hidden accept="image/*" onChange={handleFileChange} />
+                </Button>
+              </Box>
             )}
           </Box>
 
@@ -150,9 +145,9 @@ const SearchByImageTab = () => {
             <Button variant="outlined" onClick={handleRemoveImage}>
               Չեղարկել
             </Button>
-            <Button variant="contained" onClick={handleSave}>
+            <LoadingButton variant="contained" onClick={handleSave} loading={isFetching}>
               Որոնել
-            </Button>
+            </LoadingButton>
           </Box>
         )}
       </Paper>
