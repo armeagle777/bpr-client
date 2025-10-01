@@ -15,6 +15,7 @@ import useSearchByImageData from '../../../hooks/useSearchByImageData';
 import DataLoader from '../../../components/DataLoader/DataLoader';
 import PersonLightDataCard from './PersonLightDataCard';
 import { LoadingButton } from '@mui/lab';
+import FaceDetection from './FaceDetection';
 
 const SearchByImageTab = () => {
   const [image, setImage] = useState(null);
@@ -51,7 +52,7 @@ const SearchByImageTab = () => {
         <Typography variant="h5" gutterBottom>
           Որոնում Լուսանկարով
         </Typography>
-
+        <FaceDetection />
         <Box display="flex" gap={3} alignItems="center">
           {/* Left side: image */}
           <Box flex={1} display="flex" flexDirection="row" alignItems="center">
