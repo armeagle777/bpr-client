@@ -1,14 +1,15 @@
-import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import createStore from "react-auth-kit/createStore";
-import AuthProvider from "react-auth-kit/AuthProvider";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import createStore from 'react-auth-kit/createStore';
+import AuthProvider from 'react-auth-kit/AuthProvider';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import App from "./App";
-import FunctionalErrorBoundary from "./components/ErrorBundary";
+import App from './App';
+import FunctionalErrorBoundary from './components/ErrorBundary';
 
-import "./index.css";
-import { PersonsProvider } from "./components/context/persons";
+import './index.css';
+import { PersonsProvider } from './components/context/persons';
+import ThemeProvider from './components/context/ThemeContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,19 +21,21 @@ const queryClient = new QueryClient({
 });
 
 const store = createStore({
-  authName: "_auth",
-  authType: "localstorage",
+  authName: '_auth',
+  authType: 'localstorage',
   refresh: true,
   cookieDomain: window.location.hostname,
 });
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthProvider store={store}>
     <QueryClientProvider client={queryClient}>
       <PersonsProvider>
         <BrowserRouter>
           <FunctionalErrorBoundary>
-            <App />
+            <ThemeProvider>
+              <App />
+            </ThemeProvider>
           </FunctionalErrorBoundary>
         </BrowserRouter>
       </PersonsProvider>

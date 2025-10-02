@@ -1,24 +1,39 @@
 import { useState } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import { Divider, ListItemIcon } from '@mui/material';
-import { PersonAdd, Save, Logout, Group, History as HistoryIcon } from '@mui/icons-material';
+
 import { Link, useNavigate } from 'react-router-dom';
+import {
+  Box,
+  Menu,
+  AppBar,
+  Avatar,
+  Button,
+  Divider,
+  Toolbar,
+  Tooltip,
+  MenuItem,
+  Container,
+  IconButton,
+  Typography,
+  ListItemIcon,
+} from '@mui/material';
+import {
+  Save,
+  Group,
+  Logout,
+  PersonAdd,
+  Brightness4,
+  Brightness7,
+  History as HistoryIcon,
+} from '@mui/icons-material';
+
 import useAuthData from '../../hooks/useAuthData';
+import { permissionsMap } from '../../utils/constants';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { userHasPermission } from '../../utils/helperFunctions';
-import { permissionsMap } from '../../utils/constants';
+import { useThemeContext } from '../../components/context/ThemeContext';
 
 const Header = () => {
+  const { mode, toggleTheme } = useThemeContext();
   const [anchorElUser, setAnchorElUser] = useState(null);
   const open = Boolean(anchorElUser);
 
@@ -130,7 +145,9 @@ const Header = () => {
               </Button>
             )}
           </Box>
-
+          <IconButton onClick={toggleTheme}>
+            {mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+          </IconButton>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title={`${user.firstName || ''} ${user.lastName || ''}`}>
               <IconButton
