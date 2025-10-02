@@ -1,21 +1,20 @@
-import AvatarEditor from 'react-avatar-editor';
 import { useState, useRef, useCallback } from 'react';
+import { LoadingButton } from '@mui/lab';
+import AvatarEditor from 'react-avatar-editor';
 import {
   Box,
-  Button,
-  Slider,
-  Stack,
-  Typography,
-  Container,
   Paper,
+  Stack,
+  Slider,
+  Button,
+  Container,
+  Typography,
   Alert as MuiAlert,
 } from '@mui/material';
 
-import useSearchByImageData from '../../../hooks/useSearchByImageData';
-import DataLoader from '../../../components/DataLoader/DataLoader';
 import PersonLightDataCard from './PersonLightDataCard';
-import { LoadingButton } from '@mui/lab';
-import FaceDetection from './FaceDetection';
+import DataLoader from '../../../components/DataLoader/DataLoader';
+import useSearchByImageData from '../../../hooks/useSearchByImageData';
 
 const SearchByImageTab = () => {
   const [image, setImage] = useState(null);
@@ -52,7 +51,6 @@ const SearchByImageTab = () => {
         <Typography variant="h5" gutterBottom>
           Որոնում Լուսանկարով
         </Typography>
-        <FaceDetection />
         <Box display="flex" gap={3} alignItems="center">
           {/* Left side: image */}
           <Box flex={1} display="flex" flexDirection="row" alignItems="center">
