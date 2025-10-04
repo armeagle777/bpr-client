@@ -1,46 +1,45 @@
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import {
+  ArrowBackIos as ArrowBackIosIcon,
+  PictureAsPdf as PictureAsPdfIcon,
+} from '@mui/icons-material';
+import { Box, Button, Chip, Container, Grid, Stack, Tab, Tabs } from '@mui/material';
 
-import { Box, Button, Chip, Container, Grid, Stack } from "@mui/material";
-import Tab from "@mui/material/Tab";
-import Tabs from "@mui/material/Tabs";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import Family from '../family/Family';
+import BPR from '../pdf-templates/BPR';
+import Kadastr from '../Kadastr/Kadastr';
+import TabPanel from '../tabPanel/TabPanel';
+import Finances from '../finances/Finances';
+import Documents from '../documents/Documents';
+import PersonalInfoRow from './PersonalInfoRow';
+import PhotoSlider from '../photoSlider/PhotoSlider';
+import SpeedDialButton from '../speedDial/SpeedDial';
+import BusinessTab from '../businessTab/BusinessTab';
+import PDFGenerator from '../PDFGenerator/PDFGenerator';
 
-import Family from "../family/Family";
-import BPR from "../pdf-templates/BPR";
-import Kadastr from "../Kadastr/Kadastr";
-import TabPanel from "../tabPanel/TabPanel";
-import Finances from "../finances/Finances";
-import Documents from "../documents/Documents";
-import PersonalInfoRow from "./PersonalInfoRow";
-import PhotoSlider from "../photoSlider/PhotoSlider";
-import SpeedDialButton from "../speedDial/SpeedDial";
-import BusinessTab from "../businessTab/BusinessTab";
-import PDFGenerator from "../PDFGenerator/PDFGenerator";
-
-import useLikesData from "../../hooks/useLikesData";
-import { permissionsMap } from "../../utils/constants";
-import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import useLikesData from '../../hooks/useLikesData';
+import { permissionsMap } from '../../utils/constants';
 import {
   filterImageSrcs,
   formatCountryName,
   formatPersonData,
   isPersonJpk,
   userHasPermission,
-} from "../../utils/helperFunctions";
-import WpTab from "../WpTab/WpTab";
-import PoliceTab from "../policeTab/PoliceTab";
-import WeaponsTab from "../WeaponsTab/WeaponsTab";
-import RoadPoliceTab from "../RoadPoliceTab/RoadPoliceTab";
-import MojCesDebtorTab from "../MojCesDebtorTab/MojCesDebtorTab";
-import TaxEmployersTab from "../TaxEmployersTab/TaxEmployersTab";
-import PropertyTaxesTab from "../PropertyTaxesTab/PropertyTaxesTab";
-import SocialPaymentsTab from "../SocialPaymentsTab/SocialPaymentsTab";
-import RoadPoliceTransactionsTab from "../RoadPoliceTransactionsTab/RoadPoliceTransactionsTab";
-import RoadPoliceViolationsTab from "../RoadPoliceViolationsTab/RoadPoliceViolationsTab";
-import MojCivilCasesTab from "../MojCivilCasesTab/MojCivilCasesTab";
-import MojCivilBeneficiaryTab from "../MojCivilBeneficiaryTab/MojCivilBeneficiaryTab";
+} from '../../utils/helperFunctions';
+import WpTab from '../WpTab/WpTab';
+import PoliceTab from '../policeTab/PoliceTab';
+import WeaponsTab from '../WeaponsTab/WeaponsTab';
+import RoadPoliceTab from '../RoadPoliceTab/RoadPoliceTab';
+import MojCesDebtorTab from '../MojCesDebtorTab/MojCesDebtorTab';
+import TaxEmployersTab from '../TaxEmployersTab/TaxEmployersTab';
+import PropertyTaxesTab from '../PropertyTaxesTab/PropertyTaxesTab';
+import MojCivilCasesTab from '../MojCivilCasesTab/MojCivilCasesTab';
+import SocialPaymentsTab from '../SocialPaymentsTab/SocialPaymentsTab';
+import MojCivilBeneficiaryTab from '../MojCivilBeneficiaryTab/MojCivilBeneficiaryTab';
+import RoadPoliceViolationsTab from '../RoadPoliceViolationsTab/RoadPoliceViolationsTab';
+import RoadPoliceTransactionsTab from '../RoadPoliceTransactionsTab/RoadPoliceTransactionsTab';
 
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
@@ -83,7 +82,7 @@ const PersonInfoPage = ({ personInfo }) => {
     addresses,
     documents,
   } = formatPersonData(personInfo);
-  const sanitizedPNum = PNum?.replace(/\//g, "*");
+  const sanitizedPNum = PNum?.replace(/\//g, '*');
 
   const user = useAuthUser();
 
@@ -152,7 +151,7 @@ const PersonInfoPage = ({ personInfo }) => {
               <Stack direction="row" sx={{ mt: 2 }}>
                 <Box
                   sx={{
-                    width: "20%",
+                    width: '20%',
                     minWidth: 200,
                     maxWidth: 300,
                     padding: 2,
@@ -160,110 +159,65 @@ const PersonInfoPage = ({ personInfo }) => {
                 >
                   <PhotoSlider images={images} />
                 </Box>
-                <Stack direction="row" sx={{ width: "70%", padding: 2 }}>
-                  <Stack
-                    spacing={2}
-                    justifyContent="left"
-                    sx={{ width: "50%" }}
-                  >
+                <Stack direction="row" sx={{ width: '70%', padding: 2 }}>
+                  <Stack spacing={2} justifyContent="left" sx={{ width: '50%' }}>
                     <PersonalInfoRow
                       width={35}
                       label="ԱՆՈՒՆ"
-                      text={`${firstName} | ${
-                        firstNameEng ? firstNameEng : ""
-                      }`}
+                      text={`${firstName} | ${firstNameEng ? firstNameEng : ''}`}
                     />
                     <PersonalInfoRow
                       width={35}
                       label="ԱԶԳԱՆՈՒՆ"
-                      text={`${lastName} | ${lastNameEng ? lastNameEng : ""}`}
+                      text={`${lastName} | ${lastNameEng ? lastNameEng : ''}`}
                     />
                     <PersonalInfoRow
                       width={35}
                       label="ՀԱՅՐԱՆՈՒՆ"
-                      text={`${middleName ? middleName : ""} | ${
-                        middleNameEng ? middleNameEng : ""
+                      text={`${middleName ? middleName : ''} | ${
+                        middleNameEng ? middleNameEng : ''
                       }`}
                     />
-                    <PersonalInfoRow
-                      width={35}
-                      label="ԾՆՆԴՅԱՆ ա/թ"
-                      text={birthDate}
-                    />
+                    <PersonalInfoRow width={35} label="ԾՆՆԴՅԱՆ ա/թ" text={birthDate} />
                     <PersonalInfoRow
                       width={35}
                       label="ՀԾՀ"
-                      text={sanitizedPNum || Certificate_Number || ""}
+                      text={sanitizedPNum || Certificate_Number || ''}
                     />
-                    <PersonalInfoRow
-                      width={35}
-                      label="ԱԶԳՈՒԹՅՈՒՆ"
-                      text={NationalityName}
-                    />
+                    <PersonalInfoRow width={35} label="ԱԶԳՈՒԹՅՈՒՆ" text={NationalityName} />
                     <PersonalInfoRow width={35} label="ՍԵՌԸ" text={gender} />
-                    {IsDead && (
-                      <PersonalInfoRow
-                        width={40}
-                        label="Մահացել է"
-                        text={DeathDate}
-                      />
-                    )}
+                    {IsDead && <PersonalInfoRow width={40} label="Մահացել է" text={DeathDate} />}
                   </Stack>
-                  <Stack
-                    spacing={2}
-                    justifyContent="left"
-                    sx={{ width: "50%" }}
-                  >
+                  <Stack spacing={2} justifyContent="left" sx={{ width: '50%' }}>
                     <PersonalInfoRow
                       width={40}
                       label="ԵՐԿԻՐ"
                       text={
                         Foreign_Country
                           ? formatCountryName(Foreign_Country.CountryName)
-                          : "ՀԱՅԱՍՏԱՆ"
+                          : 'ՀԱՅԱՍՏԱՆ'
                       }
                     />
-                    <PersonalInfoRow
-                      width={40}
-                      label="ՄԱՐԶ"
-                      text={Region || Foreign_Region}
-                    />
+                    <PersonalInfoRow width={40} label="ՄԱՐԶ" text={Region || Foreign_Region} />
                     <PersonalInfoRow
                       width={40}
                       label="ՀԱՄԱՅՆՔ"
-                      text={
-                        Community
-                          ? `${Community}/${Residence}`
-                          : Foreign_Community
-                      }
+                      text={Community ? `${Community}/${Residence}` : Foreign_Community}
                     />
-                    <PersonalInfoRow
-                      width={40}
-                      label="ՓՈՂՈՑ"
-                      text={Street || Foreign_Address}
-                    />
+                    <PersonalInfoRow width={40} label="ՓՈՂՈՑ" text={Street || Foreign_Address} />
                     <PersonalInfoRow
                       width={40}
                       label="ՏՈՒՆ"
                       text={
-                        Building &&
-                        `${Building_Type} ${Building}, ${
-                          Apartment ? Apartment : ""
-                        }`
+                        Building && `${Building_Type} ${Building}, ${Apartment ? Apartment : ''}`
                       }
                     />
                     <PersonalInfoRow
                       width={40}
                       label="ԾՆՆԴԱՎԱՅՐ"
-                      text={`${birthCountry}/${
-                        birthRegion ? ` \ ${birthRegion}` : ""
-                      }`}
+                      text={`${birthCountry}/${birthRegion ? ` \ ${birthRegion}` : ''}`}
                     />
-                    <PersonalInfoRow
-                      width={40}
-                      label="ՔԱՂԱՔԱՑԻՈՒԹՅՈՒՆ"
-                      text={allCitizenships}
-                    />
+                    <PersonalInfoRow width={40} label="ՔԱՂԱՔԱՑԻՈՒԹՅՈՒՆ" text={allCitizenships} />
                     {Citizenship_StoppedDate && (
                       <PersonalInfoRow
                         width={40}
@@ -276,7 +230,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 {isJpk && (
                   <Box
                     sx={{
-                      width: "5%",
+                      width: '5%',
                     }}
                   >
                     <Chip size="medium" color="warning" label="ԺՊԿ" />
@@ -378,10 +332,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 </TabPanel>
               )}
               {userHasPermission(
-                [
-                  permissionsMap.ROADPOLICE_TRANSACTIONS.uid,
-                  permissionsMap.ADMIN.uid,
-                ],
+                [permissionsMap.ROADPOLICE_TRANSACTIONS.uid, permissionsMap.ADMIN.uid],
                 user.permissions
               ) && (
                 <TabPanel value={value} index={index++}>
@@ -389,10 +340,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 </TabPanel>
               )}
               {userHasPermission(
-                [
-                  permissionsMap.ROADPOLICE_VIOLATIONS.uid,
-                  permissionsMap.ADMIN.uid,
-                ],
+                [permissionsMap.ROADPOLICE_VIOLATIONS.uid, permissionsMap.ADMIN.uid],
                 user.permissions
               ) && (
                 <TabPanel value={value} index={index++}>
@@ -400,10 +348,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 </TabPanel>
               )}
               {userHasPermission(
-                [
-                  permissionsMap.MTA_PROPERTY_TAXES.uid,
-                  permissionsMap.ADMIN.uid,
-                ],
+                [permissionsMap.MTA_PROPERTY_TAXES.uid, permissionsMap.ADMIN.uid],
                 user.permissions
               ) && (
                 <TabPanel value={value} index={index++}>
@@ -442,12 +387,12 @@ const PersonInfoPage = ({ personInfo }) => {
             </Box>
 
             <SpeedDialButton
-              onLikeToggle={onLikeToggle}
               uid={PNum}
-              text={likeToggleText}
-              fileName={`bpr_${firstName}_${lastName}.pdf`}
               PDFTemplate={BPR}
               data={personInfo}
+              text={likeToggleText}
+              onLikeToggle={onLikeToggle}
+              fileName={`bpr_${firstName}_${lastName}.pdf`}
               userFullName={`${user.firstName} ${user.lastName}`}
             />
           </Container>
@@ -455,10 +400,10 @@ const PersonInfoPage = ({ personInfo }) => {
         <Grid item xs={2}>
           <Box
             sx={{
-              position: "sticky",
+              position: 'sticky',
               top: 120,
               p: 2,
-              height: "100vh",
+              height: '100vh',
             }}
           >
             <Tabs
@@ -467,11 +412,11 @@ const PersonInfoPage = ({ personInfo }) => {
               aria-label="personal-info-tabs"
               orientation="vertical"
               sx={{
-                borderColor: "divider",
-                "& .MuiTabs-indicator": {
+                borderColor: 'divider',
+                '& .MuiTabs-indicator': {
                   left: 0,
-                  width: "4px",
-                  backgroundColor: "#1976d2",
+                  width: '4px',
+                  backgroundColor: '#1976d2',
                 },
               }}
               TabIndicatorProps={{ style: { left: 0 } }}
@@ -492,9 +437,7 @@ const PersonInfoPage = ({ personInfo }) => {
                   permissionsMap.TAX_PERSON_ALL_INCOMES.uid,
                 ],
                 user.permissions
-              ) && (
-                <Tab label="Եկամուտների տվյալներ" aria-label="all-incomes" />
-              )}
+              ) && <Tab label="Եկամուտների տվյալներ" aria-label="all-incomes" />}
               {userHasPermission(
                 [
                   permissionsMap.TAX.uid,
@@ -502,9 +445,7 @@ const PersonInfoPage = ({ personInfo }) => {
                   permissionsMap.TAX_PERSON_ALL_EMPLOYERS.uid,
                 ],
                 user.permissions
-              ) && (
-                <Tab label="Աշխատատեղերի տվյալներ" aria-label="all-employers" />
-              )}
+              ) && <Tab label="Աշխատատեղերի տվյալներ" aria-label="all-employers" />}
               {userHasPermission(
                 [permissionsMap.ZAQS.uid, permissionsMap.ADMIN.uid],
                 user.permissions
@@ -524,9 +465,7 @@ const PersonInfoPage = ({ personInfo }) => {
               {userHasPermission(
                 [permissionsMap.WP.uid, permissionsMap.ADMIN.uid],
                 user.permissions
-              ) && (
-                <Tab label="Աշխատանքի թույլտվության տվյալներ" aria-label="wp" />
-              )}
+              ) && <Tab label="Աշխատանքի թույլտվության տվյալներ" aria-label="wp" />}
               {userHasPermission(
                 [permissionsMap.ROADPOLICE.uid, permissionsMap.ADMIN.uid],
                 user.permissions
@@ -536,33 +475,17 @@ const PersonInfoPage = ({ personInfo }) => {
                 user.permissions
               ) && <Tab label="Զենքերի տվյալներ" aria-label="weapons" />}
               {userHasPermission(
-                [
-                  permissionsMap.ROADPOLICE_TRANSACTIONS.uid,
-                  permissionsMap.ADMIN.uid,
-                ],
+                [permissionsMap.ROADPOLICE_TRANSACTIONS.uid, permissionsMap.ADMIN.uid],
                 user.permissions
-              ) && (
-                <Tab label="Տ/մ հաշվառումներ" aria-label="rp-transactions" />
-              )}
+              ) && <Tab label="Տ/մ հաշվառումներ" aria-label="rp-transactions" />}
               {userHasPermission(
-                [
-                  permissionsMap.ROADPOLICE_VIOLATIONS.uid,
-                  permissionsMap.ADMIN.uid,
-                ],
+                [permissionsMap.ROADPOLICE_VIOLATIONS.uid, permissionsMap.ADMIN.uid],
                 user.permissions
               ) && <Tab label="ՃՈ Տուգանքներ" aria-label="rp-violations" />}
               {userHasPermission(
-                [
-                  permissionsMap.MTA_PROPERTY_TAXES.uid,
-                  permissionsMap.ADMIN.uid,
-                ],
+                [permissionsMap.MTA_PROPERTY_TAXES.uid, permissionsMap.ADMIN.uid],
                 user.permissions
-              ) && (
-                <Tab
-                  label="Գույքահարկ"
-                  aria-label="territorial-ministry-property-taxes"
-                />
-              )}
+              ) && <Tab label="Գույքահարկ" aria-label="territorial-ministry-property-taxes" />}
               {userHasPermission(
                 [permissionsMap.MOJ_CES.uid, permissionsMap.ADMIN.uid],
                 user.permissions
@@ -575,11 +498,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 [permissionsMap.MOJ_CIVIL.uid, permissionsMap.ADMIN.uid],
                 user.permissions
               ) && [
-                <Tab
-                  label="Քաղաքացիական գործեր"
-                  aria-label="civil-cases"
-                  key="civil-cases"
-                />,
+                <Tab label="Քաղաքացիական գործեր" aria-label="civil-cases" key="civil-cases" />,
                 <Tab
                   label="Շահառուի տվյալներ"
                   aria-label="civil-beneficiary"

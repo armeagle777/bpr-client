@@ -5,6 +5,7 @@ import SearchHeader from '../../../components/search/SearchHeader';
 import PersonNotFound from '../../../components/notFound/PersonNotFound';
 import SavedSearchTag from '../../../components/SavedSearchTag/SavedSearchTag';
 import SearchPageSkileton from '../../../components/searchPageSkileton/SearchPageSkileton';
+import { initialFilterProps } from '../SearchPage.constants';
 
 const BprSearchTab = ({
   error,
@@ -18,6 +19,7 @@ const BprSearchTab = ({
   currentPage,
   filterProps,
   filterCounts,
+  handleTagClick,
   setFilterProps,
   setSearchParams,
   isInitialLoading,
@@ -27,6 +29,7 @@ const BprSearchTab = ({
   if (isError) {
     return <MuiAlert severity="error">{error.response?.data?.message || error.message}</MuiAlert>;
   }
+
   return (
     <>
       <Stack
@@ -38,9 +41,9 @@ const BprSearchTab = ({
       >
         <SearchHeader
           changePage={changePage}
-          setSearchParams={setSearchParams}
           filterProps={filterProps}
           setFilterProps={setFilterProps}
+          setSearchParams={setSearchParams}
           onClearButton={handleClearButton}
           onSaveButtonClick={handleSaveButton}
         />
@@ -48,13 +51,15 @@ const BprSearchTab = ({
       {likesData?.length > 0 && (
         <Container>
           <Stack gap={2} direction="row" justifyContent="center" flexWrap="wrap">
-            {likesData.map((searchProps, index) => (
-              <SavedSearchTag
-                key={index}
-                {...searchProps.fields}
-                onTagClick={() => setFilterProps(searchProps)}
-              />
-            ))}
+            {likesData.map((searchProps, index) => {
+              return (
+                <SavedSearchTag
+                  key={index}
+                  {...searchProps.fields}
+                  onTagClick={() => handleTagClick(searchProps.fields)}
+                />
+              );
+            })}
           </Stack>
         </Container>
       )}

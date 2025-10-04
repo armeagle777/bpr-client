@@ -11,20 +11,12 @@ import SearchByImageTab from './components/SearchByImageTab';
 import { usePersons } from '../../components/context/persons';
 import { userHasPermission } from '../../utils/helperFunctions';
 import { likeTypesMap, permissionsMap } from '../../utils/constants';
+import { initialFilterProps } from './SearchPage.constants';
 
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
-};
-
-const initialFilterProps = {
-  ssn: '',
-  firstName: '',
-  lastName: '',
-  birthDate: '',
-  patronomicName: '',
-  documentNumber: '',
 };
 
 const SearchPage = () => {
@@ -72,6 +64,11 @@ const SearchPage = () => {
     setSelectedTab(newValue);
   };
 
+  const handleTagClick = (savedProps) => {
+    if (!savedProps) return;
+    setFilterProps({ ...initialFilterProps, ...savedProps });
+  };
+
   return (
     <>
       <Box sx={{ paddingTop: 2, paddingLeft: 2 }}>
@@ -96,6 +93,7 @@ const SearchPage = () => {
           currentPage={currentPage}
           filterProps={filterProps}
           filterCounts={filterCounts}
+          handleTagClick={handleTagClick}
           setFilterProps={setFilterProps}
           setSearchParams={setSearchParams}
           isInitialLoading={isInitialLoading}

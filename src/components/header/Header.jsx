@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -21,14 +20,15 @@ import {
   Group,
   Logout,
   PersonAdd,
-  Brightness4,
-  Brightness7,
   History as HistoryIcon,
+  Bedtime as BedtimeIcon,
+  WbSunny as WbSunnyIcon,
 } from '@mui/icons-material';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
+import { THEME_MODS } from '../../utils/constants';
 import useAuthData from '../../hooks/useAuthData';
 import { permissionsMap } from '../../utils/constants';
-import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { userHasPermission } from '../../utils/helperFunctions';
 import { useThemeContext } from '../../components/context/ThemeContext';
 
@@ -146,7 +146,7 @@ const Header = () => {
             )}
           </Box>
           <IconButton onClick={toggleTheme}>
-            {mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+            {mode === THEME_MODS.DARK ? <WbSunnyIcon /> : <BedtimeIcon />}
           </IconButton>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title={`${user.firstName || ''} ${user.lastName || ''}`}>

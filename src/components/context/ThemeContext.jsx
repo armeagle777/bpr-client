@@ -2,9 +2,11 @@ import { createContext, useState, useContext, useEffect } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 
+import { THEME_MODS } from '../../utils/constants';
+
 const ThemeContext = createContext({
   toggleTheme: () => {},
-  mode: 'light',
+  mode: THEME_MODS.LIGHT,
 });
 
 export const useThemeContext = () => useContext(ThemeContext);
@@ -12,7 +14,7 @@ export const useThemeContext = () => useContext(ThemeContext);
 const ThemeProvider = ({ children }) => {
   const [mode, setMode] = useState(() => {
     const savedMode = localStorage.getItem('themeMode');
-    return savedMode === 'dark' ? 'dark' : 'light';
+    return savedMode === THEME_MODS.DARK ? THEME_MODS.DARK : THEME_MODS.LIGHT;
   });
 
   const theme = createTheme({
@@ -21,8 +23,8 @@ const ThemeProvider = ({ children }) => {
 
   const toggleTheme = () => {
     setMode((currentMode) => {
-      const nextMode = currentMode === 'dark' ? 'light' : 'dark';
-      localStorage.setItem('themeMode', nextMode); // save new mode
+      const nextMode = currentMode === THEME_MODS.DARK ? THEME_MODS.LIGHT : THEME_MODS.DARK;
+      localStorage.setItem('themeMode', nextMode);
       return nextMode;
     });
   };

@@ -348,3 +348,8 @@ export const DOCUMENT_STATUSES = {
   VALID: 'VALID',
   INVALID: 'INVALID',
 };
+
+export const THEME_MODS = {
+  DARK: 'dark',
+  LIGHT: 'light',
+};
