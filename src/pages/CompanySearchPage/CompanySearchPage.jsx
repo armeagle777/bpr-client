@@ -27,6 +27,7 @@ const CompanySearchPage = () => {
     error,
     isError,
     filters,
+    setFilters,
     isFetching,
     handleReset,
     handleSearch,
@@ -43,6 +44,23 @@ const CompanySearchPage = () => {
 
   const handleSaveButton = () => {
     onLikeCreate({ likeTypeName: likeTypesMap.stateRegister.name, fields: filters });
+  };
+
+  const handleSavedTagClick = (savedProps) => {
+    if (
+      !savedProps ||
+      typeof savedProps !== 'object' ||
+      Array.isArray(savedProps) ||
+      Object.keys(savedProps).length === 0
+    ) {
+      return;
+    }
+
+    setFilters(
+      Object.fromEntries(
+        Object.keys(filters).map((key) => [key, key in savedProps ? savedProps[key] : ''])
+      )
+    );
   };
 
   const buttonsDisabled = !filters.name && !filters.taxId && !filters.type;
@@ -110,14 +128,14 @@ const CompanySearchPage = () => {
           </LoadingButton>
         </Stack>
         {likesData?.length > 0 && (
-          <Container>
+          <Container sx={{ mb: 4 }}>
             <Stack gap={2} direction="row" justifyContent="center" flexWrap="wrap">
               {likesData.map((searchProps, index) => {
                 return (
                   <SavedSearchTag
                     key={index}
                     {...searchProps.fields}
-                    onTagClick={() => setFilterProps(searchProps)}
+                    onTagClick={() => handleSavedTagClick(searchProps?.fields)}
                   />
                 );
               })}

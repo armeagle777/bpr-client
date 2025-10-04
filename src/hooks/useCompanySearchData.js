@@ -1,20 +1,20 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 
-import { filterCompanies } from "../api/personsApi";
+import { filterCompanies } from '../api/personsApi';
 
 const useCompanySearchData = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchEnabled, setSearchEnabled] = useState(false);
 
   const [filters, setFilters] = useState({
-    name: searchParams.get("name") || "",
-    taxId: searchParams.get("taxId") || "",
-    type: searchParams.get("type") || "",
+    name: searchParams.get('name') || '',
+    taxId: searchParams.get('taxId') || '',
+    type: searchParams.get('type') || '',
   });
   const { isFetching, isError, error, data } = useQuery(
-    ["search-companies", searchParams],
+    ['search-companies', searchParams],
     () => filterCompanies(filters),
     {
       keepPreviousData: false,
@@ -30,7 +30,7 @@ const useCompanySearchData = () => {
 
     const changedValues = {
       [name]: value,
-      ...(name === "name" && value === "" ? { type: "" } : {}),
+      ...(name === 'name' && value === '' ? { type: '' } : {}),
     };
 
     setFilters({ ...filters, ...changedValues });
@@ -48,7 +48,7 @@ const useCompanySearchData = () => {
   };
 
   const handleReset = () => {
-    setFilters({ name: "", taxId: "", type: "" });
+    setFilters({ name: '', taxId: '', type: '' });
     setSearchParams({});
     setSearchEnabled(false);
   };
@@ -58,6 +58,7 @@ const useCompanySearchData = () => {
     error,
     isError,
     filters,
+    setFilters,
     isFetching,
     handleReset,
     handleSearch,

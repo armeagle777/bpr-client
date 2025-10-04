@@ -47,6 +47,20 @@ const Header = ({
       fields: { [searchBase]: certNumberInput },
     });
   };
+
+  const handleSavedTagClick = (searchProps) => {
+    if (
+      !searchProps ||
+      typeof searchProps !== 'object' ||
+      Array.isArray(searchProps) ||
+      Object.keys(searchProps).length === 0
+    ) {
+      return;
+    }
+    const savedItem = Object.entries(searchProps)?.[0];
+    setCertNumberInput(savedItem[1]);
+    handleBaseChange(null, savedItem[0]);
+  };
   const buttonDisabled = !certNumberInput;
 
   return (
@@ -149,7 +163,7 @@ const Header = ({
                 <SavedSearchTag
                   key={index}
                   {...searchProps.fields}
-                  onTagClick={() => setFilterProps(searchProps)}
+                  onTagClick={() => handleSavedTagClick(searchProps?.fields)}
                 />
               );
             })}
