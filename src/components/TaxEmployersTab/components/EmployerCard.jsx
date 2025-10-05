@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 import {
   Box,
   Card,
@@ -13,7 +13,8 @@ import {
   CardContent,
   ListItemText,
   ListItemIcon,
-} from "@mui/material";
+  useTheme,
+} from '@mui/material';
 import {
   Work as WorkIcon,
   LocationOn as LocationOnIcon,
@@ -21,11 +22,13 @@ import {
   ExpandLess as ExpandLessIcon,
   AccountBalance as AccountBalanceIcon,
   MonetizationOn as MonetizationOnIcon,
-} from "@mui/icons-material";
-import { isNumeric } from "../TaxEmployersTab.helpers";
+} from '@mui/icons-material';
+import { isNumeric } from '../TaxEmployersTab.helpers';
+import { formatAmount } from '../../../utils/helperFunctions';
 
 const EmployerCard = ({ employer }) => {
   const [openPositions, setOpenPositions] = useState(false);
+  const theme = useTheme();
 
   return (
     <Grid item sm={12}>
@@ -34,20 +37,15 @@ const EmployerCard = ({ employer }) => {
           borderRadius: 4,
           boxShadow: 6,
           p: 2,
-          transition: "0.3s",
-          "&:hover": { boxShadow: 10 },
-          bgcolor: "background.paper",
-          width: "100%",
+          transition: '0.3s',
+          '&:hover': { boxShadow: 10 },
+          bgcolor: 'background.paper',
+          width: '100%',
         }}
       >
         <CardContent>
           {/* Header */}
-          <Typography
-            variant="h6"
-            color="primary"
-            fontWeight="bold"
-            gutterBottom
-          >
+          <Typography variant="h6" color="primary" fontWeight="bold" gutterBottom>
             {employer.TP_NAME}
           </Typography>
 
@@ -62,7 +60,7 @@ const EmployerCard = ({ employer }) => {
             <Grid item xs={12} sm={6}>
               <Box display="flex" alignItems="center" gap={1}>
                 <LocationOnIcon color="action" fontSize="small" />
-                <Typography>{employer.Address || "—"}</Typography>
+                <Typography>{employer.Address || '—'}</Typography>
               </Box>
             </Grid>
           </Grid>
@@ -73,12 +71,12 @@ const EmployerCard = ({ employer }) => {
               <Grid item xs={12} sm={4}>
                 <Chip
                   icon={<MonetizationOnIcon />}
-                  label={`Աշխատավարձ: ${employer.Salary?.sum || "—"} ${
-                    employer.Salary?.currency || ""
-                  }`}
+                  label={`Աշխատավարձ: ${
+                    employer.Salary?.sum ? formatAmount(employer.Salary.sum) : '—'
+                  } ${employer.Salary?.currency || ''}`}
                   color="success"
                   variant="outlined"
-                  sx={{ width: "100%" }}
+                  sx={{ width: '100%' }}
                 />
               </Grid>
             )}
@@ -86,12 +84,12 @@ const EmployerCard = ({ employer }) => {
               <Grid item xs={12} sm={4}>
                 <Chip
                   icon={<AccountBalanceIcon />}
-                  label={`Զուտ եկամուտ: ${employer.Net_income?.sum || "—"} ${
-                    employer.Net_income?.currency || ""
-                  }`}
+                  label={`Զուտ եկամուտ: ${
+                    employer.Net_income?.sum ? formatAmount(employer.Net_income.sum) : '—'
+                  } ${employer.Net_income?.currency || ''}`}
                   color="info"
                   variant="outlined"
-                  sx={{ width: "100%" }}
+                  sx={{ width: '100%' }}
                 />
               </Grid>
             )}
@@ -99,12 +97,10 @@ const EmployerCard = ({ employer }) => {
               <Grid item xs={12} sm={4}>
                 <Chip
                   icon={<WorkIcon />}
-                  label={`Պայմանագրային եկամուտ: ${
-                    employer.Contract_revenue?.sum || "—"
-                  }`}
+                  label={`Պայմանագրային եկամուտ: ${employer.Contract_revenue?.sum || '—'}`}
                   color="warning"
                   variant="outlined"
-                  sx={{ width: "100%" }}
+                  sx={{ width: '100%' }}
                 />
               </Grid>
             )}
@@ -113,20 +109,12 @@ const EmployerCard = ({ employer }) => {
           <Divider sx={{ my: 2 }} />
 
           {/* Positions Timeline Style */}
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            mb={1}
-          >
+          <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
             <Typography variant="subtitle1" fontWeight="bold">
               Պաշտոններ
             </Typography>
             {employer.PositionInfo?.length > 0 && (
-              <IconButton
-                onClick={() => setOpenPositions(!openPositions)}
-                size="small"
-              >
+              <IconButton onClick={() => setOpenPositions(!openPositions)} size="small">
                 {openPositions ? <ExpandLessIcon /> : <ExpandMoreIcon />}
               </IconButton>
             )}
@@ -140,7 +128,10 @@ const EmployerCard = ({ employer }) => {
                   sx={{
                     mb: 1,
                     borderRadius: 2,
-                    bgcolor: "grey.50",
+                    bgcolor:
+                      theme.palette.mode === 'dark'
+                        ? theme.palette.grey[700]
+                        : theme.palette.grey[100],
                     boxShadow: 1,
                   }}
                 >
@@ -152,19 +143,15 @@ const EmployerCard = ({ employer }) => {
                     secondary={
                       <>
                         <Typography variant="body2">
-                          Մուտք:{" "}
+                          Մուտք:{' '}
                           <strong>
-                            {pos.Position_Start_Date ||
-                              pos.Civil_relations_StartDate ||
-                              "—"}
+                            {pos.Position_Start_Date || pos.Civil_relations_StartDate || '—'}
                           </strong>
                         </Typography>
                         <Typography variant="body2">
-                          Ելք:{" "}
+                          Ելք:{' '}
                           <strong>
-                            {pos.Position_End_Date ||
-                              pos.Civil_relations_EndDate ||
-                              "—"}
+                            {pos.Position_End_Date || pos.Civil_relations_EndDate || '—'}
                           </strong>
                         </Typography>
                       </>

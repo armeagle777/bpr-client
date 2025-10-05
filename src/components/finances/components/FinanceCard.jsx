@@ -10,7 +10,7 @@ import {
   Typography,
   CardContent,
   TableContainer,
-} from "@mui/material";
+} from '@mui/material';
 
 const FinanceCard = ({ employer }) => {
   const periods = employer.personInfoPeriods?.personInfoPeriod || [];
@@ -38,8 +38,7 @@ const FinanceCard = ({ employer }) => {
           {employer.taxpayerName}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          ՀՎՀՀ: {employer.taxpayerid} | Տեսակ: {employer.legalTypeName} (
-          {employer.legalTypeCode})
+          ՀՎՀՀ: {employer.taxpayerid} | Տեսակ: {employer.legalTypeName} ({employer.legalTypeCode})
         </Typography>
 
         <Divider sx={{ my: 2 }} />
@@ -60,46 +59,26 @@ const FinanceCard = ({ employer }) => {
             </TableHead>
             <TableBody>
               {periods.map(({ date, personInfo }, i) => (
-                <TableRow
-                  key={i}
-                  sx={{
-                    backgroundColor:
-                      personInfo.salaryEquivPayments === 0
-                        ? "#fff5f5"
-                        : "inherit",
-                  }}
-                >
+                <TableRow key={i}>
                   <TableCell>{date}</TableCell>
                   <TableCell align="right">{personInfo.incomeTax}</TableCell>
                   <TableCell align="right">{personInfo.workinghours}</TableCell>
-                  <TableCell align="right">
-                    {personInfo.socialpayments}
-                  </TableCell>
-                  <TableCell align="right">
-                    {personInfo.socialpaymentspaid}
-                  </TableCell>
-                  <TableCell align="right">
-                    {personInfo.salaryEquivPayments}
-                  </TableCell>
-                  <TableCell align="right">
-                    {personInfo.civilLowContractPayments}
-                  </TableCell>
+                  <TableCell align="right">{personInfo.socialpayments}</TableCell>
+                  <TableCell align="right">{personInfo.socialpaymentspaid}</TableCell>
+                  <TableCell align="right">{personInfo.salaryEquivPayments}</TableCell>
+                  <TableCell align="right">{personInfo.civilLowContractPayments}</TableCell>
                 </TableRow>
               ))}
 
               {/* Totals Row */}
-              <TableRow sx={{ backgroundColor: "#f0f7ff", fontWeight: "bold" }}>
+              <TableRow sx={{ fontWeight: 'bold' }}>
                 <TableCell>Ընդամենը</TableCell>
                 <TableCell align="right">{totals.incomeTax}</TableCell>
                 <TableCell align="right">{totals.workinghours}</TableCell>
                 <TableCell align="right">{totals.socialpayments}</TableCell>
                 <TableCell align="right">{totals.socialpaymentspaid}</TableCell>
-                <TableCell align="right">
-                  {totals.salaryEquivPayments}
-                </TableCell>
-                <TableCell align="right">
-                  {totals.civilLowContractPayments}
-                </TableCell>
+                <TableCell align="right">{totals.salaryEquivPayments}</TableCell>
+                <TableCell align="right">{totals.civilLowContractPayments}</TableCell>
               </TableRow>
             </TableBody>
           </Table>

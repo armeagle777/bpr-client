@@ -1,17 +1,12 @@
-import { Stack, Typography } from "@mui/material";
-import CompanyTooltip from "./CompanyTooltip";
+import { Stack, Typography } from '@mui/material';
+import CompanyTooltip from './CompanyTooltip';
 
-const TableHeader = ({
-  companyData,
-  taxpayerid,
-  taxpayerName,
-  legalTypeName,
-}) => {
+const TableHeader = ({ companyData, taxpayerid, taxpayerName, legalTypeName }) => {
   return (
-    <Stack direction="row" sx={{ alignItems: "center" }}>
+    <Stack direction="row" sx={{ alignItems: 'center' }}>
       <Typography variant="body2" component="span">
-        {`${taxpayerName || companyData?.name_am || ""} ${
-          legalTypeName || companyData?.company_type || ""
+        {`${taxpayerName || companyData?.name_am || ''} ${
+          legalTypeName || companyData?.company_type || ''
         } | ${taxpayerid}`}
       </Typography>
       {companyData && (

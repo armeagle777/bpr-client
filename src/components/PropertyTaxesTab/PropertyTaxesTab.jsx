@@ -1,16 +1,16 @@
-import { useState } from "react";
-import { Box, Tab, Tabs, Typography } from "@mui/material";
+import { useState } from 'react';
+import { Box, Tab, Tabs, Typography } from '@mui/material';
 
-import NotFound from "./components/NotFound";
-import DataLoader from "../DataLoader/DataLoader";
-import PhysicalVehicleCard from "./components/PhysicalVehicleCard";
-import PhysicalPropertyCard from "./components/PhysicalPropertyCard";
-import LegalPropertyCard from "./components/LegalPropertyCard";
-import useTerritorialMinPropertyTaxesData from "../../hooks/useTerritorialMinPropertyTaxesData";
-import LegalVehicleCard from "./components/LegalVehicleCard";
+import DataLoader from '../DataLoader/DataLoader';
+import PhysicalVehicleCard from './components/PhysicalVehicleCard';
+import PhysicalPropertyCard from './components/PhysicalPropertyCard';
+import LegalPropertyCard from './components/LegalPropertyCard';
+import useTerritorialMinPropertyTaxesData from '../../hooks/useTerritorialMinPropertyTaxesData';
+import LegalVehicleCard from './components/LegalVehicleCard';
+import NoResults from '../NoResults/NoResults';
 
-const PropertyTaxesTab = ({ identificatorNumber, personType = "PHYSICAL" }) => {
-  const [serviceType, setServiceType] = useState("REAL_ESTATE");
+const PropertyTaxesTab = ({ identificatorNumber, personType = 'PHYSICAL' }) => {
+  const [serviceType, setServiceType] = useState('REAL_ESTATE');
 
   const { data, isFetching, error } = useTerritorialMinPropertyTaxesData({
     serviceType,
@@ -23,13 +23,7 @@ const PropertyTaxesTab = ({ identificatorNumber, personType = "PHYSICAL" }) => {
   };
   return (
     <Box>
-      <Typography
-        variant="h5"
-        color="primary"
-        fontWeight="bold"
-        gutterBottom
-        sx={{ mb: 2 }}
-      >
+      <Typography variant="h5" color="primary" fontWeight="bold" gutterBottom sx={{ mb: 2 }}>
         Գույքահարկի Վճարների Վերաբերյալ Տեղեկատվություն
       </Typography>
       {/* Tabs */}
@@ -59,26 +53,26 @@ const PropertyTaxesTab = ({ identificatorNumber, personType = "PHYSICAL" }) => {
       {/* Data View */}
       {!isFetching && data && (
         <Box p={2}>
-          {serviceType === "REAL_ESTATE" &&
+          {serviceType === 'REAL_ESTATE' &&
             !!data?.length &&
             data?.map((item, idx) =>
-              personType === "PHYSICAL" ? (
+              personType === 'PHYSICAL' ? (
                 <PhysicalPropertyCard item={item} key={idx} />
               ) : (
                 <LegalPropertyCard item={item} key={idx} />
               )
             )}
 
-          {serviceType === "VEHICLES" &&
+          {serviceType === 'VEHICLES' &&
             data?.map((item, idx) =>
-              personType === "PHYSICAL" ? (
+              personType === 'PHYSICAL' ? (
                 <PhysicalVehicleCard key={idx} item={item} />
               ) : (
                 <LegalVehicleCard key={idx} item={item} />
               )
             )}
 
-          {!data?.length && <NotFound />}
+          {!data?.length && <NoResults />}
         </Box>
       )}
     </Box>

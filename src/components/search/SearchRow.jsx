@@ -1,17 +1,17 @@
-import InfoIcon from "@mui/icons-material/Info";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import { Chip, Stack } from "@mui/material";
-import Button from "@mui/material/Button";
-import CardMedia from "@mui/material/CardMedia";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
-import { useNavigate } from "react-router-dom";
-import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import InfoIcon from '@mui/icons-material/Info';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import { Chip, Stack } from '@mui/material';
+import Button from '@mui/material/Button';
+import CardMedia from '@mui/material/CardMedia';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { useNavigate } from 'react-router-dom';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
-import { formatAddressString, isPersonJpk } from "../../utils/helperFunctions";
-import { searchRowPersonData } from "../../utils/helperFunctions";
-import PDFGenerator from "../PDFGenerator/PDFGenerator";
-import BPR from "../pdf-templates/BPR";
+import { formatAddressString, isPersonJpk } from '../../utils/helperFunctions';
+import { searchRowPersonData } from '../../utils/helperFunctions';
+import PDFGenerator from '../PDFGenerator/PDFGenerator';
+import BPR from '../pdf-templates/BPR';
 
 const SearchRow = ({ personInfo }) => {
   const {
@@ -22,7 +22,7 @@ const SearchRow = ({ personInfo }) => {
     DeathDate,
     Citizenship_StoppedDate,
   } = personInfo;
-  const sanitizedPNum = PNum?.replace(/\//g, "*");
+  const sanitizedPNum = PNum?.replace(/\//g, '*');
   const navigate = useNavigate();
 
   const addressLine = formatAddressString(addresses);
@@ -40,8 +40,7 @@ const SearchRow = ({ personInfo }) => {
   } = searchRowPersonData(documents);
   const user = useAuthUser();
 
-  const noImageSrc =
-    gender === "M" ? "./src/assets/male.png" : "./src/assets/female.png";
+  const noImageSrc = './src/assets/profile.png';
   const infoClickHandler = () => {
     navigate(`/bpr/${sanitizedPNum}`);
   };
@@ -52,11 +51,11 @@ const SearchRow = ({ personInfo }) => {
     <Stack
       direction="row"
       sx={{
-        width: "100%",
+        width: '100%',
       }}
     >
       <CardMedia
-        sx={{ height: "130px", width: "100px", bgcolor: "#ccc" }}
+        sx={{ height: '130px', width: '100px', bgcolor: '#ccc' }}
         image={avatar ? `data:image/jpeg;base64,${avatar}` : noImageSrc}
         title="green iguana"
       />
@@ -94,7 +93,7 @@ const SearchRow = ({ personInfo }) => {
             component="div"
             variant="body2"
             color="text.secondary"
-            sx={{ width: "100%" }}
+            sx={{ width: '100%' }}
           >
             <small>ԳՐԱՆՑՄԱՆ ՀԱՍՑԵ : </small> {addressLine}
           </Typography>

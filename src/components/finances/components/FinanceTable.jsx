@@ -1,16 +1,16 @@
-import { Skeleton, Stack } from "@mui/material";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import MuiTableRow from "@mui/material/TableRow";
+import { Skeleton, Stack } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import MuiTableRow from '@mui/material/TableRow';
 
-import useFetchCompany from "../../../hooks/useFetchCompany";
-import { formatedData } from "../../../utils/helperFunctions";
+import useFetchCompany from '../../../hooks/useFetchCompany';
+import { formatedData } from '../../../utils/helperFunctions';
 // import CompanyTooltip from "./CompanyTooltip";
-import StyledTableRow from "./StyledTableRow";
-import TableHeader from "./TableHeader";
+import StyledTableRow from './StyledTableRow';
+import TableHeader from './TableHeader';
 
 const FinanceTable = ({ employer }) => {
   const {
@@ -53,9 +53,7 @@ const FinanceTable = ({ employer }) => {
           </TableHead>
           <TableBody>
             <StyledTableRow>{TableData.salaryEquivPayments}</StyledTableRow>
-            <StyledTableRow>
-              {TableData.civilLowContractPayments}
-            </StyledTableRow>
+            <StyledTableRow>{TableData.civilLowContractPayments}</StyledTableRow>
             <StyledTableRow>{TableData.incomeTax}</StyledTableRow>
             <StyledTableRow>{TableData.socialpayments}</StyledTableRow>
             <StyledTableRow>{TableData.socialpaymentspaid}</StyledTableRow>

@@ -1,16 +1,16 @@
-import { v4 } from "uuid";
-import StyledTableCell from "../components/finances/components/StyledTableCell";
-import ThCell from "../components/finances/components/ThCell";
-import TdCell from "../components/finances/components/TdCell";
+import { v4 } from 'uuid';
+import StyledTableCell from '../components/finances/components/StyledTableCell';
+import ThCell from '../components/finances/components/ThCell';
+import TdCell from '../components/finances/components/TdCell';
 
 export const formatCountryName = (countryName) => {
-  const countryNameArray = countryName.split(" ");
+  const countryNameArray = countryName.split(' ');
 
   if (countryNameArray.length === 1) {
     return countryName;
   }
 
-  let name = "";
+  let name = '';
   for (let word of countryNameArray) {
     name += word[0];
   }
@@ -20,9 +20,8 @@ export const formatCountryName = (countryName) => {
 
 export const findCurrentAddress = (addresses) => {
   const registrationAddress =
-    addresses.find(
-      (address) => address.RegistrationData.Registration_Type === "CURRENT"
-    ) || addresses[0];
+    addresses.find((address) => address.RegistrationData.Registration_Type === 'CURRENT') ||
+    addresses[0];
 
   const headerAddressObject = { ...registrationAddress?.RegistrationAddress };
 
@@ -47,15 +46,13 @@ export const formatAddressString = (addresses) => {
   } = currentAddressObj;
 
   if (!Foreign_Country) {
-    addressString = `Հայաստան ${
-      Region === Community ? Region : Region + " " + Community
-    }, ${Residence || ""}, ${Street || ""}  ${
-      (Building_Type || "", Building || "")
-    }, ${Apartment || ""}`;
+    addressString = `Հայաստան ${Region === Community ? Region : Region + ' ' + Community}, ${
+      Residence || ''
+    }, ${Street || ''}  ${(Building_Type || '', Building || '')}, ${Apartment || ''}`;
   } else {
-    addressString = `${Foreign_Country.CountryName || ""} ${
-      Foreign_Region || ""
-    }, ${Foreign_Community || ""}, ${Foreign_Address || ""}`;
+    addressString = `${Foreign_Country.CountryName || ''} ${Foreign_Region || ''}, ${
+      Foreign_Community || ''
+    }, ${Foreign_Address || ''}`;
   }
 
   return addressString;
@@ -63,8 +60,7 @@ export const formatAddressString = (addresses) => {
 
 export const findValidDocument = (documents) => {
   const validDocument =
-    documents.find((doc) => doc.Document_Status === "PRIMARY_VALID") ||
-    documents[0];
+    documents.find((doc) => doc.Document_Status === 'PRIMARY_VALID') || documents[0];
 
   return validDocument;
 };
@@ -73,12 +69,7 @@ export const searchRowPersonData = (documents) => {
   const avatar = documents.find((doc) => doc.Photo_ID)?.Photo_ID;
   const validDoc = findValidDocument(documents);
 
-  const {
-    Document_Department,
-    Document_Number,
-    PassportData = {},
-    Person = {},
-  } = { ...validDoc };
+  const { Document_Department, Document_Number, PassportData = {}, Person = {} } = { ...validDoc };
 
   const { Passport_Issuance_Date, Passport_Validity_Date } = PassportData || {};
 
@@ -96,14 +87,14 @@ export const searchRowPersonData = (documents) => {
   const rowData = {
     avatar,
     gender: Genus,
-    department: Document_Department || "",
-    docNum: Document_Number || "",
-    issueDate: Passport_Issuance_Date || "",
-    validDate: Passport_Validity_Date || "",
-    firstName: First_Name || English_First_Name || "",
-    lastName: Last_Name || English_Last_Name || "",
-    middleName: Patronymic_Name || English_Patronymic_Name || "",
-    birthDate: Birth_Date || "",
+    department: Document_Department || '',
+    docNum: Document_Number || '',
+    issueDate: Passport_Issuance_Date || '',
+    validDate: Passport_Validity_Date || '',
+    firstName: First_Name || English_First_Name || '',
+    lastName: Last_Name || English_Last_Name || '',
+    middleName: Patronymic_Name || English_Patronymic_Name || '',
+    birthDate: Birth_Date || '',
   };
 
   return rowData;
@@ -131,7 +122,7 @@ export const formatPersonData = (personInfo) => {
       return acc;
     }, [])
     .map((name) => {
-      const citizenshipNamesArray = name?.split(" ");
+      const citizenshipNamesArray = name?.split(' ');
       if (citizenshipNamesArray?.length === 1) {
         return citizenshipNamesArray;
       }
@@ -139,9 +130,9 @@ export const formatPersonData = (personInfo) => {
       return citizenshipNamesArray?.reduce((acc, name) => {
         acc += name[0];
         return acc;
-      }, "");
+      }, '');
     })
-    .join(",");
+    .join(',');
 
   const {
     Person: {
@@ -161,8 +152,8 @@ export const formatPersonData = (personInfo) => {
     },
   } = { ...findValidDocument(documents) };
 
-  const NationalityName = Nationality?.NationalityName || "";
-  const CountryName = Birth_Country?.Birth_Country || "";
+  const NationalityName = Nationality?.NationalityName || '';
+  const CountryName = Birth_Country?.Birth_Country || '';
 
   return {
     titleAddress: {
@@ -176,7 +167,7 @@ export const formatPersonData = (personInfo) => {
       firstNameEng: English_First_Name,
       lastNameEng: English_Last_Name,
       middleNameEng: English_Patronymic_Name,
-      gender: Genus === "M" ? "ԱՐԱԿԱՆ" : "ԻԳԱԿԱՆ",
+      gender: Genus === 'M' ? 'ԱՐԱԿԱՆ' : 'ԻԳԱԿԱՆ',
       NationalityName,
       birthDate: Birth_Date,
       birthCountry: formatCountryName(CountryName),
@@ -199,14 +190,9 @@ export const filterImageSrcs = (docs, gender, birthDate) => {
     return images;
   }
 
-  const birthYear = birthDate.split("/")[2];
+  const birthYear = birthDate.split('/')[2];
   const age = new Date().getFullYear() - birthYear;
-  const noImageSrc =
-    age < 18
-      ? "../baby.png"
-      : gender === "ԱՐԱԿԱՆ"
-      ? "../male.png"
-      : "../female.png";
+  const noImageSrc = '../profile.png';
 
   return [noImageSrc];
 };
@@ -219,34 +205,24 @@ export const formatedData = (periods) => {
   return [...periods].reduce(
     (acc, { date, personInfo }) => {
       acc.titles.push(
-        <StyledTableCell align="right" key={v4()} sx={{ fontSize: "10px" }}>
+        <StyledTableCell align="right" key={v4()} sx={{ fontSize: '10px' }}>
           {date}
         </StyledTableCell>
       );
-      acc.salaryEquivPayments.push(
-        <TdCell data={personInfo.salaryEquivPayments} key={v4()} />
-      );
+      acc.salaryEquivPayments.push(<TdCell data={personInfo.salaryEquivPayments} key={v4()} />);
       acc.incomeTax.push(<TdCell data={personInfo.incomeTax} key={v4()} />);
       acc.civilLowContractPayments.push(
         <TdCell data={personInfo.civilLowContractPayments} key={v4()} />
       );
-      acc.socialpayments.push(
-        <TdCell data={personInfo.socialpayments} key={v4()} />
-      );
-      acc.socialpaymentspaid.push(
-        <TdCell data={personInfo.socialpaymentspaid} key={v4()} />
-      );
-      acc.workinghours.push(
-        <TdCell data={personInfo.workinghours} key={v4()} />
-      );
+      acc.socialpayments.push(<TdCell data={personInfo.socialpayments} key={v4()} />);
+      acc.socialpaymentspaid.push(<TdCell data={personInfo.socialpaymentspaid} key={v4()} />);
+      acc.workinghours.push(<TdCell data={personInfo.workinghours} key={v4()} />);
 
       return acc;
     },
     {
       titles: [<StyledTableCell key={v4()}>...</StyledTableCell>],
-      salaryEquivPayments: [
-        <ThCell title="Աշխ․ հավասարեցված վճարներ" key={v4()} />,
-      ],
+      salaryEquivPayments: [<ThCell title="Աշխ․ հավասարեցված վճարներ" key={v4()} />],
       incomeTax: [<ThCell title="Եկամտային հարկ" key={v4()} />],
       civilLowContractPayments: [<ThCell title="Քաղ. պայմ" key={v4()} />],
       socialpayments: [<ThCell title="Հաշվարկված սոց․ վճարներ" key={v4()} />],
@@ -257,9 +233,7 @@ export const formatedData = (periods) => {
 };
 
 export const userHasPermission = (allowedPermissions, userPermissions) => {
-  const hasPermission = allowedPermissions?.some((perm) =>
-    userPermissions.includes(perm)
-  );
+  const hasPermission = allowedPermissions?.some((perm) => userPermissions.includes(perm));
 
   return hasPermission;
 };
@@ -269,9 +243,9 @@ export const isPersonJpk = (documents) => {
   return (
     documents.findIndex(
       (doc) =>
-        doc.Document_Status === "PRIMARY_VALID" &&
-        doc.Document_Type === "NON_BIOMETRIC_PASSPORT" &&
-        doc.PassportData?.Passport_Type === "N"
+        doc.Document_Status === 'PRIMARY_VALID' &&
+        doc.Document_Type === 'NON_BIOMETRIC_PASSPORT' &&
+        doc.PassportData?.Passport_Type === 'N'
     ) >= 0
   );
 };
@@ -281,9 +255,7 @@ export const filterUniqueDocuments = (documents = []) =>
     (doc, index, self) =>
       index ===
       self.findIndex(
-        (d) =>
-          d.Document_Type === doc.Document_Type &&
-          d.Document_Number === doc.Document_Number
+        (d) => d.Document_Type === doc.Document_Type && d.Document_Number === doc.Document_Number
       )
   );
 
@@ -293,7 +265,7 @@ export const getFlattenData = (data) => {
     // If the value is an array, flatten it
     if (Array.isArray(data[key])) {
       result[key] = data[key].flat(); // Flatten the array
-    } else if (typeof data[key] === "object" && data[key] !== null) {
+    } else if (typeof data[key] === 'object' && data[key] !== null) {
       // If the value is an object, call flattenData recursively
       result[key] = getFlattenData(data[key]);
     } else {
@@ -310,7 +282,7 @@ export const getSortedByDateFIeld = (data, fieldName) =>
 export const formatDateTimeString = (datetime, showTime = false) => {
   const date = new Date(datetime);
 
-  const pad = (num) => String(num).padStart(2, "0");
+  const pad = (num) => String(num).padStart(2, '0');
 
   const day = pad(date.getDate());
   const month = pad(date.getMonth() + 1); // Months are zero-indexed
@@ -318,20 +290,14 @@ export const formatDateTimeString = (datetime, showTime = false) => {
   const hours = pad(date.getHours());
   const minutes = pad(date.getMinutes());
 
-  return showTime
-    ? `${day}/${month}/${year} ${hours}:${minutes}`
-    : `${day}/${month}/${year}`;
+  return showTime ? `${day}/${month}/${year} ${hours}:${minutes}` : `${day}/${month}/${year}`;
 };
 
-export const getDirectionColor = (direction) =>
-  direction === "IN" ? "success" : "error";
+export const getDirectionColor = (direction) => (direction === 'IN' ? 'success' : 'error');
 
 export const formatAmount = (value, currency) => {
-  if (!value) return "N/A";
+  if (!value) return 'N/A';
   const num = Number(value);
   if (isNaN(num)) return value.toString();
-  return (
-    new Intl.NumberFormat("en-US").format(num) +
-    (currency ? ` ${currency}` : "")
-  );
+  return new Intl.NumberFormat('en-US').format(num) + (currency ? ` ${currency}` : '');
 };
