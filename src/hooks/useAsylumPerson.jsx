@@ -1,16 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { message } from "antd";
-import { Avatar } from "@mui/material";
-import { Link } from "react-router-dom";
-import { LoadingButton } from "@mui/lab";
-import { useQuery } from "@tanstack/react-query";
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { message } from 'antd';
+import { Avatar } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { useQuery } from '@tanstack/react-query';
 
 import {
   filterAsylumPersonData,
   getAsylumFilterOptionsData,
   getAsylumPersonFullData,
-} from "../api/personsApi";
-import { initialFilters } from "../pages/AsylumSearch/AsylumSearch.constants";
+} from '../api/personsApi';
+import { initialFilters } from '../pages/AsylumSearch/AsylumSearch.constants';
 
 const useAsylumPerson = () => {
   const [filters, setFilters] = useState(initialFilters);
@@ -25,12 +24,12 @@ const useAsylumPerson = () => {
     isError: asylumFilterOptionsIsError,
     error: asylumFilterOptionsError,
   } = useQuery({
-    queryKey: ["asylum-filter-options"],
+    queryKey: ['asylum-filter-options'],
     queryFn: getAsylumFilterOptionsData,
   });
 
   const { data, isFetching, isError, error, refetch } = useQuery({
-    queryKey: ["asylum-person"],
+    queryKey: ['asylum-person'],
     queryFn: () => filterAsylumPersonData(filters, page),
     enabled: false,
     keepPreviousData: false,
@@ -74,7 +73,7 @@ const useAsylumPerson = () => {
     isError: isFullDataError,
     error: fullDataError,
   } = useQuery({
-    queryKey: ["asylum-person-full-data", modalPersonProps],
+    queryKey: ['asylum-person-full-data', modalPersonProps],
     queryFn: () => getAsylumPersonFullData(modalPersonProps),
     enabled: !!modalPersonProps,
     keepPreviousData: false,
@@ -85,7 +84,7 @@ const useAsylumPerson = () => {
   }, [isFetching, page]);
 
   useEffect(() => {
-    if (isFullDataError) message.error("Ինչ-որ բան այնպես չէ");
+    if (isFullDataError) message.error('Ինչ-որ բան այնպես չէ');
   }, [isFullDataError]);
 
   useEffect(() => {
@@ -141,9 +140,9 @@ const useAsylumPerson = () => {
 
   const columns = [
     {
-      title: "Նկարը",
-      dataIndex: "image",
-      key: "image",
+      title: 'Նկարը',
+      dataIndex: 'image',
+      key: 'image',
       render: (_, record) => (
         <Avatar
           src={record.image}
@@ -154,60 +153,55 @@ const useAsylumPerson = () => {
       ),
     },
     {
-      title: "Փաստաթուղթը",
-      dataIndex: "doc_num",
-      key: "doc_num",
+      title: 'Փաստաթուղթը',
+      dataIndex: 'doc_num',
+      key: 'doc_num',
     },
     {
-      title: "Քաղաքացիությունը",
-      dataIndex: "CITIZENSHIP_NAME_ARM",
-      key: "CITIZENSHIP_NAME_ARM",
-      render: (_, record) =>
-        `${record.CITIZENSHIP_NAME_ARM} | ${record.CITIZENSHIP_NAME_ENG}`,
+      title: 'Քաղաքացիությունը',
+      dataIndex: 'CITIZENSHIP_NAME_ARM',
+      key: 'CITIZENSHIP_NAME_ARM',
+      render: (_, record) => `${record.CITIZENSHIP_NAME_ARM} | ${record.CITIZENSHIP_NAME_ENG}`,
     },
     {
-      title: "Անունը (լատ)",
-      dataIndex: "f_name_eng",
-      key: "f_name_eng",
+      title: 'Անունը (լատ)',
+      dataIndex: 'f_name_eng',
+      key: 'f_name_eng',
     },
     {
-      title: "Ազգանունը (լատ)",
-      dataIndex: "l_name_eng",
-      key: "l_name_eng",
+      title: 'Ազգանունը (լատ)',
+      dataIndex: 'l_name_eng',
+      key: 'l_name_eng',
     },
     {
-      title: "Անունը (hայ)",
-      dataIndex: "f_name_arm",
-      key: "f_name_arm",
+      title: 'Անունը (hայ)',
+      dataIndex: 'f_name_arm',
+      key: 'f_name_arm',
     },
     {
-      title: "Ազգանունը (hայ)",
-      dataIndex: "l_name_arm",
-      key: "l_name_arm",
+      title: 'Ազգանունը (hայ)',
+      dataIndex: 'l_name_arm',
+      key: 'l_name_arm',
     },
     {
-      title: "Սեռը",
-      dataIndex: "sex",
-      key: "sex",
-      render: (_, record) => (record.sex == 1 ? "Արական" : "Իգական"),
+      title: 'Սեռը',
+      dataIndex: 'sex',
+      key: 'sex',
+      render: (_, record) => (record.sex == 1 ? 'Արական' : 'Իգական'),
     },
     {
-      title: "Ծննդյան ա/թ",
-      dataIndex: "b_day",
-      key: "birthday",
-      render: (_, record) =>
-        `${record.b_day}.${record.b_month}.${record.b_year}`,
+      title: 'Ծննդյան ա/թ',
+      dataIndex: 'b_day',
+      key: 'birthday',
+      render: (_, record) => `${record.b_day}.${record.b_month}.${record.b_year}`,
     },
     {
-      title: "...",
-      dataIndex: "",
-      key: "action",
+      title: '...',
+      dataIndex: '',
+      key: 'action',
       render: (_, record) => (
         <LoadingButton
-          loading={
-            modalPersonProps?.personal_id === record.personal_id &&
-            isFullDataFetching
-          }
+          loading={modalPersonProps?.personal_id === record.personal_id && isFullDataFetching}
           onClick={() => handleModalOpen(record)}
         >
           Մանրամասն

@@ -1,13 +1,13 @@
-import { Button } from "antd";
-import { memo, useEffect } from "react";
-import { toast } from "react-toastify";
-import { useQuery } from "@tanstack/react-query";
-import { FaDownload } from "react-icons/fa6";
+import { memo, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import { useQuery } from '@tanstack/react-query';
+import { FaDownload } from 'react-icons/fa6';
 
-import { getExcelFile } from "../../api/personsApi";
+import { getExcelFile } from '../../api/personsApi';
+import { Button } from '@mui/material';
 
 function generateFileName() {
-  const timestamp = new Date().toISOString().replace(/[:.-]/g, "");
+  const timestamp = new Date().toISOString().replace(/[:.-]/g, '');
 
   return `logs_${timestamp}`;
 }
@@ -29,7 +29,7 @@ const ExportExcelButton = ({ filters }) => {
   });
 
   if (isError) {
-    toast.error("Ինչ-որ բան այնպես չէ:", {
+    toast.error('Ինչ-որ բան այնպես չէ:', {
       progress: undefined,
     });
   }
@@ -39,13 +39,13 @@ const ExportExcelButton = ({ filters }) => {
       if (fileData) {
         try {
           const blob = await fileData;
-          const link = document.createElement("a");
+          const link = document.createElement('a');
           link.href = window.URL.createObjectURL(blob);
           link.download = `${fileName}.xlsx`;
           link.click();
           window.URL.revokeObjectURL(link.href);
         } catch (error) {
-          console.error("Error exporting Excel from React:", error.message);
+          console.error('Error exporting Excel from React:', error.message);
         }
       }
     };
@@ -64,9 +64,9 @@ const ExportExcelButton = ({ filters }) => {
       loading={isFetching}
       icon={<FaDownload />}
       style={{
-        color: "purple",
-        fontWeight: "bold",
-        height: "100%",
+        color: 'purple',
+        fontWeight: 'bold',
+        height: '100%',
       }}
       onClick={handleExportExcel}
     >
