@@ -19,7 +19,10 @@ export const formatFieldsLabel = (fields) => {
 
   // StateRegister saved Likes
   if (fields.taxId) return `${labels.taxId}: ${fields.taxId}`;
-  if (fields.name && fields.type) return `${labels.name}: ${fields.name}`;
+  if (fields.name && fields.type)
+    return `${labels.name}: ${fields.name}, ${labels.type}: ${fields.type}`;
+  if (fields.name) return `${labels.name}: ${fields.name}`;
+  if (fields.type) return `${labels.type}: ${fields.type}`;
 
   //RoadPolice saved Likes
   if (fields.PLATE_NUMBER) return `${labels.PLATE_NUMBER}: ${fields.PLATE_NUMBER}`;
@@ -30,6 +33,10 @@ export const formatFieldsLabel = (fields) => {
 
   if (fields.ssn) {
     return `${labels.ssn}: ${fields.ssn}`;
+  }
+
+  if (fields.SSN) {
+    return `${labels.ssn}: ${fields.SSN}`;
   }
 
   if (fields.documentNumber) {
