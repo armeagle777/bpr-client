@@ -1,16 +1,17 @@
-import { memo } from "react";
-import { Container } from "@mui/material";
+import { memo } from 'react';
+import { Container } from '@mui/material';
 
-import WeaponsSearchHeader from "./components/WeaponsSearchHeader";
-import WeaponsTable from "../../components/WeaponsTable/WeaponsTable";
-import useSearchWeapons from "../../hooks/useSearchWeapons";
-import DataLoader from "../../components/DataLoader/DataLoader";
+import WeaponsSearchHeader from './components/WeaponsSearchHeader';
+import MuiTable from '../../components/MuiTable/MuiTable';
+import useSearchWeapons from '../../hooks/useSearchWeapons';
+import DataLoader from '../../components/DataLoader/DataLoader';
 
 const WeaponSearch = () => {
   const {
     data,
     error,
     isError,
+    columns,
     isLoading,
     isFetching,
     searchBase,
@@ -31,9 +32,7 @@ const WeaponSearch = () => {
       />
       {isFetching && <DataLoader />}
 
-      {Array.isArray(data) && (
-        <WeaponsTable isFetching={isFetching} data={data} fullWidth={true} />
-      )}
+      {Array.isArray(data) && <MuiTable rows={data} columns={columns} />}
     </Container>
   );
 };
