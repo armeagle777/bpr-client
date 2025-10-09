@@ -1,16 +1,16 @@
-import { DeleteOutlined } from '@ant-design/icons';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Button, Form, Popconfirm, message } from 'antd';
-import { Link } from 'react-router-dom';
-import { createLike, deleteLike, getLikes, toggleLike } from '../api/personsApi';
-import { formatDate } from '../components/pdf-templates/templates.helpers';
-import { formatFieldsLabel } from '../components/SavedSearchTag/SavedSearchTag.helpers';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { Button, Dialog } from '@mui/material';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import { formatDate } from '../components/pdf-templates/templates.helpers';
+import { createLike, deleteLike, getLikes, toggleLike } from '../api/personsApi';
+import { formatFieldsLabel } from '../components/SavedSearchTag/SavedSearchTag.helpers';
 
 const useLikesData = ({ likeTypeName, pageSize } = {}) => {
   const [page, setPage] = useState(1);
   const queryClient = useQueryClient();
-  const [form] = Form.useForm();
 
   const { isLoading, isError, error, data, isFetching } = useQuery(
     ['likes', likeTypeName, pageSize, page],
@@ -23,20 +23,20 @@ const useLikesData = ({ likeTypeName, pageSize } = {}) => {
   const toggleLikeMutation = useMutation(({ uid, text }) => toggleLike({ uid, text }), {
     onSuccess: (data) => {
       queryClient.invalidateQueries('likes');
-      message.success('Հաջողությամբ կատարվել է');
+      toast.success('Հաջողությամբ կատարվել է');
     },
     onError: (error, variables, context, mutation) => {
-      message.error('Ինչ-որ բան այնպես չէ');
+      toast.error('Ինչ-որ բան այնպես չէ');
     },
   });
 
   const deleteLikeMutation = useMutation((id) => deleteLike(id), {
     onSuccess: (data) => {
       queryClient.invalidateQueries('likes');
-      message.success('Հաջողությամբ Հեռացվել է');
+      toast.success('Հաջողությամբ Հեռացվել է');
     },
     onError: (error, variables, context, mutation) => {
-      message.error('Ինչ-որ բան այնպես չէ');
+      toast.error('Ինչ-որ բան այնպես չէ');
     },
   });
 
@@ -45,10 +45,10 @@ const useLikesData = ({ likeTypeName, pageSize } = {}) => {
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries('likes');
-        message.success('Հաջողությամբ կատարվել է');
+        toast.success('Հաջողությամբ կատարվել է');
       },
       onError: (error, variables, context, mutation) => {
-        message.error('Ինչ-որ բան այնպես չէ');
+        toast.error('Ինչ-որ բան այնպես չէ');
       },
     }
   );
@@ -60,6 +60,11 @@ const useLikesData = ({ likeTypeName, pageSize } = {}) => {
 
   const cancel = (e) => {
     console.log(':>');
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    cancel?.();
   };
   const columns = [
     {
@@ -88,17 +93,41 @@ const useLikesData = ({ likeTypeName, pageSize } = {}) => {
       dataIndex: 'operation',
       render: (_, record) => {
         return (
-          <Popconfirm
-            title="Հեռացնել պահպանված որոնման տողը"
-            description="Համոզվա՞ծ եք"
-            onConfirm={() => deleteLikeMutation.mutate(record.id)}
-            onCancel={cancel}
-            okText="Հեռացնել"
-            cancelText="Չեղարկել"
-            placement="left"
+          // <Popconfirm
+          //   title="Հեռացնել պահպանված որոնման տողը"
+          //   description="Համոզվա՞ծ եք"
+          //   onConfirm={() => deleteLikeMutation.mutate(record.id)}
+          //   onCancel={cancel}
+          //   okText="Հեռացնել"
+          //   cancelText="Չեղարկել"
+          //   placement="left"
+          // >
+          //   <Button danger icon={<DeleteOutlined />} />
+          // </Popconfirm>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="confirm-delete-title"
+            aria-describedby="confirm-delete-description"
           >
-            <Button danger icon={<DeleteOutlined />} />
-          </Popconfirm>
+            <DialogTitle id="confirm-delete-title">Հեռացնել պահպանված որոնման տողը</DialogTitle>
+
+            <DialogContent>
+              <DialogContentText id="confirm-delete-description">Համոզվա՞ծ եք</DialogContentText>
+            </DialogContent>
+
+            <DialogActions>
+              <Button onClick={handleClose}>Չեղարկել</Button>
+              <Button
+                onClick={() => deleteLikeMutation.mutate(record.id)}
+                color="error"
+                variant="contained"
+                autoFocus
+              >
+                Հեռացնել
+              </Button>
+            </DialogActions>
+          </Dialog>
         );
       },
     },

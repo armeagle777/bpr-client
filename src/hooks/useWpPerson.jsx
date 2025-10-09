@@ -1,12 +1,12 @@
-import { LoadingButton } from "@mui/lab";
-import { useQuery } from "@tanstack/react-query";
-import { message } from "antd";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { LoadingButton } from '@mui/lab';
+import { useQuery } from '@tanstack/react-query';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { getWpPersonData, getWpPersonFullData } from "../api/personsApi";
-import { initialFilters } from "../pages/WpPersonSearch/constants";
-import { Link } from "react-router-dom";
-import { Avatar } from "@mui/material";
+import { getWpPersonData, getWpPersonFullData } from '../api/personsApi';
+import { initialFilters } from '../pages/WpPersonSearch/constants';
+import { Link } from 'react-router-dom';
+import { Avatar } from '@mui/material';
+import { toast } from 'react-toastify';
 
 const useWpPerson = () => {
   const [filters, setFilters] = useState(initialFilters);
@@ -20,7 +20,7 @@ const useWpPerson = () => {
   }, [filters]);
 
   const { data, isFetching, isError, error, refetch } = useQuery({
-    queryKey: ["wp-person", filters],
+    queryKey: ['wp-person', filters],
     queryFn: () => getWpPersonData(filters, page),
     enabled: false,
     keepPreviousData: false,
@@ -33,7 +33,7 @@ const useWpPerson = () => {
     isError: isFullDataError,
     error: fullDataError,
   } = useQuery({
-    queryKey: ["wp-person-full-data", modalPersonProps],
+    queryKey: ['wp-person-full-data', modalPersonProps],
     queryFn: () => getWpPersonFullData(modalPersonProps),
     enabled: !!modalPersonProps,
   });
@@ -43,7 +43,7 @@ const useWpPerson = () => {
   }, [isFetching, page]);
 
   useEffect(() => {
-    if (isFullDataError) message.error("Ինչ-որ բան այնպես չէ");
+    if (isFullDataError) toast.error('Ինչ-որ բան այնպես չէ');
   }, [isFullDataError]);
 
   useEffect(() => {
@@ -106,9 +106,9 @@ const useWpPerson = () => {
 
   const columns = [
     {
-      title: "Նկարը",
-      dataIndex: "path",
-      key: "path",
+      title: 'Նկարը',
+      dataIndex: 'path',
+      key: 'path',
       render: (_, record) => (
         <Avatar
           src={record.path}
@@ -119,63 +119,62 @@ const useWpPerson = () => {
       ),
     },
     {
-      title: "Փաստաթուղթը",
-      dataIndex: "passport_number",
-      key: "passport_number",
+      title: 'Փաստաթուղթը',
+      dataIndex: 'passport_number',
+      key: 'passport_number',
     },
     {
-      title: "ՀԾՀ",
-      dataIndex: "ssn",
-      key: "ssn",
+      title: 'ՀԾՀ',
+      dataIndex: 'ssn',
+      key: 'ssn',
       render: (_, record) =>
-        record.ssn ? <Link to={`/bpr/${record.ssn}`}>{record.ssn}</Link> : "",
+        record.ssn ? <Link to={`/bpr/${record.ssn}`}>{record.ssn}</Link> : '',
     },
     {
-      title: "Քաղաքացիությունը",
-      dataIndex: "arm_short",
-      key: "arm_short",
+      title: 'Քաղաքացիությունը',
+      dataIndex: 'arm_short',
+      key: 'arm_short',
       render: (_, record) => `${record.arm_short} | ${record.alpha_3}`,
     },
     {
-      title: "Անունը (լատ)",
-      dataIndex: "first_name_en",
-      key: "first_name_en",
+      title: 'Անունը (լատ)',
+      dataIndex: 'first_name_en',
+      key: 'first_name_en',
     },
     {
-      title: "Ազգանունը (լատ)",
-      dataIndex: "last_name_en",
-      key: "last_name_en",
+      title: 'Ազգանունը (լատ)',
+      dataIndex: 'last_name_en',
+      key: 'last_name_en',
     },
     {
-      title: "Անունը (hայ)",
-      dataIndex: "first_name_am",
-      key: "first_name_am",
+      title: 'Անունը (hայ)',
+      dataIndex: 'first_name_am',
+      key: 'first_name_am',
     },
     {
-      title: "Ազգանունը (hայ)",
-      dataIndex: "last_name_am",
-      key: "last_name_am",
+      title: 'Ազգանունը (hայ)',
+      dataIndex: 'last_name_am',
+      key: 'last_name_am',
     },
     {
-      title: "Սեռը",
-      dataIndex: "gender_id",
-      key: "gender_id",
-      render: (_, record) => (record.gender_id == 1 ? "Male" : "Female"),
+      title: 'Սեռը',
+      dataIndex: 'gender_id',
+      key: 'gender_id',
+      render: (_, record) => (record.gender_id == 1 ? 'Male' : 'Female'),
     },
     {
-      title: "Ծննդյան ա/թ",
-      dataIndex: "birthday_day",
-      key: "birthday",
+      title: 'Ծննդյան ա/թ',
+      dataIndex: 'birthday_day',
+      key: 'birthday',
       render: (_, record) =>
         `${record.birthday_day}.${record.birthday_month}.${record.birthday_year}`,
     },
     {
-      title: "...",
-      dataIndex: "",
-      key: "action",
+      title: '...',
+      dataIndex: '',
+      key: 'action',
       render: (_, record) => {
-        const hasDetailData =
-          !!record.id && !!record.user_id && !!record.tableName;
+        const hasDetailData = !!record.id && !!record.user_id && !!record.tableName;
         return (
           <LoadingButton
             loading={modalPersonProps?.id === record.id && isFullDataFetching}

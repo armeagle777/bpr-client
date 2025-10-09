@@ -1,63 +1,49 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import {
-  createRole,
-  getPermissions,
-  getRoles,
-  updateRole,
-  updateUser,
-} from "../api/personsApi";
-import { toast } from "react-toastify";
-import { useState } from "react";
-import { Form, message, Popconfirm, Select, Typography } from "antd";
-import IosSwitch from "../components/IosSwitch/IosSwitch";
+import { createRole, getPermissions, getRoles, updateRole, updateUser } from '../api/personsApi';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
+import { Form, Popconfirm, Select, Typography } from 'antd';
 
 const useRolesData = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingKey, setEditingKey] = useState("");
+  const [editingKey, setEditingKey] = useState('');
   const queryClient = useQueryClient();
   const [newRoleForm] = Form.useForm();
   const [form] = Form.useForm();
 
   const isEditing = (record) => record.key === editingKey;
 
-  const { isLoading, isError, error, data } = useQuery(
-    ["roles"],
-    () => getRoles(),
-    {
-      keepPreviousData: true,
-    }
-  );
+  const { isLoading, isError, error, data } = useQuery(['roles'], () => getRoles(), {
+    keepPreviousData: true,
+  });
 
   const {
     isLoading: isLoadingPermissions,
     isError: isErrorPermissions,
     data: permissions,
-  } = useQuery(["permissions"], () => getPermissions(), {
+  } = useQuery(['permissions'], () => getPermissions(), {
     keepPreviousData: true,
   });
 
-  const editRoleMutation = useMutation(
-    ({ id, data }) => updateRole({ id, data }),
-    {
-      onSuccess: (data) => {
-        queryClient.invalidateQueries("roles");
-        toast.success("Հաջողությամբ խմբագրվել է", {
-          progress: undefined,
-        });
-      },
-      onError: (error, variables, context, mutation) => {
-        toast.error(error.response?.data?.message || error.message, {
-          progress: undefined,
-        });
-      },
-    }
-  );
+  const editRoleMutation = useMutation(({ id, data }) => updateRole({ id, data }), {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries('roles');
+      toast.success('Հաջողությամբ խմբագրվել է', {
+        progress: undefined,
+      });
+    },
+    onError: (error, variables, context, mutation) => {
+      toast.error(error.response?.data?.message || error.message, {
+        progress: undefined,
+      });
+    },
+  });
 
   const createRoleMutation = useMutation((data) => createRole(data), {
     onSuccess: (data) => {
-      queryClient.invalidateQueries("roles");
-      toast.success("Հաջողությամբ գրանցվել է", {
+      queryClient.invalidateQueries('roles');
+      toast.success('Հաջողությամբ գրանցվել է', {
         progress: undefined,
       });
     },
@@ -81,16 +67,16 @@ const useRolesData = () => {
 
   const edit = (record) => {
     form.setFieldsValue({
-      name: "",
-      age: "",
-      address: "",
+      name: '',
+      age: '',
+      address: '',
       ...record,
     });
     setEditingKey(record.key);
   };
 
   const cancel = () => {
-    setEditingKey("");
+    setEditingKey('');
   };
 
   const save = async (key) => {
@@ -102,10 +88,10 @@ const useRolesData = () => {
         const item = modifiedRolesData[index];
         const newItem = { ...item, ...row };
         editRoleMutation.mutate({ id: item.id, data: newItem });
-        setEditingKey("");
+        setEditingKey('');
       }
     } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
+      console.log('Validate Failed:', errInfo);
     }
   };
 
@@ -118,7 +104,7 @@ const useRolesData = () => {
   };
 
   const handleChange = (value) => {
-    console.log("Value", value);
+    console.log('Value', value);
   };
 
   const permissionOptions = permissions?.permissions?.map((p) => ({
@@ -128,19 +114,19 @@ const useRolesData = () => {
 
   const columns = [
     {
-      title: "#",
-      dataIndex: "id",
+      title: '#',
+      dataIndex: 'id',
       editable: false,
     },
     {
-      title: "Անուն",
-      dataIndex: "name",
+      title: 'Անուն',
+      dataIndex: 'name',
       editable: true,
       required: true,
     },
     {
-      title: "Թույլտվություններ",
-      dataIndex: "permissions",
+      title: 'Թույլտվություններ',
+      dataIndex: 'permissions',
       editable: true,
       required: true,
       options: { permissionOptions },
@@ -155,7 +141,7 @@ const useRolesData = () => {
             mode="multiple"
             allowClear
             style={{
-              width: "600px",
+              width: '600px',
             }}
             placeholder="Թույլտվություն"
             onChange={handleChange}
@@ -168,8 +154,8 @@ const useRolesData = () => {
       },
     },
     {
-      title: "...",
-      dataIndex: "operation",
+      title: '...',
+      dataIndex: 'operation',
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
@@ -187,10 +173,7 @@ const useRolesData = () => {
             </Popconfirm>
           </span>
         ) : (
-          <Typography.Link
-            disabled={editingKey !== ""}
-            onClick={() => edit(record)}
-          >
+          <Typography.Link disabled={editingKey !== ''} onClick={() => edit(record)}>
             Խմբագրել
           </Typography.Link>
         );
@@ -207,7 +190,7 @@ const useRolesData = () => {
       ...col,
       onCell: (record) => ({
         record,
-        inputType: col.options ? "select" : "text",
+        inputType: col.options ? 'select' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
         required: col.required,

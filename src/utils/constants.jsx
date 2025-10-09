@@ -353,3 +353,10 @@ export const THEME_MODS = {
   DARK: 'dark',
   LIGHT: 'light',
 };
+
+export const SEVERITY_MAPS = {
+  SUCCESS: 'success',
+  ERROR: 'error',
+  INFO: 'info',
+  WARNING: 'warning',
+};

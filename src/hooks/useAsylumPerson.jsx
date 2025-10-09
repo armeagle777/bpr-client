@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { message } from 'antd';
+import { toast } from 'react-toastify';
 import { Avatar } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useQuery } from '@tanstack/react-query';
@@ -84,7 +84,7 @@ const useAsylumPerson = () => {
   }, [isFetching, page]);
 
   useEffect(() => {
-    if (isFullDataError) message.error('Ինչ-որ բան այնպես չէ');
+    if (isFullDataError) toast.error('Ինչ-որ բան այնպես չէ');
   }, [isFullDataError]);
 
   useEffect(() => {

@@ -33,10 +33,9 @@ const SearchByImageTab = () => {
     if (!editorRef.current) return;
 
     const canvas = editorRef.current.getImageScaledToCanvas();
-    console.log('Canvas', canvas);
     const base64 = canvas.toDataURL('image/jpeg');
-    const cleanBase64 = base64.replace(/^data:image\/\w+;base64,/, '');
-    console.log(cleanBase64);
+    // const cleanBase64 = base64.replace(/^data:image\/\w+;base64,/, '');
+    const cleanBase64 = base64.split(',')[1];
     setImageBase64(cleanBase64);
   };
 

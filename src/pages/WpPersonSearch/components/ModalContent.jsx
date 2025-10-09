@@ -1,25 +1,23 @@
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Tab, Tabs } from '@mui/material';
 
-import TabPanel from "./TabPanel";
-import PersonalInfoTab from "./PersonalInfoTab";
-import { Table } from "antd";
+import TabPanel from './TabPanel';
+import PersonalInfoTab from './PersonalInfoTab';
+import { Table } from 'antd';
+
+import MuiTable from '../../../components/MuiTable/MuiTable';
 import {
   cardsTabColumns,
   claimsTabColumns,
   famMemberTabColumns,
   ticketsTabColumns,
-} from "../constants";
+} from '../constants';
 
 const ModalContent = ({ selectedTab, onTabChange, data }) => {
   const { baseInfo, fines, claims, cards, familyMembers } = data;
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs
-          value={selectedTab}
-          onChange={onTabChange}
-          aria-label="wp-detailed-info"
-        >
+    <Box sx={{ width: '100%' }}>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={selectedTab} onChange={onTabChange} aria-label="wp-detailed-info">
           <Tab label="Անձնական տվյալներ" />
           <Tab label="Դիմումներ" />
           <Tab label="Քարտեր" />
@@ -27,44 +25,34 @@ const ModalContent = ({ selectedTab, onTabChange, data }) => {
           <Tab label="Ընտանիքի անդամներ" />
         </Tabs>
       </Box>
-      <TabPanel
-        hidden={selectedTab !== 0}
-        id="personal-info-tab"
-        ariaLabel="personal-info-tab"
-      >
+      <TabPanel hidden={selectedTab !== 0} id="personal-info-tab" ariaLabel="personal-info-tab">
         {baseInfo && <PersonalInfoTab data={baseInfo} />}
       </TabPanel>
-      <TabPanel
-        hidden={selectedTab !== 1}
-        id="claims-tab"
-        ariaLabel="claims-tab"
-      >
+      <TabPanel hidden={selectedTab !== 1} id="claims-tab" ariaLabel="claims-tab">
         {claims && (
-          <Table
-            bordered
-            dataSource={claims}
-            columns={claimsTabColumns}
-            pagination={false}
-            rowKey="id"
-          />
+          // <Table
+          //   bordered
+          //   dataSource={claims}
+          //   columns={claimsTabColumns}
+          //   pagination={false}
+          //   rowKey="id"
+          // />
+          <MuiTable columns={claimsTabColumns} rows={claims} />
         )}
       </TabPanel>
       <TabPanel hidden={selectedTab !== 2} id="cards-tab" ariaLabel="cards-tab">
         {cards && (
-          <Table
-            bordered
-            dataSource={cards}
-            columns={cardsTabColumns}
-            pagination={false}
-            rowKey="id"
-          />
+          // <Table
+          //   bordered
+          //   dataSource={cards}
+          //   columns={cardsTabColumns}
+          //   pagination={false}
+          //   rowKey="id"
+          // />
+          <MuiTable rows={cards} columns={cardsTabColumns} />
         )}
       </TabPanel>
-      <TabPanel
-        hidden={selectedTab !== 3}
-        id="tickets-tab"
-        ariaLabel="tickets-tab"
-      >
+      <TabPanel hidden={selectedTab !== 3} id="tickets-tab" ariaLabel="tickets-tab">
         {fines && (
           <Table
             bordered
@@ -75,13 +63,13 @@ const ModalContent = ({ selectedTab, onTabChange, data }) => {
               return {
                 style: {
                   backgroundColor:
-                    record.status === "pending"
-                      ? "red"
-                      : record.status === "closed"
-                      ? "green"
-                      : record.status === "fined"
-                      ? "orange"
-                      : "inherit",
+                    record.status === 'pending'
+                      ? 'red'
+                      : record.status === 'closed'
+                      ? 'green'
+                      : record.status === 'fined'
+                      ? 'orange'
+                      : 'inherit',
                 },
               };
             }}
@@ -89,19 +77,16 @@ const ModalContent = ({ selectedTab, onTabChange, data }) => {
           />
         )}
       </TabPanel>
-      <TabPanel
-        hidden={selectedTab !== 4}
-        id="fam-members-tab"
-        ariaLabel="fam-members-tab"
-      >
+      <TabPanel hidden={selectedTab !== 4} id="fam-members-tab" ariaLabel="fam-members-tab">
         {familyMembers && (
-          <Table
-            bordered
-            dataSource={familyMembers}
-            pagination={false}
-            columns={famMemberTabColumns}
-            rowKey="id"
-          />
+          // <Table
+          //   bordered
+          //   dataSource={familyMembers}
+          //   pagination={false}
+          //   columns={famMemberTabColumns}
+          //   rowKey="id"
+          // />
+          <MuiTable rows={familyMembers} columns={famMemberTabColumns} />
         )}
       </TabPanel>
     </Box>
