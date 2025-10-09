@@ -1,12 +1,12 @@
-import { Alert, Box, Button } from "@mui/material";
-import { PersonAdd } from "@mui/icons-material";
-import EditableCell from "./EditableCell/EditableCell";
+import { Alert, Box, Button } from '@mui/material';
+import { PersonAdd } from '@mui/icons-material';
+import EditableCell from './EditableCell/EditableCell';
 
-import { Form, Table } from "antd";
-import Modal from "../../components/Modal/Modal";
-import NewRoleForm from "./NewRoleForm/NewRoleForm";
-import ModalHeader from "./ModalHeader/ModalHeader";
-import useRolesData from "../../hooks/useRolesData";
+import { Form, Table } from 'antd';
+import Modal from '../../components/Modal/Modal';
+import NewRoleForm from './NewRoleForm/NewRoleForm';
+import ModalHeader from './ModalHeader/ModalHeader';
+import useRolesData from '../../hooks/useRolesData';
 
 const Roles = () => {
   const {
@@ -27,12 +27,12 @@ const Roles = () => {
     permissions,
   } = useRolesData();
 
-  if (isError) return <Alert severity="error">{error}</Alert>;
+  if (isError) return <Alert severity="error">{error.message || 'Փորձեք ավելի ուշ'}</Alert>;
 
   return (
     <Box
       sx={{
-        padding: "30px 10px",
+        padding: '30px 10px',
       }}
     >
       <Button
