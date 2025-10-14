@@ -1,11 +1,10 @@
+import { memo } from 'react';
 import { Container, Stack, Alert as MuiAlert } from '@mui/material';
 
 import SearchBody from '../../../components/search/SearchBody';
 import SearchHeader from '../../../components/search/SearchHeader';
-import PersonNotFound from '../../../components/notFound/PersonNotFound';
 import SavedSearchTag from '../../../components/SavedSearchTag/SavedSearchTag';
 import SearchPageSkileton from '../../../components/searchPageSkileton/SearchPageSkileton';
-import { initialFilterProps } from '../SearchPage.constants';
 
 const BprSearchTab = ({
   error,
@@ -18,7 +17,6 @@ const BprSearchTab = ({
   setFilters,
   currentPage,
   filterProps,
-  filterCounts,
   handleTagClick,
   setFilterProps,
   setSearchParams,
@@ -65,21 +63,18 @@ const BprSearchTab = ({
       )}
       {isInitialLoading ? (
         <SearchPageSkileton />
-      ) : !persons ? null : persons?.length === 0 ? (
-        <PersonNotFound />
-      ) : (
+      ) : !persons ? null : (
         <SearchBody
           persons={persons}
-          currentPage={currentPage}
+          filters={filters}
           changePage={changePage}
           totalCount={totalCount}
-          filters={filters}
           setFilters={setFilters}
-          filterCounts={filterCounts}
+          currentPage={currentPage}
         />
       )}
     </>
   );
 };
 
-export default BprSearchTab;
+export default memo(BprSearchTab);

@@ -5,4 +5,7 @@ export const initialFilterProps = {
   birthDate: '',
   patronomicName: '',
   documentNumber: '',
+  age: { min: null, max: null },
+  gender: '',
+  marz: '',
 };

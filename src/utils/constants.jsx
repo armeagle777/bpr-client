@@ -111,25 +111,6 @@ export const bprDocumentTypes = {
 
 export const perPageCount = 10;
 
-export const filterDefaultObj = {
-  age: {},
-  gender: { maleCount: 0, femaleCount: 0 },
-  region: {
-    yerevan: 0,
-    aragatsotn: 0,
-    ararat: 0,
-    armavir: 0,
-    gegharquniq: 0,
-    kotayq: 0,
-    lori: 0,
-    shirak: 0,
-    syuniq: 0,
-    tavush: 0,
-    vayotsDzor: 0,
-    other: 0,
-  },
-};
-
 export const companyDocumentNames = {
   statement: { title: 'ՔԱՂՎԱԾՔ', icon: <DescriptionIcon /> },
   charter: { title: 'ԿԱՆՈՆԱԴՐՈՒԹՅՈՒՆ', icon: <AccountBalanceIcon /> },

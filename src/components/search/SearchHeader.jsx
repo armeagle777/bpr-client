@@ -1,19 +1,36 @@
 import dayjs from 'dayjs';
-import { useEffect, useMemo, useState } from 'react';
-import { Box, Button, Stack, TextField } from '@mui/material';
+import { memo, useEffect, useMemo, useState } from 'react';
+import {
+  Box,
+  Stack,
+  Button,
+  Select,
+  MenuItem,
+  TextField,
+  InputLabel,
+  FormControl,
+} from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { PersonSearch, RestartAlt, Save as SaveAltIcon } from '@mui/icons-material';
 
 const SearchHeader = ({
-  setSearchParams,
   changePage,
   filterProps,
-  setFilterProps,
   onClearButton,
+  setFilterProps,
+  setSearchParams,
   onSaveButtonClick,
 }) => {
   const [isNameRowOpen, setIsNameRowOpen] = useState(!!filterProps.firstName.length);
+
+  useEffect(() => {
+    if (filterProps.firstName.length === 0) {
+      setIsNameRowOpen(false);
+    } else if (filterProps.firstName.length > 0 && !isNameRowOpen) {
+      setIsNameRowOpen(true);
+    }
+  }, [filterProps.firstName]);
 
   const onNameFocus = () => {
     setIsNameRowOpen(true);
@@ -24,14 +41,6 @@ const SearchHeader = ({
       setIsNameRowOpen(false);
     }
   };
-
-  useEffect(() => {
-    if (filterProps.firstName.length === 0) {
-      setIsNameRowOpen(false);
-    } else if (filterProps.firstName.length > 0 && !isNameRowOpen) {
-      setIsNameRowOpen(true);
-    }
-  }, [filterProps.firstName]);
 
   const { ssnDisabled, nameDisabled, docnumDisabled, isSearchBtnActive, isResetBtnDisabled } =
     useMemo(() => {
@@ -62,10 +71,34 @@ const SearchHeader = ({
     setFilterProps({ ...filterProps, [name]: value.trim().toUpperCase() });
   };
 
+  const onAgeChange = (event) => {
+    const ageFilterOptions = { ageFrom: 'min', ageTo: 'max' };
+    const { name, value } = event.target;
+    const newValue = Math.max(Number(value), 0);
+    setFilterProps({
+      ...filterProps,
+      age: { ...filterProps.age, [ageFilterOptions[name]]: newValue },
+    });
+  };
   const handleSubmit = (e) => {
     setSearchParams(filterProps);
     changePage(1);
   };
+
+  const marzes = [
+    { label: 'ԲԼՈՐԸ', value: '' },
+    { label: 'ԵՐԵՎԱՆ', value: 'ԵՐԵՎԱՆ' },
+    { label: 'ԱՐԱԳԱԾՈՏՆ', value: 'ԱՐԱԳԱԾՈՏՆ' },
+    { label: 'ԱՐԱՐԱՏ', value: 'ԱՐԱՐԱՏ' },
+    { label: 'ԱՐՄԱՎԻՐ', value: 'ԱՐՄԱՎԻՐ' },
+    { label: 'ԳԵՂԱՐՔՈՒՆԻՔ', value: 'ԳԵՂԱՐՔՈՒՆԻՔ' },
+    { label: 'ԿՈՏԱՅՔ', value: 'ԿՈՏԱՅՔ' },
+    { label: 'ԼՈՌԻ', value: 'ԼՈՌԻ' },
+    { label: 'ՇԻՐԱԿ', value: 'ՇԻՐԱԿ' },
+    { label: 'ՍՅՈՒՆԻՔ', value: 'ՍՅՈՒՆԻՔ' },
+    { label: 'ՏԱՎՈՒՇ', value: 'ՏԱՎՈՒՇ' },
+    { label: 'ՎԱՅՈՑ ՁՈՐ', value: 'ՎԱՅՈՑ ՁՈՐ' },
+  ];
 
   return (
     <Stack
@@ -76,11 +109,14 @@ const SearchHeader = ({
         pt: '20px',
       }}
     >
+      {/* FIRST ROW */}
       <Box
         component="form"
         sx={{
           display: 'flex',
           alignItems: 'center',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
           '& .MuiTextField-root': { m: 1, width: '18ch' },
         }}
         noValidate
@@ -137,18 +173,6 @@ const SearchHeader = ({
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
-          {/* <TextField
-
-            type="date"
-            id="birthDate"
-            name="birthDate"
-            label="Ծննդ․ թիվ"
-            InputLabelProps={{
-              shrink: true,
-            }}
-            onChange={onInputChange}
-            value={filterProps.birthDate}
-          /> */}
         </Box>
 
         <TextField
@@ -203,8 +227,70 @@ const SearchHeader = ({
           <SaveAltIcon />
         </Button>
       </Box>
+
+      {/* SECOND ROW */}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          '& .MuiTextField-root': { m: 1, width: '18ch' },
+        }}
+      >
+        <FormControl sx={{ m: 1, width: '20ch' }}>
+          <InputLabel id="marz-label">Մարզ</InputLabel>
+          <Select
+            id="marz"
+            name="marz"
+            label="Մարզ"
+            labelId="marz-label"
+            onChange={onInputChange}
+            value={filterProps.marz || ''}
+          >
+            {marzes.map((marz) => (
+              <MenuItem key={marz.label} value={marz.value}>
+                {marz.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        <TextField
+          label="Տարիք(սկսած)"
+          id="ageFrom"
+          name="ageFrom"
+          type="number"
+          onChange={onAgeChange}
+          value={filterProps.age?.min || ''}
+        />
+        <TextField
+          label="Տարիք(մինչև)"
+          id="ageTo"
+          name="ageTo"
+          type="number"
+          onChange={onAgeChange}
+          value={filterProps.age?.max || ''}
+        />
+
+        <FormControl sx={{ m: 1, width: '20ch' }}>
+          <InputLabel id="gender-label">Սեռ</InputLabel>
+          <Select
+            labelId="gender-label"
+            id="gender"
+            name="gender"
+            value={filterProps?.gender || ''}
+            label="Սեռ"
+            onChange={onInputChange}
+          >
+            <MenuItem value="">Բոլորը</MenuItem>
+            <MenuItem value="MALE">Արական</MenuItem>
+            <MenuItem value="FEMALE">Իգական</MenuItem>
+          </Select>
+        </FormControl>
+      </Box>
     </Stack>
   );
 };
 
-export default SearchHeader;
+export default memo(SearchHeader);

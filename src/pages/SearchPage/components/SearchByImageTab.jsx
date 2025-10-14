@@ -159,7 +159,8 @@ const SearchByImageTab = () => {
         ) : isFetching ? (
           <DataLoader />
         ) : null}
-        {!!data?.length && data.map((person) => <PersonLightDataCard data={person} />)}
+        {!!data?.length &&
+          data.map((person, index) => <PersonLightDataCard key={index} data={person} />)}
       </Stack>
     </Container>
   );

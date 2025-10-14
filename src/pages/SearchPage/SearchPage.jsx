@@ -1,17 +1,16 @@
+import { memo, useState } from 'react';
 import PropTypes from 'prop-types';
-import { memo, useEffect, useState } from 'react';
 import { Box, Tab, Tabs } from '@mui/material';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
 import useLikesData from '../../hooks/useLikesData';
 import BprSearchTab from './components/BprSearchTab';
-import { useQueryClient } from '@tanstack/react-query';
 import CustomTabPanel from './components/CustomTabPanel';
-import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import { initialFilterProps } from './SearchPage.constants';
 import SearchByImageTab from './components/SearchByImageTab';
 import { usePersons } from '../../components/context/persons';
 import { userHasPermission } from '../../utils/helperFunctions';
 import { likeTypesMap, permissionsMap } from '../../utils/constants';
-import { initialFilterProps } from './SearchPage.constants';
 
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
@@ -24,14 +23,11 @@ const SearchPage = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const {
     error,
-    filters,
     persons,
     isError,
     changePage,
     totalCount,
-    setFilters,
     currentPage,
-    filterCounts,
     setSearchParams,
     isInitialLoading,
   } = usePersons();
@@ -40,15 +36,7 @@ const SearchPage = () => {
     likeTypeName: likeTypesMap.bpr.name,
   });
 
-  const queryClient = useQueryClient();
   const user = useAuthUser();
-
-  useEffect(() => {
-    return () => {
-      queryClient.refetchQueries(['search-persons', filters]);
-      setSearchParams({});
-    };
-  }, [setSearchParams, queryClient, filters]);
 
   const handleClearButton = () => {
     setFilterProps(initialFilterProps);
@@ -85,14 +73,11 @@ const SearchPage = () => {
           error={error}
           isError={isError}
           persons={persons}
-          filters={filters}
           likesData={likesData}
-          setFilters={setFilters}
           totalCount={totalCount}
           changePage={changePage}
           currentPage={currentPage}
           filterProps={filterProps}
-          filterCounts={filterCounts}
           handleTagClick={handleTagClick}
           setFilterProps={setFilterProps}
           setSearchParams={setSearchParams}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import {
@@ -513,4 +513,4 @@ const PersonInfoPage = ({ personInfo }) => {
   );
 };
 
-export default PersonInfoPage;
+export default memo(PersonInfoPage);
