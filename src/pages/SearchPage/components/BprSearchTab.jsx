@@ -11,11 +11,15 @@ const BprSearchTab = ({
   isError,
   persons,
   filters,
+  regions,
   likesData,
   changePage,
   totalCount,
   setFilters,
   currentPage,
+  communities,
+  settlements,
+  settlementsFetching,
   filterProps,
   handleTagClick,
   setFilterProps,
@@ -23,6 +27,7 @@ const BprSearchTab = ({
   isInitialLoading,
   handleSaveButton,
   handleClearButton,
+  communitiesFetching,
 }) => {
   if (isError) {
     return <MuiAlert severity="error">{error.response?.data?.message || error.message}</MuiAlert>;
@@ -38,12 +43,17 @@ const BprSearchTab = ({
         }}
       >
         <SearchHeader
+          regions={regions}
           changePage={changePage}
+          communities={communities}
           filterProps={filterProps}
+          settlements={settlements}
+          settlementsFetching={settlementsFetching}
           setFilterProps={setFilterProps}
           setSearchParams={setSearchParams}
           onClearButton={handleClearButton}
           onSaveButtonClick={handleSaveButton}
+          communitiesFetching={communitiesFetching}
         />
       </Stack>
       {likesData?.length > 0 && (

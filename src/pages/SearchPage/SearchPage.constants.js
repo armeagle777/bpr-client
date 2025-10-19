@@ -7,5 +7,7 @@ export const initialFilterProps = {
   documentNumber: '',
   age: { min: null, max: null },
   gender: '',
-  marz: '',
+  region: '',
+  community: '',
+  settlement: '',
 };

@@ -9,21 +9,28 @@ import {
   TextField,
   InputLabel,
   FormControl,
+  Autocomplete,
 } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { PersonSearch, RestartAlt, Save as SaveAltIcon } from '@mui/icons-material';
+import CommunityAutocomplete from '../CommunityAutocomplete/CommunityAutocomplete';
+import SettlementAutocomplete from '../SettlementAutocomplete/SettlementAutocomplete';
 
 const SearchHeader = ({
+  regions,
   changePage,
+  communities,
+  settlements,
   filterProps,
   onClearButton,
   setFilterProps,
   setSearchParams,
   onSaveButtonClick,
+  communitiesFetching,
+  settlementsFetching,
 }) => {
   const [isNameRowOpen, setIsNameRowOpen] = useState(!!filterProps.firstName.length);
-
   useEffect(() => {
     if (filterProps.firstName.length === 0) {
       setIsNameRowOpen(false);
@@ -71,6 +78,41 @@ const SearchHeader = ({
     setFilterProps({ ...filterProps, [name]: value.trim().toUpperCase() });
   };
 
+  const handleRegionChange = (event) => {
+    const selectedLabel = event.target.value;
+    const selectedRegion = regions.find((r) => r.name === selectedLabel);
+
+    setFilterProps((prev) => ({
+      ...prev,
+      region: selectedRegion
+        ? {
+            label: selectedRegion.name,
+            value: selectedRegion.name,
+            regionId: selectedRegion.id,
+          }
+        : { label: '', value: '', regionId: '' },
+    }));
+  };
+
+  const handleCommunityChange = (event, selectedCommunity) => {
+    setFilterProps((prev) => ({
+      ...prev,
+      community: selectedCommunity
+        ? {
+            label: selectedCommunity.name,
+            value: selectedCommunity.name,
+            communityId: selectedCommunity.id,
+          }
+        : { label: '', value: '', communityId: '' },
+    }));
+  };
+  const handleSettlementChange = (newSettlement) => {
+    setFilterProps((prev) => ({
+      ...prev,
+      settlement: newSettlement?.name || '',
+    }));
+  };
+
   const onAgeChange = (event) => {
     const ageFilterOptions = { ageFrom: 'min', ageTo: 'max' };
     const { name, value } = event.target;
@@ -80,26 +122,11 @@ const SearchHeader = ({
       age: { ...filterProps.age, [ageFilterOptions[name]]: newValue },
     });
   };
+
   const handleSubmit = (e) => {
     setSearchParams(filterProps);
     changePage(1);
   };
-
-  const marzes = [
-    { label: 'ԲԼՈՐԸ', value: '' },
-    { label: 'ԵՐԵՎԱՆ', value: 'ԵՐԵՎԱՆ' },
-    { label: 'ԱՐԱԳԱԾՈՏՆ', value: 'ԱՐԱԳԱԾՈՏՆ' },
-    { label: 'ԱՐԱՐԱՏ', value: 'ԱՐԱՐԱՏ' },
-    { label: 'ԱՐՄԱՎԻՐ', value: 'ԱՐՄԱՎԻՐ' },
-    { label: 'ԳԵՂԱՐՔՈՒՆԻՔ', value: 'ԳԵՂԱՐՔՈՒՆԻՔ' },
-    { label: 'ԿՈՏԱՅՔ', value: 'ԿՈՏԱՅՔ' },
-    { label: 'ԼՈՌԻ', value: 'ԼՈՌԻ' },
-    { label: 'ՇԻՐԱԿ', value: 'ՇԻՐԱԿ' },
-    { label: 'ՍՅՈՒՆԻՔ', value: 'ՍՅՈՒՆԻՔ' },
-    { label: 'ՏԱՎՈՒՇ', value: 'ՏԱՎՈՒՇ' },
-    { label: 'ՎԱՅՈՑ ՁՈՐ', value: 'ՎԱՅՈՑ ՁՈՐ' },
-  ];
-
   return (
     <Stack
       spacing={2}
@@ -239,28 +266,43 @@ const SearchHeader = ({
         }}
       >
         <FormControl sx={{ m: 1, width: '20ch' }}>
-          <InputLabel id="marz-label">Մարզ</InputLabel>
+          <InputLabel id="region-label">Մարզ</InputLabel>
           <Select
-            id="marz"
-            name="marz"
+            id="region"
+            name="region"
             label="Մարզ"
-            labelId="marz-label"
-            onChange={onInputChange}
-            value={filterProps.marz || ''}
+            labelId="region-label"
+            onChange={handleRegionChange}
+            value={filterProps.region?.label || ''}
           >
-            {marzes.map((marz) => (
-              <MenuItem key={marz.label} value={marz.value}>
-                {marz.label}
+            {regions?.map((region) => (
+              <MenuItem key={region.id} value={region.name} data-region-id={region.id}>
+                {region.name}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
-
+        <FormControl sx={{ m: 1, width: '25ch' }}>
+          <CommunityAutocomplete
+            value={filterProps.community?.label || ''}
+            onChange={handleCommunityChange}
+            options={communities}
+            loading={communitiesFetching}
+          />
+        </FormControl>
+        <FormControl sx={{ m: 1, width: '25ch' }}>
+          <SettlementAutocomplete
+            value={filterProps.settlement || ''}
+            onChange={handleSettlementChange}
+            options={settlements}
+            loading={settlementsFetching}
+          />
+        </FormControl>
         <TextField
-          label="Տարիք(սկսած)"
           id="ageFrom"
-          name="ageFrom"
           type="number"
+          name="ageFrom"
+          label="Տարիք(սկսած)"
           onChange={onAgeChange}
           value={filterProps.age?.min || ''}
         />
@@ -276,14 +318,14 @@ const SearchHeader = ({
         <FormControl sx={{ m: 1, width: '20ch' }}>
           <InputLabel id="gender-label">Սեռ</InputLabel>
           <Select
-            labelId="gender-label"
+            label="Սեռ"
             id="gender"
             name="gender"
-            value={filterProps?.gender || ''}
-            label="Սեռ"
+            labelId="gender-label"
             onChange={onInputChange}
+            value={filterProps?.gender || ''}
           >
-            <MenuItem value="">Բոլորը</MenuItem>
+            <MenuItem value="">-Բոլորը-</MenuItem>
             <MenuItem value="MALE">Արական</MenuItem>
             <MenuItem value="FEMALE">Իգական</MenuItem>
           </Select>

@@ -369,6 +369,21 @@ export const getLogTypes = async () => {
   return response.data;
 };
 
+export const getCadastreRegions = async () => {
+  const response = await personsApi.get('/kadastr/options/regions');
+  return response.data;
+};
+
+export const getCadastreCommunities = async (regionId) => {
+  const response = await personsApi.get(`/kadastr/options/communities?regionId=${regionId}`);
+  return response.data;
+};
+
+export const getCadastreSettlements = async (communityId) => {
+  const response = await personsApi.get(`/kadastr/options/settlements?communityId=${communityId}`);
+  return response.data;
+};
+
 export const searchPersonByImage = async (imageBase64) => {
   const response = await personsApi.post('/ic/persons/by-image', { imageBase64 });
   return response.data;

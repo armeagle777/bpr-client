@@ -10,7 +10,10 @@ import { initialFilterProps } from './SearchPage.constants';
 import SearchByImageTab from './components/SearchByImageTab';
 import { usePersons } from '../../components/context/persons';
 import { userHasPermission } from '../../utils/helperFunctions';
+import useCadastreRegions from '../../hooks/useCadastreRegions';
 import { likeTypesMap, permissionsMap } from '../../utils/constants';
+import useCadastreCommunities from '../../hooks/useCadastreCommunities';
+import useCadastreSettlements from '../../hooks/useCadastreSettlements';
 
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
@@ -31,6 +34,13 @@ const SearchPage = () => {
     setSearchParams,
     isInitialLoading,
   } = usePersons();
+  const { regions } = useCadastreRegions({ enabled: true });
+  const { communities, isFetching: communitiesFetching } = useCadastreCommunities({
+    regionId: filterProps?.region?.regionId,
+  });
+  const { settlements, isFetching: settlementsFetching } = useCadastreSettlements({
+    communityId: filterProps?.community?.communityId,
+  });
 
   const { onLikeCreate, data: likesData } = useLikesData({
     likeTypeName: likeTypesMap.bpr.name,
@@ -73,9 +83,12 @@ const SearchPage = () => {
           error={error}
           isError={isError}
           persons={persons}
+          regions={regions}
           likesData={likesData}
           totalCount={totalCount}
           changePage={changePage}
+          communities={communities}
+          settlements={settlements}
           currentPage={currentPage}
           filterProps={filterProps}
           handleTagClick={handleTagClick}
@@ -84,6 +97,8 @@ const SearchPage = () => {
           isInitialLoading={isInitialLoading}
           handleSaveButton={handleSaveButton}
           handleClearButton={handleClearButton}
+          settlementsFetching={settlementsFetching}
+          communitiesFetching={communitiesFetching}
         />
       </CustomTabPanel>
       <CustomTabPanel value={selectedTab} index={1}>
