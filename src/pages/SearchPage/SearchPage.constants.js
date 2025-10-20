@@ -10,4 +10,7 @@ export const initialFilterProps = {
   region: '',
   community: '',
   settlement: '',
+  street: '',
+  building: '',
+  apartment: '',
 };

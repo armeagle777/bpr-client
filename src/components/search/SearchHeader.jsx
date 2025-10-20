@@ -299,6 +299,30 @@ const SearchHeader = ({
           />
         </FormControl>
         <TextField
+          type="search"
+          id="street"
+          name="street"
+          label="Փողոցը"
+          onChange={onInputChange}
+          value={filterProps.street || ''}
+        />
+        <TextField
+          id="building"
+          type="number"
+          name="building"
+          label="Տուն"
+          onChange={onInputChange}
+          value={filterProps.building || ''}
+        />
+        <TextField
+          id="apartment"
+          type="number"
+          name="apartment"
+          label="Բնակ"
+          onChange={onInputChange}
+          value={filterProps.apartment || ''}
+        />
+        <TextField
           id="ageFrom"
           type="number"
           name="ageFrom"
