@@ -14,21 +14,14 @@ import {
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { PersonSearch, RestartAlt, Save as SaveAltIcon } from '@mui/icons-material';
-import CommunityAutocomplete from '../CommunityAutocomplete/CommunityAutocomplete';
-import SettlementAutocomplete from '../SettlementAutocomplete/SettlementAutocomplete';
 
 const SearchHeader = ({
-  regions,
   changePage,
-  communities,
-  settlements,
   filterProps,
   onClearButton,
   setFilterProps,
   setSearchParams,
   onSaveButtonClick,
-  communitiesFetching,
-  settlementsFetching,
 }) => {
   const [isNameRowOpen, setIsNameRowOpen] = useState(!!filterProps.firstName.length);
   useEffect(() => {
@@ -78,40 +71,6 @@ const SearchHeader = ({
     setFilterProps({ ...filterProps, [name]: value.trim().toUpperCase() });
   };
 
-  const handleRegionChange = (event) => {
-    const selectedLabel = event.target.value;
-    const selectedRegion = regions.find((r) => r.name === selectedLabel);
-
-    setFilterProps((prev) => ({
-      ...prev,
-      region: selectedRegion
-        ? {
-            label: selectedRegion.name,
-            value: selectedRegion.name,
-            regionId: selectedRegion.id,
-          }
-        : { label: '', value: '', regionId: '' },
-    }));
-  };
-
-  const handleCommunityChange = (event, selectedCommunity) => {
-    setFilterProps((prev) => ({
-      ...prev,
-      community: selectedCommunity
-        ? {
-            label: selectedCommunity.name,
-            value: selectedCommunity.name,
-            communityId: selectedCommunity.id,
-          }
-        : { label: '', value: '', communityId: '' },
-    }));
-  };
-  const handleSettlementChange = (newSettlement) => {
-    setFilterProps((prev) => ({
-      ...prev,
-      settlement: newSettlement?.name || '',
-    }));
-  };
 
   const onAgeChange = (event) => {
     const ageFilterOptions = { ageFrom: 'min', ageTo: 'max' };
@@ -255,91 +214,57 @@ const SearchHeader = ({
         </Button>
       </Box>
 
-      {/* SECOND ROW */}
+      {/* SECOND ROW - Age and Gender Filters */}
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
           flexWrap: 'wrap',
           justifyContent: 'center',
-          '& .MuiTextField-root': { m: 1, width: '18ch' },
+          gap: 2,
+          '& .MuiTextField-root': { width: '18ch' },
+          '& .MuiFormControl-root': { width: '20ch' },
         }}
       >
-        <FormControl sx={{ m: 1, width: '20ch' }}>
-          <InputLabel id="region-label">Մարզ</InputLabel>
-          <Select
-            id="region"
-            name="region"
-            label="Մարզ"
-            labelId="region-label"
-            onChange={handleRegionChange}
-            value={filterProps.region?.label || ''}
-          >
-            {regions?.map((region) => (
-              <MenuItem key={region.id} value={region.name} data-region-id={region.id}>
-                {region.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl sx={{ m: 1, width: '25ch' }}>
-          <CommunityAutocomplete
-            value={filterProps.community?.label || ''}
-            onChange={handleCommunityChange}
-            options={communities}
-            loading={communitiesFetching}
+        {/* Age Range Filter */}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            p: 1,
+            border: '1px solid #e0e0e0',
+            borderRadius: 1,
+            backgroundColor: '#fafafa',
+          }}
+        >
+          <TextField
+            id="ageFrom"
+            type="number"
+            name="ageFrom"
+            label="Տարիքից"
+            onChange={onAgeChange}
+            value={filterProps.age?.min || ''}
+            size="small"
+            sx={{ width: '80px' }}
+            inputProps={{ min: 0, max: 120 }}
           />
-        </FormControl>
-        <FormControl sx={{ m: 1, width: '25ch' }}>
-          <SettlementAutocomplete
-            value={filterProps.settlement || ''}
-            onChange={handleSettlementChange}
-            options={settlements}
-            loading={settlementsFetching}
+          <Box sx={{ color: '#666', fontSize: '14px' }}>մինչև</Box>
+          <TextField
+            label="Տարիքը"
+            id="ageTo"
+            name="ageTo"
+            type="number"
+            onChange={onAgeChange}
+            value={filterProps.age?.max || ''}
+            size="small"
+            sx={{ width: '80px' }}
+            inputProps={{ min: 0, max: 120 }}
           />
-        </FormControl>
-        <TextField
-          type="search"
-          id="street"
-          name="street"
-          label="Փողոցը"
-          onChange={onInputChange}
-          value={filterProps.street || ''}
-        />
-        <TextField
-          id="building"
-          type="number"
-          name="building"
-          label="Տուն"
-          onChange={onInputChange}
-          value={filterProps.building || ''}
-        />
-        <TextField
-          id="apartment"
-          type="number"
-          name="apartment"
-          label="Բնակ"
-          onChange={onInputChange}
-          value={filterProps.apartment || ''}
-        />
-        <TextField
-          id="ageFrom"
-          type="number"
-          name="ageFrom"
-          label="Տարիք(սկսած)"
-          onChange={onAgeChange}
-          value={filterProps.age?.min || ''}
-        />
-        <TextField
-          label="Տարիք(մինչև)"
-          id="ageTo"
-          name="ageTo"
-          type="number"
-          onChange={onAgeChange}
-          value={filterProps.age?.max || ''}
-        />
+        </Box>
 
-        <FormControl sx={{ m: 1, width: '20ch' }}>
+        {/* Gender Filter */}
+        <FormControl size="small">
           <InputLabel id="gender-label">Սեռ</InputLabel>
           <Select
             label="Սեռ"
@@ -348,6 +273,7 @@ const SearchHeader = ({
             labelId="gender-label"
             onChange={onInputChange}
             value={filterProps?.gender || ''}
+            sx={{ minWidth: '120px' }}
           >
             <MenuItem value="">-Բոլորը-</MenuItem>
             <MenuItem value="MALE">Արական</MenuItem>
