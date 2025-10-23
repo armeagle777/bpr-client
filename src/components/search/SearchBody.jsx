@@ -5,11 +5,20 @@ import SearchRow from './SearchRow';
 import { perPageCount } from '../../utils/constants';
 import { countForFilter } from '../../utils/configs';
 import PersonNotFound from '../notFound/PersonNotFound';
+import SearchAside from './SearchAside';
 
 const SearchBody = ({ persons, currentPage, changePage, totalCount }) => {
   const showExtended = totalCount >= countForFilter;
   return (
     <Stack direction="row" spacing={1} sx={{ justifyContent: 'center', pt: 2 }}>
+      <SearchAside
+        filters={filters}
+        setFilters={setFilters}
+        showExtended={showExtended}
+        persons={persons}
+        filterCounts={filterCounts}
+        disabled={filtersDisabled}
+      />
       <Divider orientation="vertical" variant="middle" flexItem />
       <Stack spacing={1} sx={{ width: '80%', px: 2, pb: 4, alignItems: 'center' }}>
         {!persons?.length ? (
