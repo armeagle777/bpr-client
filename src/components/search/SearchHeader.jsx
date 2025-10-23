@@ -215,7 +215,7 @@ const SearchHeader = ({
       </Box>
 
       {/* SECOND ROW - Age and Gender Filters */}
-      <Box
+      {/* <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -226,7 +226,6 @@ const SearchHeader = ({
           '& .MuiFormControl-root': { width: '20ch' },
         }}
       >
-        {/* Age Range Filter */}
         <Box
           sx={{
             display: 'flex',
@@ -263,7 +262,6 @@ const SearchHeader = ({
           />
         </Box>
 
-        {/* Gender Filter */}
         <FormControl size="small">
           <InputLabel id="gender-label">Սեռ</InputLabel>
           <Select
@@ -280,7 +278,7 @@ const SearchHeader = ({
             <MenuItem value="FEMALE">Իգական</MenuItem>
           </Select>
         </FormControl>
-      </Box>
+      </Box> */}
     </Stack>
   );
 };
