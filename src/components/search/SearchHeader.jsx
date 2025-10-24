@@ -16,6 +16,8 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { PersonSearch, RestartAlt, Save as SaveAltIcon } from '@mui/icons-material';
 
 const SearchHeader = ({
+  onInputChange,
+  handleSearchSubmit,
   changePage,
   filterProps,
   onClearButton,
@@ -66,26 +68,6 @@ const SearchHeader = ({
       };
     }, [filterProps]);
 
-  const onInputChange = (event) => {
-    const { name, value } = event.target;
-    setFilterProps({ ...filterProps, [name]: value.trim().toUpperCase() });
-  };
-
-
-  const onAgeChange = (event) => {
-    const ageFilterOptions = { ageFrom: 'min', ageTo: 'max' };
-    const { name, value } = event.target;
-    const newValue = Math.max(Number(value), 0);
-    setFilterProps({
-      ...filterProps,
-      age: { ...filterProps.age, [ageFilterOptions[name]]: newValue },
-    });
-  };
-
-  const handleSubmit = (e) => {
-    setSearchParams(filterProps);
-    changePage(1);
-  };
   return (
     <Stack
       spacing={2}
@@ -185,7 +167,7 @@ const SearchHeader = ({
           sx={{ py: 2 }}
           color="primary"
           variant="contained"
-          onClick={handleSubmit}
+          onClick={handleSearchSubmit}
           disabled={!isSearchBtnActive}
         >
           <PersonSearch />

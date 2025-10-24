@@ -10,12 +10,13 @@ const BprSearchTab = ({
   error,
   isError,
   persons,
-  filters,
   regions,
   likesData,
   changePage,
   totalCount,
-  setFilters,
+  onInputChange,
+  onAgeChange,
+  handleSearchSubmit,
   currentPage,
   communities,
   settlements,
@@ -43,6 +44,9 @@ const BprSearchTab = ({
         }}
       >
         <SearchHeader
+          onInputChange={onInputChange}
+          onAgeChange={onAgeChange}
+          handleSearchSubmit={handleSearchSubmit}
           regions={regions}
           changePage={changePage}
           communities={communities}
@@ -75,12 +79,16 @@ const BprSearchTab = ({
         <SearchPageSkileton />
       ) : !persons ? null : (
         <SearchBody
+          onInputChange={onInputChange}
+          onAgeChange={onAgeChange}
+          handleSearchSubmit={handleSearchSubmit}
           persons={persons}
-          filters={filters}
+          filterProps={filterProps}
           changePage={changePage}
           totalCount={totalCount}
-          setFilters={setFilters}
+          setFilters={setFilterProps}
           currentPage={currentPage}
+          isLoading={isInitialLoading}
         />
       )}
     </>

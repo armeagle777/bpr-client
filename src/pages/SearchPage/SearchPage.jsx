@@ -67,6 +67,26 @@ const SearchPage = () => {
     setFilterProps({ ...initialFilterProps, ...savedProps });
   };
 
+  const onInputChange = (event) => {
+    const { name, value } = event.target;
+    setFilterProps({ ...filterProps, [name]: value.trim().toUpperCase() });
+  };
+
+  const onAgeChange = (event) => {
+    const ageFilterOptions = { ageFrom: 'min', ageTo: 'max' };
+    const { name, value } = event.target;
+    const newValue = Math.max(Number(value), 0);
+    setFilterProps({
+      ...filterProps,
+      age: { ...filterProps.age, [ageFilterOptions[name]]: newValue },
+    });
+  };
+
+  const handleSearchSubmit = (e) => {
+    setSearchParams(filterProps);
+    changePage(1);
+  };
+
   return (
     <>
       <Box sx={{ paddingTop: 2, paddingLeft: 2 }}>
@@ -84,6 +104,9 @@ const SearchPage = () => {
           isError={isError}
           persons={persons}
           regions={regions}
+          onInputChange={onInputChange}
+          onAgeChange={onAgeChange}
+          handleSearchSubmit={handleSearchSubmit}
           likesData={likesData}
           totalCount={totalCount}
           changePage={changePage}
