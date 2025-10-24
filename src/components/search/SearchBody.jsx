@@ -9,15 +9,14 @@ import SearchAside from './SearchAside';
 
 const SearchBody = ({
   persons,
-  currentPage,
-  changePage,
-  totalCount,
-  filterProps,
-  setFilters,
-  onInputChange,
-  onAgeChange,
-  handleSearchSubmit,
   isLoading,
+  totalCount,
+  changePage,
+  onAgeChange,
+  currentPage,
+  filterProps,
+  onInputChange,
+  handleSearchSubmit,
 }) => {
   const filtersDisabled = !persons || (!areFiltersUsed(filterProps) && !persons?.length);
   const showExtended = totalCount >= countForFilter;

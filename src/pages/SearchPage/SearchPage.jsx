@@ -1,4 +1,5 @@
 import { memo, useState } from 'react';
+import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import { Box, Tab, Tabs } from '@mui/material';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
@@ -82,6 +83,13 @@ const SearchPage = () => {
     });
   };
 
+  const handleBirthDateChange = (newValue) => {
+    const formattedDate = newValue ? dayjs(newValue).format('DD/MM/YYYY') : '';
+    onInputChange({
+      target: { name: 'birthDate', value: formattedDate },
+    });
+  };
+
   const handleSearchSubmit = (e) => {
     setSearchParams(filterProps);
     changePage(1);
@@ -104,9 +112,6 @@ const SearchPage = () => {
           isError={isError}
           persons={persons}
           regions={regions}
-          onInputChange={onInputChange}
-          onAgeChange={onAgeChange}
-          handleSearchSubmit={handleSearchSubmit}
           likesData={likesData}
           totalCount={totalCount}
           changePage={changePage}
@@ -114,12 +119,14 @@ const SearchPage = () => {
           settlements={settlements}
           currentPage={currentPage}
           filterProps={filterProps}
+          onAgeChange={onAgeChange}
+          onInputChange={onInputChange}
           handleTagClick={handleTagClick}
-          setFilterProps={setFilterProps}
-          setSearchParams={setSearchParams}
           isInitialLoading={isInitialLoading}
           handleSaveButton={handleSaveButton}
           handleClearButton={handleClearButton}
+          handleSearchSubmit={handleSearchSubmit}
+          onBirthDateChange={handleBirthDateChange}
           settlementsFetching={settlementsFetching}
           communitiesFetching={communitiesFetching}
         />

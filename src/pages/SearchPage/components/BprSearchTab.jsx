@@ -14,20 +14,19 @@ const BprSearchTab = ({
   likesData,
   changePage,
   totalCount,
-  onInputChange,
   onAgeChange,
-  handleSearchSubmit,
   currentPage,
   communities,
   settlements,
-  settlementsFetching,
   filterProps,
+  onInputChange,
   handleTagClick,
-  setFilterProps,
-  setSearchParams,
   isInitialLoading,
   handleSaveButton,
   handleClearButton,
+  onBirthDateChange,
+  handleSearchSubmit,
+  settlementsFetching,
   communitiesFetching,
 }) => {
   if (isError) {
@@ -44,19 +43,17 @@ const BprSearchTab = ({
         }}
       >
         <SearchHeader
-          onInputChange={onInputChange}
-          onAgeChange={onAgeChange}
-          handleSearchSubmit={handleSearchSubmit}
           regions={regions}
-          changePage={changePage}
           communities={communities}
           filterProps={filterProps}
+          onAgeChange={onAgeChange}
           settlements={settlements}
-          settlementsFetching={settlementsFetching}
-          setFilterProps={setFilterProps}
-          setSearchParams={setSearchParams}
+          onInputChange={onInputChange}
           onClearButton={handleClearButton}
           onSaveButtonClick={handleSaveButton}
+          onBirthDateChange={onBirthDateChange}
+          handleSearchSubmit={handleSearchSubmit}
+          settlementsFetching={settlementsFetching}
           communitiesFetching={communitiesFetching}
         />
       </Stack>
@@ -79,16 +76,15 @@ const BprSearchTab = ({
         <SearchPageSkileton />
       ) : !persons ? null : (
         <SearchBody
-          onInputChange={onInputChange}
-          onAgeChange={onAgeChange}
-          handleSearchSubmit={handleSearchSubmit}
           persons={persons}
-          filterProps={filterProps}
           changePage={changePage}
           totalCount={totalCount}
-          setFilters={setFilterProps}
+          onAgeChange={onAgeChange}
+          filterProps={filterProps}
           currentPage={currentPage}
           isLoading={isInitialLoading}
+          onInputChange={onInputChange}
+          handleSearchSubmit={handleSearchSubmit}
         />
       )}
     </>

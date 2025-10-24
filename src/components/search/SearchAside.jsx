@@ -13,17 +13,15 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
-import Checkbox from '../checkbox/Checkbox';
-
 const SearchAside = ({
-  showExtended,
-  filterProps,
   // filterCounts,
   disabled,
-  onInputChange,
-  onAgeChange,
-  handleSearchSubmit,
   isLoading,
+  filterProps,
+  onAgeChange,
+  showExtended,
+  onInputChange,
+  handleSearchSubmit,
 }) => {
   return (
     <Stack sx={{ width: '15%' }}>

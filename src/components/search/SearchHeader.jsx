@@ -16,16 +16,15 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { PersonSearch, RestartAlt, Save as SaveAltIcon } from '@mui/icons-material';
 
 const SearchHeader = ({
-  onInputChange,
-  handleSearchSubmit,
-  changePage,
   filterProps,
+  onInputChange,
   onClearButton,
-  setFilterProps,
-  setSearchParams,
   onSaveButtonClick,
+  onBirthDateChange,
+  handleSearchSubmit,
 }) => {
   const [isNameRowOpen, setIsNameRowOpen] = useState(!!filterProps.firstName.length);
+
   useEffect(() => {
     if (filterProps.firstName.length === 0) {
       setIsNameRowOpen(false);
@@ -72,18 +71,17 @@ const SearchHeader = ({
     <Stack
       spacing={2}
       sx={{
+        pt: '20px',
         width: '100%',
         alignItems: 'center',
-        pt: '20px',
       }}
     >
-      {/* FIRST ROW */}
       <Box
         component="form"
         sx={{
           display: 'flex',
-          alignItems: 'center',
           flexWrap: 'wrap',
+          alignItems: 'center',
           justifyContent: 'center',
           '& .MuiTextField-root': { m: 1, width: '18ch' },
         }}
@@ -95,19 +93,19 @@ const SearchHeader = ({
           type="search"
           id="firstName"
           name="firstName"
+          onBlur={onNameBlur}
+          onFocus={onNameFocus}
+          disabled={nameDisabled}
           onChange={onInputChange}
           value={filterProps.firstName}
-          onFocus={onNameFocus}
-          onBlur={onNameBlur}
-          disabled={nameDisabled}
         />
 
         <Box
           sx={{
-            width: isNameRowOpen ? '540px' : 0,
             display: 'flex',
-            flexDirection: 'row',
             overflow: 'hidden',
+            flexDirection: 'row',
+            width: isNameRowOpen ? '540px' : 0,
             transition: 'width 1.3s ease-in-out',
           }}
         >
@@ -130,14 +128,9 @@ const SearchHeader = ({
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
               label="Ծննդ․ թիվ"
-              value={filterProps.birthDate ? dayjs(filterProps.birthDate, 'DD/MM/YYYY') : null}
-              onChange={(newValue) => {
-                const formattedDate = newValue ? dayjs(newValue).format('DD/MM/YYYY') : '';
-                onInputChange({
-                  target: { name: 'birthDate', value: formattedDate },
-                });
-              }}
               format="DD/MM/YYYY"
+              onChange={onBirthDateChange}
+              value={filterProps.birthDate ? dayjs(filterProps.birthDate, 'DD/MM/YYYY') : null}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
@@ -149,8 +142,8 @@ const SearchHeader = ({
           id="documentNumber"
           name="documentNumber"
           onChange={onInputChange}
-          value={filterProps.documentNumber}
           disabled={docnumDisabled}
+          value={filterProps.documentNumber}
         />
         <TextField
           id="ssn"
@@ -174,93 +167,27 @@ const SearchHeader = ({
         </Button>
         <Button
           size="large"
-          sx={{ py: 2, ml: 1 }}
           color="error"
           title="Մաքրել"
           variant="contained"
-          disabled={isResetBtnDisabled}
+          sx={{ py: 2, ml: 1 }}
           onClick={onClearButton}
+          disabled={isResetBtnDisabled}
         >
           <RestartAlt />
         </Button>
         <Button
           size="large"
-          sx={{ py: 2, ml: 1 }}
           color="info"
           title="Պահպանել"
           variant="contained"
+          sx={{ py: 2, ml: 1 }}
           disabled={isResetBtnDisabled}
           onClick={onSaveButtonClick}
         >
           <SaveAltIcon />
         </Button>
       </Box>
-
-      {/* SECOND ROW - Age and Gender Filters */}
-      {/* <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          gap: 2,
-          '& .MuiTextField-root': { width: '18ch' },
-          '& .MuiFormControl-root': { width: '20ch' },
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-            p: 1,
-            border: '1px solid #e0e0e0',
-            borderRadius: 1,
-            backgroundColor: '#fafafa',
-          }}
-        >
-          <TextField
-            id="ageFrom"
-            type="number"
-            name="ageFrom"
-            label="Տարիքից"
-            onChange={onAgeChange}
-            value={filterProps.age?.min || ''}
-            size="small"
-            sx={{ width: '80px' }}
-            inputProps={{ min: 0, max: 120 }}
-          />
-          <Box sx={{ color: '#666', fontSize: '14px' }}>մինչև</Box>
-          <TextField
-            label="Տարիքը"
-            id="ageTo"
-            name="ageTo"
-            type="number"
-            onChange={onAgeChange}
-            value={filterProps.age?.max || ''}
-            size="small"
-            sx={{ width: '80px' }}
-            inputProps={{ min: 0, max: 120 }}
-          />
-        </Box>
-
-        <FormControl size="small">
-          <InputLabel id="gender-label">Սեռ</InputLabel>
-          <Select
-            label="Սեռ"
-            id="gender"
-            name="gender"
-            labelId="gender-label"
-            onChange={onInputChange}
-            value={filterProps?.gender || ''}
-            sx={{ minWidth: '120px' }}
-          >
-            <MenuItem value="">-Բոլորը-</MenuItem>
-            <MenuItem value="MALE">Արական</MenuItem>
-            <MenuItem value="FEMALE">Իգական</MenuItem>
-          </Select>
-        </FormControl>
-      </Box> */}
     </Stack>
   );
 };
