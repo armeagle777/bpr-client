@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from "react";
+import { memo, useMemo, useState } from 'react';
 import {
   Box,
   Card,
@@ -15,17 +15,17 @@ import {
   IconButton,
   Stack,
   Paper,
-} from "@mui/material";
+} from '@mui/material';
 import {
   Circle as CircleIcon,
   Person as PersonIcon,
   ExpandMore as ExpandMoreIcon,
   Close as CloseIcon,
-} from "@mui/icons-material";
-import { useInView } from "react-intersection-observer";
+} from '@mui/icons-material';
+import { useInView } from 'react-intersection-observer';
 
-import useFetchPerson from "../../../hooks/useFetchPerson";
-import { getBestPhoto } from "../TaxEmployeesTab.helpers";
+import useFetchPerson from '../../../hooks/useFetchPerson';
+import { getBestPhoto } from '../TaxEmployeesTab.helpers';
 
 const EmployeeCard = ({ data }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -37,14 +37,10 @@ const EmployeeCard = ({ data }) => {
   const { personalinfo, positions, isActiveEmployee } = data;
   const { firstname, lastname, birthdate, ssn } = personalinfo;
 
-  const {
-    data: personBprData,
-    isError,
-    isLoading,
-  } = useFetchPerson(ssn, inView);
+  const { data: personBprData, isError, isLoading } = useFetchPerson(ssn, inView);
 
   const documents = personBprData?.documents;
-  const imageUrl = getBestPhoto(documents) || "";
+  const imageUrl = getBestPhoto(documents) || '';
 
   const handleCardClick = () => {
     setDrawerOpen(true);
@@ -61,21 +57,16 @@ const EmployeeCard = ({ data }) => {
         maxWidth: 340,
         borderRadius: 3,
         boxShadow: 3,
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
       }}
     >
       {/* Profile Image */}
-      <Box sx={{ p: 2, position: "relative" }}>
+      <Box sx={{ p: 2, position: 'relative' }}>
         {isLoading ? (
-          <Skeleton
-            variant="rounded"
-            width={150}
-            height={150}
-            sx={{ borderRadius: 2 }}
-          />
+          <Skeleton variant="rounded" width={150} height={150} sx={{ borderRadius: 2 }} />
         ) : (
           <Avatar
             src={imageUrl}
@@ -100,12 +91,12 @@ const EmployeeCard = ({ data }) => {
             label="Active"
             size="small"
             sx={{
-              position: "absolute",
+              position: 'absolute',
               top: 10,
               right: 10,
-              color: "green",
-              bgcolor: "white",
-              fontWeight: "bold",
+              color: 'green',
+              bgcolor: 'white',
+              fontWeight: 'bold',
             }}
           />
         )}
@@ -114,24 +105,16 @@ const EmployeeCard = ({ data }) => {
       {/* Info */}
       <CardContent
         sx={{
-          textAlign: "center",
+          textAlign: 'center',
           pb: 1,
-          cursor: "pointer",
+          cursor: 'pointer',
         }}
         onClick={handleCardClick}
       >
-        <Typography
-          variant="h6"
-          fontWeight="bold"
-          sx={{ textTransform: "uppercase", mb: 1 }}
-        >
+        <Typography variant="h6" fontWeight="bold" sx={{ textTransform: 'uppercase', mb: 1 }}>
           {firstname}
         </Typography>
-        <Typography
-          variant="h6"
-          fontWeight="bold"
-          sx={{ textTransform: "uppercase", mb: 1 }}
-        >
+        <Typography variant="h6" fontWeight="bold" sx={{ textTransform: 'uppercase', mb: 1 }}>
           {lastname}
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
@@ -141,7 +124,7 @@ const EmployeeCard = ({ data }) => {
 
       {/* Accordion for Positions */}
 
-      <Accordion sx={{ width: "100%", boxShadow: "none" }}>
+      <Accordion sx={{ width: '100%', boxShadow: 'none' }}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <Typography variant="subtitle1" fontWeight="bold">
             Դրույքներ
@@ -154,14 +137,14 @@ const EmployeeCard = ({ data }) => {
                 {pos.positionname}
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                {pos.startdate} – {pos.enddate || "Հիմա"}
+                {pos.startdate} – {pos.enddate || 'Հիմա'}
               </Typography>
             </Box>
           ))}
         </AccordionDetails>
       </Accordion>
 
-      <Divider sx={{ width: "100%" }} />
+      <Divider sx={{ width: '100%' }} />
 
       {/* Drawer */}
       <Drawer
@@ -170,18 +153,13 @@ const EmployeeCard = ({ data }) => {
         onClose={handleCloseDrawer}
         PaperProps={{
           sx: {
-            width: { xs: "100%", sm: 600, md: 800 },
+            width: { xs: '100%', sm: 600, md: 800 },
           },
         }}
       >
         <Box sx={{ p: 3 }}>
           {/* Header */}
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{ mb: 3 }}
-          >
+          <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
             <Typography variant="h5" fontWeight="bold" color="primary">
               Աշխատակցի Վերաբերյալ Տեղեկատվություն
             </Typography>
@@ -220,7 +198,7 @@ const EmployeeCard = ({ data }) => {
                 Փաստաթղթեր
               </Typography>
               {personBprData.documents.map((doc, idx) => (
-                <Box key={idx} sx={{ mb: 2, p: 2, bgcolor: "grey.50" }}>
+                <Box key={idx} sx={{ mb: 2, p: 2 }}>
                   <Typography variant="subtitle2" fontWeight="bold">
                     {doc.Document_Type}
                   </Typography>
@@ -228,8 +206,8 @@ const EmployeeCard = ({ data }) => {
                     <strong>Փաստաթղթի համար:</strong> {doc.Document_Number}
                   </Typography>
                   <Typography variant="body2">
-                    <strong>Վավեր է մինչև:</strong>{" "}
-                    {doc.PassportData?.Passport_Validity_Date || "N/A"}
+                    <strong>Վավեր է մինչև:</strong>{' '}
+                    {doc.PassportData?.Passport_Validity_Date || 'N/A'}
                   </Typography>
                   <Typography variant="body2">
                     <strong>Կարգավիճակ:</strong> {doc.Document_Status}
@@ -246,36 +224,31 @@ const EmployeeCard = ({ data }) => {
                 Հասցեներ
               </Typography>
               {personBprData.addresses.map((address, idx) => (
-                <Box key={idx} sx={{ mb: 2, p: 2, bgcolor: "grey.50" }}>
+                <Box key={idx} sx={{ mb: 2, p: 2 }}>
                   <Typography variant="subtitle2" fontWeight="bold">
                     Հասցե {idx + 1}
                   </Typography>
                   <Typography variant="body2">
-                    <strong>Տարածաշրջան:</strong>{" "}
-                    {address.RegistrationAddress?.Region}
+                    <strong>Տարածաշրջան:</strong> {address.RegistrationAddress?.Region}
                   </Typography>
                   <Typography variant="body2">
-                    <strong>Համայնք:</strong>{" "}
-                    {address.RegistrationAddress?.Community}
+                    <strong>Համայնք:</strong> {address.RegistrationAddress?.Community}
                   </Typography>
                   <Typography variant="body2">
-                    <strong>Փողոց:</strong>{" "}
-                    {address.RegistrationAddress?.Street}
+                    <strong>Փողոց:</strong> {address.RegistrationAddress?.Street}
                   </Typography>
                   <Typography variant="body2">
-                    <strong>Տուն:</strong>{" "}
-                    {address.RegistrationAddress?.Building}
+                    <strong>Տուն:</strong> {address.RegistrationAddress?.Building}
                   </Typography>
                   <Typography variant="body2">
-                    <strong>Նամակագրության ինդեքս:</strong>{" "}
+                    <strong>Նամակագրության ինդեքս:</strong>{' '}
                     {address.RegistrationAddress?.Postal_Index}
                   </Typography>
                   <Typography variant="body2">
-                    <strong>Գրանցման ամսաթիվ:</strong>{" "}
-                    {address.RegistrationData?.Registration_Date}
+                    <strong>Գրանցման ամսաթիվ:</strong> {address.RegistrationData?.Registration_Date}
                   </Typography>
                   <Typography variant="body2">
-                    <strong>Գրանցման նպատակ:</strong>{" "}
+                    <strong>Գրանցման նպատակ:</strong>{' '}
                     {address.RegistrationData?.Registration_Aim?.AimName}
                   </Typography>
                 </Box>
@@ -290,11 +263,10 @@ const EmployeeCard = ({ data }) => {
             </Typography>
             <Stack spacing={1}>
               <Typography>
-                <strong>PNum:</strong> {personBprData?.PNum || "N/A"}
+                <strong>PNum:</strong> {personBprData?.PNum || 'N/A'}
               </Typography>
               <Typography>
-                <strong>Կարգավիճակ:</strong>{" "}
-                {personBprData?.SSN_Indicator ? "Ակտիվ" : "Ոչ ակտիվ"}
+                <strong>Կարգավիճակ:</strong> {personBprData?.SSN_Indicator ? 'Ակտիվ' : 'Ոչ ակտիվ'}
               </Typography>
             </Stack>
           </Paper>
