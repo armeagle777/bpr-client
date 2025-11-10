@@ -1,4 +1,5 @@
 import { memo, useState } from 'react';
+import dayjs from 'dayjs';
 import PropTypes from 'prop-types';
 import { Box, Tab, Tabs } from '@mui/material';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
@@ -67,6 +68,33 @@ const SearchPage = () => {
     setFilterProps({ ...initialFilterProps, ...savedProps });
   };
 
+  const onInputChange = (event) => {
+    const { name, value } = event.target;
+    setFilterProps({ ...filterProps, [name]: value.trim().toUpperCase() });
+  };
+
+  const onAgeChange = (event) => {
+    const ageFilterOptions = { ageFrom: 'min', ageTo: 'max' };
+    const { name, value } = event.target;
+    const newValue = Math.max(Number(value), 0);
+    setFilterProps({
+      ...filterProps,
+      age: { ...filterProps.age, [ageFilterOptions[name]]: newValue },
+    });
+  };
+
+  const handleBirthDateChange = (newValue) => {
+    const formattedDate = newValue ? dayjs(newValue).format('DD/MM/YYYY') : '';
+    onInputChange({
+      target: { name: 'birthDate', value: formattedDate },
+    });
+  };
+
+  const handleSearchSubmit = (e) => {
+    setSearchParams(filterProps);
+    changePage(1);
+  };
+
   return (
     <>
       <Box sx={{ paddingTop: 2, paddingLeft: 2 }}>
@@ -91,12 +119,14 @@ const SearchPage = () => {
           settlements={settlements}
           currentPage={currentPage}
           filterProps={filterProps}
+          onAgeChange={onAgeChange}
+          onInputChange={onInputChange}
           handleTagClick={handleTagClick}
-          setFilterProps={setFilterProps}
-          setSearchParams={setSearchParams}
           isInitialLoading={isInitialLoading}
           handleSaveButton={handleSaveButton}
           handleClearButton={handleClearButton}
+          handleSearchSubmit={handleSearchSubmit}
+          onBirthDateChange={handleBirthDateChange}
           settlementsFetching={settlementsFetching}
           communitiesFetching={communitiesFetching}
         />
