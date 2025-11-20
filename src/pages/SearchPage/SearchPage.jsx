@@ -45,18 +45,14 @@ const SearchPage = () => {
   const { settlements, isFetching: settlementsFetching } = useCadastreSettlements({
     communityId: filterProps?.community?.communityId,
   });
-  const {
-    communities: addressCommunities,
-    isFetching: addressCommunitiesFetching,
-  } = useCadastreCommunities({
-    regionId: addressFilterProps?.regionOption?.regionId,
-  });
-  const {
-    settlements: addressSettlements,
-    isFetching: addressSettlementsFetching,
-  } = useCadastreSettlements({
-    communityId: addressFilterProps?.communityOption?.communityId,
-  });
+  const { communities: addressCommunities, isFetching: addressCommunitiesFetching } =
+    useCadastreCommunities({
+      regionId: addressFilterProps?.regionOption?.regionId,
+    });
+  const { settlements: addressSettlements, isFetching: addressSettlementsFetching } =
+    useCadastreSettlements({
+      communityId: addressFilterProps?.communityOption?.communityId,
+    });
   const { streets, isFetching: streetsFetching } = useCadastreStreets({
     settlementId: addressFilterProps?.residenceOption?.settlementId,
   });
@@ -178,7 +174,8 @@ const SearchPage = () => {
   };
 
   const normalizeAddressFilters = () => {
-    const { regionOption, communityOption, residenceOption, streetOption, ...rest } = addressFilterProps;
+    const { regionOption, communityOption, residenceOption, streetOption, ...rest } =
+      addressFilterProps;
 
     return {
       ...rest,
@@ -186,6 +183,7 @@ const SearchPage = () => {
       community: rest.community || communityOption?.name || '',
       residence: rest.residence || residenceOption?.name || '',
       street: rest.street || streetOption?.name || '',
+      addressType: rest.addressType || 'LIVING',
       regionId: regionOption?.regionId || '',
       communityId: communityOption?.communityId || '',
       settlementId: residenceOption?.settlementId || '',
@@ -213,12 +211,12 @@ const SearchPage = () => {
     <>
       <Box sx={{ paddingTop: 2, paddingLeft: 2 }}>
         <Tabs value={selectedTab} onChange={handleTabsChange} aria-label="Person Search Tabs">
-          <Tab label="ԲՊՌ Որոնում" />
-          {showSearchByImageTab && <Tab label="Որոնում Լուսանկարով" />}
           <Tab label="Որոնում հասցեով" />
+          {showSearchByImageTab && <Tab label="Որոնում Լուսանկարով" />}
+          <Tab label="ԲՊՌ Որոնում" />
         </Tabs>
       </Box>
-      <CustomTabPanel value={selectedTab} index={0}>
+      <CustomTabPanel value={selectedTab} index={showSearchByImageTab ? 2 : 1}>
         <BprSearchTab
           error={error}
           isError={isError}
@@ -248,7 +246,7 @@ const SearchPage = () => {
           <SearchByImageTab />
         </CustomTabPanel>
       )}
-      <CustomTabPanel value={selectedTab} index={showSearchByImageTab ? 2 : 1}>
+      <CustomTabPanel value={selectedTab} index={0}>
         <SearchByAddressTab
           error={error}
           persons={persons}

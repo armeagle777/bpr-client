@@ -1,17 +1,28 @@
 import { memo } from 'react';
 import dayjs from 'dayjs';
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Alert as MuiAlert,
   Autocomplete,
   Box,
   Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
+  Typography,
 } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 
 import SearchBody from '../../../components/search/SearchBody';
 import SearchPageSkileton from '../../../components/searchPageSkileton/SearchPageSkileton';
@@ -25,7 +36,7 @@ const NameField = ({
   onInputChange,
   onMatchTypeChange,
 }) => (
-  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ flex: 1, minWidth: 260 }}>
+  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ flex: 1, minWidth: 230 }}>
     <TextField label={label} name={name} value={value} onChange={onInputChange} fullWidth />
     <ToggleButtonGroup
       size="small"
@@ -38,8 +49,12 @@ const NameField = ({
         }
       }}
     >
-      <ToggleButton value="exact">Հստակ</ToggleButton>
-      <ToggleButton value="contains">Պարունակում է</ToggleButton>
+      <ToggleButton value="exact" aria-label="Հստակ" title="Հստակ">
+        <CheckCircleOutlineIcon fontSize="small" />
+      </ToggleButton>
+      <ToggleButton value="contains" aria-label="Պարունակում է" title="Պարունակում է">
+        <ManageSearchIcon fontSize="small" />
+      </ToggleButton>
     </ToggleButtonGroup>
   </Stack>
 );
@@ -138,78 +153,108 @@ const SearchByAddressTab = ({
               />
             </Stack>
 
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Ծննդ․ թիվ"
-                format="DD/MM/YYYY"
-                onChange={onBirthDateChange}
-                value={filters.birthDate ? dayjs(filters.birthDate, 'DD/MM/YYYY') : null}
-                slotProps={{ textField: { fullWidth: true } }}
-              />
-            </LocalizationProvider>
+            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Ծննդ․ թիվ"
+                  format="DD/MM/YYYY"
+                  onChange={onBirthDateChange}
+                  value={filters.birthDate ? dayjs(filters.birthDate, 'DD/MM/YYYY') : null}
+                  slotProps={{ textField: { fullWidth: true } }}
+                  sx={{ width: '100%' }}
+                />
+              </LocalizationProvider>
 
-            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-              <Autocomplete
-                fullWidth
-                options={regions ?? []}
-                value={filters.regionOption}
-                onChange={(_, newValue) => onSelectChange('region', newValue)}
-                getOptionLabel={(option) => option?.name || ''}
-                isOptionEqualToValue={(option, value) => option?.regionId === value?.regionId}
-                renderInput={(params) => <TextField {...params} label="Մարզ" />}
-              />
-              <Autocomplete
-                fullWidth
-                options={communities ?? []}
-                value={filters.communityOption}
-                onChange={(_, newValue) => onSelectChange('community', newValue)}
-                getOptionLabel={(option) => option?.name || ''}
-                isOptionEqualToValue={(option, value) => option?.communityId === value?.communityId}
-                renderInput={(params) => <TextField {...params} label="Համայնք" />}
-                disabled={!filters.regionOption}
-                loading={communitiesFetching}
-              />
+              <FormControl fullWidth>
+                <InputLabel id="address-type-label">Հասցեի տեսակ</InputLabel>
+                <Select
+                  labelId="address-type-label"
+                  label="Հասցեի տեսակ"
+                  name="addressType"
+                  value={filters.addressType}
+                  onChange={onInputChange}
+                >
+                  <MenuItem value="LIVING">Ներկայիս հասցե</MenuItem>
+                  <MenuItem value="BIRTH">Ծննդյան հասցե</MenuItem>
+                </Select>
+              </FormControl>
             </Stack>
-            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-              <Autocomplete
-                fullWidth
-                options={settlements ?? []}
-                value={filters.residenceOption}
-                onChange={(_, newValue) => onSelectChange('residence', newValue)}
-                getOptionLabel={(option) => option?.name || ''}
-                isOptionEqualToValue={(option, value) => option?.settlementId === value?.settlementId}
-                renderInput={(params) => <TextField {...params} label="Բնակավայր" />}
-                disabled={!filters.communityOption}
-                loading={settlementsFetching}
-              />
-              <Autocomplete
-                fullWidth
-                options={streets ?? []}
-                value={filters.streetOption}
-                onChange={(_, newValue) => onSelectChange('street', newValue)}
-                getOptionLabel={(option) => option?.name || ''}
-                isOptionEqualToValue={(option, value) => option?.streetId === value?.streetId}
-                renderInput={(params) => <TextField {...params} label="Փողոց" />}
-                disabled={!filters.residenceOption}
-                loading={streetsFetching}
-              />
-            </Stack>
-            <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-              <TextField
-                label="Շենք"
-                name="building"
-                fullWidth
-                value={filters.building}
-                onChange={onInputChange}
-              />
-              <TextField
-                label="Բնակարան"
-                name="apartment"
-                fullWidth
-                value={filters.apartment}
-                onChange={onInputChange}
-              />
-            </Stack>
+
+            <Accordion disableGutters sx={{ mt: 1 }}>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="address-fields">
+                <Typography fontWeight={600}>Հասցեի տվյալներ</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Stack spacing={2}>
+                  <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+                    <Autocomplete
+                      fullWidth
+                      options={regions ?? []}
+                      value={filters.regionOption}
+                      onChange={(_, newValue) => onSelectChange('region', newValue)}
+                      getOptionLabel={(option) => option?.name || ''}
+                      isOptionEqualToValue={(option, value) => option?.regionId === value?.regionId}
+                      renderInput={(params) => <TextField {...params} label="Մարզ" />}
+                    />
+                    <Autocomplete
+                      fullWidth
+                      options={communities ?? []}
+                      value={filters.communityOption}
+                      onChange={(_, newValue) => onSelectChange('community', newValue)}
+                      getOptionLabel={(option) => option?.name || ''}
+                      isOptionEqualToValue={(option, value) =>
+                        option?.communityId === value?.communityId
+                      }
+                      renderInput={(params) => <TextField {...params} label="Համայնք" />}
+                      disabled={!filters.regionOption}
+                      loading={communitiesFetching}
+                    />
+                  </Stack>
+                  <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+                    <Autocomplete
+                      fullWidth
+                      options={settlements ?? []}
+                      value={filters.residenceOption}
+                      onChange={(_, newValue) => onSelectChange('residence', newValue)}
+                      getOptionLabel={(option) => option?.name || ''}
+                      isOptionEqualToValue={(option, value) =>
+                        option?.settlementId === value?.settlementId
+                      }
+                      renderInput={(params) => <TextField {...params} label="Բնակավայր" />}
+                      disabled={!filters.communityOption}
+                      loading={settlementsFetching}
+                    />
+                    <Autocomplete
+                      fullWidth
+                      options={streets ?? []}
+                      value={filters.streetOption}
+                      onChange={(_, newValue) => onSelectChange('street', newValue)}
+                      getOptionLabel={(option) => option?.name || ''}
+                      isOptionEqualToValue={(option, value) => option?.streetId === value?.streetId}
+                      renderInput={(params) => <TextField {...params} label="Փողոց" />}
+                      disabled={!filters.residenceOption}
+                      loading={streetsFetching}
+                    />
+                  </Stack>
+                  <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+                    <TextField
+                      label="Շենք"
+                      name="building"
+                      fullWidth
+                      value={filters.building}
+                      onChange={onInputChange}
+                    />
+                    <TextField
+                      label="Բնակարան"
+                      name="apartment"
+                      fullWidth
+                      value={filters.apartment}
+                      onChange={onInputChange}
+                    />
+                  </Stack>
+                </Stack>
+              </AccordionDetails>
+            </Accordion>
             <Stack direction="row" justifyContent="flex-end" spacing={2}>
               <Button variant="outlined" color="error" onClick={onClear} disabled={isResetDisabled}>
                 Մաքրել

@@ -20,6 +20,7 @@ export const initialAddressFilterProps = {
   firstNameMatchType: 'exact',
   lastNameMatchType: 'exact',
   patronomicNameMatchType: 'exact',
+  addressType: 'LIVING',
   regionOption: null,
   communityOption: null,
   residenceOption: null,
