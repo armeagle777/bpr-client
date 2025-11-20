@@ -17,6 +17,7 @@ const SearchBody = ({
   filterProps,
   onInputChange,
   handleSearchSubmit,
+  hideFilters = false,
 }) => {
   const filtersDisabled = !persons || (!areFiltersUsed(filterProps) && !persons?.length);
   const showExtended = totalCount >= countForFilter;
@@ -27,18 +28,25 @@ const SearchBody = ({
 
   return (
     <Stack direction="row" spacing={1} sx={{ justifyContent: 'center', pt: 2 }}>
-      <SearchAside
-        onInputChange={onInputChange}
-        onAgeChange={onAgeChange}
-        handleSearchSubmit={handleSearchSubmit}
-        filterProps={filterProps}
-        showExtended={showExtended}
-        // filterCounts={filterCounts}
-        disabled={filtersDisabled}
-        isLoading={isLoading}
-      />
-      <Divider orientation="vertical" variant="middle" flexItem />
-      <Stack spacing={1} sx={{ width: '80%', px: 2, pb: 4, alignItems: 'center' }}>
+      {!hideFilters && (
+        <>
+          <SearchAside
+            onInputChange={onInputChange}
+            onAgeChange={onAgeChange}
+            handleSearchSubmit={handleSearchSubmit}
+            filterProps={filterProps}
+            showExtended={showExtended}
+            // filterCounts={filterCounts}
+            disabled={filtersDisabled}
+            isLoading={isLoading}
+          />
+          <Divider orientation="vertical" variant="middle" flexItem />
+        </>
+      )}
+      <Stack
+        spacing={1}
+        sx={{ width: hideFilters ? '100%' : '80%', px: 2, pb: 4, alignItems: 'center' }}
+      >
         {!persons?.length ? (
           <PersonNotFound />
         ) : (
