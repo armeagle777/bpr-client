@@ -384,6 +384,11 @@ export const getCadastreSettlements = async (communityId) => {
   return response.data;
 };
 
+export const getCadastreStreets = async (settlementId) => {
+  const response = await personsApi.get(`/kadastr/options/streets?settlementId=${settlementId}`);
+  return response.data;
+};
+
 export const searchPersonByImage = async (imageBase64) => {
   const response = await personsApi.post('/ic/persons/by-image', { imageBase64 });
   return response.data;

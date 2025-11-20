@@ -14,3 +14,19 @@ export const initialFilterProps = {
   // building: '',
   // apartment: '',
 };
+
+export const initialAddressFilterProps = {
+  ...initialFilterProps,
+  firstNameMatchType: 'exact',
+  lastNameMatchType: 'exact',
+  patronomicNameMatchType: 'exact',
+  regionOption: null,
+  communityOption: null,
+  residenceOption: null,
+  streetOption: null,
+  community: '',
+  residence: '',
+  street: '',
+  building: '',
+  apartment: '',
+};
