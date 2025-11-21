@@ -7,15 +7,11 @@ import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import useLikesData from '../../hooks/useLikesData';
 import BprSearchTab from './components/BprSearchTab';
 import CustomTabPanel from './components/CustomTabPanel';
-import { initialAddressFilterProps, initialFilterProps } from './SearchPage.constants';
+import { initialFilterProps } from './SearchPage.constants';
 import SearchByImageTab from './components/SearchByImageTab';
-import { usePersons } from '../../components/context/persons';
 import { userHasPermission } from '../../utils/helperFunctions';
 import useCadastreRegions from '../../hooks/useCadastreRegions';
 import { likeTypesMap, permissionsMap } from '../../utils/constants';
-import useCadastreCommunities from '../../hooks/useCadastreCommunities';
-import useCadastreSettlements from '../../hooks/useCadastreSettlements';
-import useCadastreStreets from '../../hooks/useCadastreStreets';
 import SearchByAddressTab from './components/SearchByAddressTab';
 
 CustomTabPanel.propTypes = {
@@ -27,26 +23,14 @@ CustomTabPanel.propTypes = {
 const SearchPage = () => {
   const [filterProps, setFilterProps] = useState(initialFilterProps);
   const [selectedTab, setSelectedTab] = useState(0);
-  const [addressFilterProps, setAddressFilterProps] = useState(initialAddressFilterProps);
 
   const { regions } = useCadastreRegions({ enabled: true });
-  const { communities, isFetching: communitiesFetching } = useCadastreCommunities({
-    regionId: filterProps?.region?.regionId,
-  });
-  const { settlements, isFetching: settlementsFetching } = useCadastreSettlements({
-    communityId: filterProps?.community?.communityId,
-  });
-  const { communities: addressCommunities, isFetching: addressCommunitiesFetching } =
-    useCadastreCommunities({
-      regionId: addressFilterProps?.regionOption?.regionId,
-    });
-  const { settlements: addressSettlements, isFetching: addressSettlementsFetching } =
-    useCadastreSettlements({
-      communityId: addressFilterProps?.communityOption?.communityId,
-    });
-  const { streets, isFetching: streetsFetching } = useCadastreStreets({
-    settlementId: addressFilterProps?.residenceOption?.settlementId,
-  });
+  // const { communities, isFetching: communitiesFetching } = useCadastreCommunities({
+  //   regionId: filterProps?.region?.regionId,
+  // });
+  // const { settlements, isFetching: settlementsFetching } = useCadastreSettlements({
+  //   communityId: filterProps?.community?.communityId,
+  // });
 
   const { onLikeCreate, data: likesData } = useLikesData({
     likeTypeName: likeTypesMap.bpr.name,
@@ -95,99 +79,6 @@ const SearchPage = () => {
     });
   };
 
-  const handleAddressInputChange = (event) => {
-    const { name, value } = event.target;
-    setAddressFilterProps({ ...addressFilterProps, [name]: value.trim().toUpperCase() });
-  };
-
-  const handleAddressMatchTypeChange = (name, value) => {
-    setAddressFilterProps((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleAddressSelectChange = (field, option) => {
-    setAddressFilterProps((prev) => {
-      if (field === 'region') {
-        return {
-          ...prev,
-          regionOption: option,
-          region: option?.name || '',
-          communityOption: null,
-          community: '',
-          residenceOption: null,
-          residence: '',
-          streetOption: null,
-          street: '',
-        };
-      }
-
-      if (field === 'community') {
-        return {
-          ...prev,
-          communityOption: option,
-          community: option?.name || '',
-          residenceOption: null,
-          residence: '',
-          streetOption: null,
-          street: '',
-        };
-      }
-
-      if (field === 'residence') {
-        return {
-          ...prev,
-          residenceOption: option,
-          residence: option?.name || '',
-          streetOption: null,
-          street: '',
-        };
-      }
-
-      if (field === 'street') {
-        return {
-          ...prev,
-          streetOption: option,
-          street: option?.name || '',
-        };
-      }
-
-      return prev;
-    });
-  };
-
-  const handleAddressBirthDateChange = (newValue) => {
-    const formattedDate = newValue ? dayjs(newValue).format('DD/MM/YYYY') : '';
-    setAddressFilterProps((prev) => ({ ...prev, birthDate: formattedDate }));
-  };
-
-  const normalizeAddressFilters = () => {
-    const { regionOption, communityOption, residenceOption, streetOption, ...rest } =
-      addressFilterProps;
-
-    return {
-      ...rest,
-      region: rest.region || regionOption?.name || '',
-      community: rest.community || communityOption?.name || '',
-      residence: rest.residence || residenceOption?.name || '',
-      street: rest.street || streetOption?.name || '',
-      addressType: rest.addressType || 'LIVING',
-      regionId: regionOption?.regionId || '',
-      communityId: communityOption?.communityId || '',
-      settlementId: residenceOption?.settlementId || '',
-      streetId: streetOption?.streetId || '',
-    };
-  };
-
-  const handleAddressSearchSubmit = () => {
-    setSearchParams(normalizeAddressFilters());
-    changePage(1);
-  };
-
-  const handleAddressClearButton = () => {
-    setAddressFilterProps(initialAddressFilterProps);
-    setSearchParams({});
-    changePage(1);
-  };
-
   const showSearchByImageTab = userHasPermission(
     [permissionsMap.SEARCH_PERSON_BY_IMAGE.uid, permissionsMap.ADMIN.uid],
     user.permissions
@@ -220,22 +111,7 @@ const SearchPage = () => {
         </CustomTabPanel>
       )}
       <CustomTabPanel value={selectedTab} index={0}>
-        <SearchByAddressTab
-          regions={regions}
-          streets={streets}
-          settlements={addressSettlements}
-          communities={addressCommunities}
-          filters={addressFilterProps}
-          onInputChange={handleAddressInputChange}
-          onSelectChange={handleAddressSelectChange}
-          onBirthDateChange={handleAddressBirthDateChange}
-          onMatchTypeChange={handleAddressMatchTypeChange}
-          onSearchSubmit={handleAddressSearchSubmit}
-          onClear={handleAddressClearButton}
-          settlementsFetching={addressSettlementsFetching}
-          communitiesFetching={addressCommunitiesFetching}
-          streetsFetching={streetsFetching}
-        />
+        <SearchByAddressTab regions={regions} />
       </CustomTabPanel>
     </>
   );
