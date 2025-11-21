@@ -5,30 +5,34 @@ import SearchBody from '../../../components/search/SearchBody';
 import SearchHeader from '../../../components/search/SearchHeader';
 import SavedSearchTag from '../../../components/SavedSearchTag/SavedSearchTag';
 import SearchPageSkileton from '../../../components/searchPageSkileton/SearchPageSkileton';
+import { usePersons } from '../../../components/context/persons';
 
 const BprSearchTab = ({
-  error,
-  isError,
-  persons,
-  regions,
   likesData,
-  changePage,
-  totalCount,
   onAgeChange,
-  currentPage,
-  communities,
-  settlements,
   filterProps,
   onInputChange,
   handleTagClick,
-  isInitialLoading,
   handleSaveButton,
   handleClearButton,
   onBirthDateChange,
-  handleSearchSubmit,
-  settlementsFetching,
-  communitiesFetching,
 }) => {
+  const {
+    error,
+    persons,
+    isError,
+    changePage,
+    totalCount,
+    currentPage,
+    setSearchParams,
+    isInitialLoading,
+  } = usePersons();
+
+  const handleSearchSubmit = (e) => {
+    setSearchParams(filterProps);
+    changePage(1);
+  };
+
   if (isError) {
     return <MuiAlert severity="error">{error.response?.data?.message || error.message}</MuiAlert>;
   }
@@ -43,18 +47,12 @@ const BprSearchTab = ({
         }}
       >
         <SearchHeader
-          regions={regions}
-          communities={communities}
           filterProps={filterProps}
-          onAgeChange={onAgeChange}
-          settlements={settlements}
           onInputChange={onInputChange}
           onClearButton={handleClearButton}
           onSaveButtonClick={handleSaveButton}
           onBirthDateChange={onBirthDateChange}
           handleSearchSubmit={handleSearchSubmit}
-          settlementsFetching={settlementsFetching}
-          communitiesFetching={communitiesFetching}
         />
       </Stack>
       {likesData?.length > 0 && (

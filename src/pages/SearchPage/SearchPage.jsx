@@ -28,16 +28,7 @@ const SearchPage = () => {
   const [filterProps, setFilterProps] = useState(initialFilterProps);
   const [selectedTab, setSelectedTab] = useState(0);
   const [addressFilterProps, setAddressFilterProps] = useState(initialAddressFilterProps);
-  const {
-    error,
-    persons,
-    isError,
-    changePage,
-    totalCount,
-    currentPage,
-    setSearchParams,
-    isInitialLoading,
-  } = usePersons();
+
   const { regions } = useCadastreRegions({ enabled: true });
   const { communities, isFetching: communitiesFetching } = useCadastreCommunities({
     regionId: filterProps?.region?.regionId,
@@ -102,11 +93,6 @@ const SearchPage = () => {
     onInputChange({
       target: { name: 'birthDate', value: formattedDate },
     });
-  };
-
-  const handleSearchSubmit = (e) => {
-    setSearchParams(filterProps);
-    changePage(1);
   };
 
   const handleAddressInputChange = (event) => {
@@ -218,27 +204,14 @@ const SearchPage = () => {
       </Box>
       <CustomTabPanel value={selectedTab} index={showSearchByImageTab ? 2 : 1}>
         <BprSearchTab
-          error={error}
-          isError={isError}
-          persons={persons}
-          regions={regions}
           likesData={likesData}
-          totalCount={totalCount}
-          changePage={changePage}
-          communities={communities}
-          settlements={settlements}
-          currentPage={currentPage}
           filterProps={filterProps}
           onAgeChange={onAgeChange}
           onInputChange={onInputChange}
           handleTagClick={handleTagClick}
-          isInitialLoading={isInitialLoading}
           handleSaveButton={handleSaveButton}
           handleClearButton={handleClearButton}
-          handleSearchSubmit={handleSearchSubmit}
           onBirthDateChange={handleBirthDateChange}
-          settlementsFetching={settlementsFetching}
-          communitiesFetching={communitiesFetching}
         />
       </CustomTabPanel>
       {showSearchByImageTab && (
@@ -248,16 +221,10 @@ const SearchPage = () => {
       )}
       <CustomTabPanel value={selectedTab} index={0}>
         <SearchByAddressTab
-          error={error}
-          persons={persons}
-          isError={isError}
           regions={regions}
           streets={streets}
-          totalCount={totalCount}
-          changePage={changePage}
           settlements={addressSettlements}
           communities={addressCommunities}
-          currentPage={currentPage}
           filters={addressFilterProps}
           onInputChange={handleAddressInputChange}
           onSelectChange={handleAddressSelectChange}
@@ -265,7 +232,6 @@ const SearchPage = () => {
           onMatchTypeChange={handleAddressMatchTypeChange}
           onSearchSubmit={handleAddressSearchSubmit}
           onClear={handleAddressClearButton}
-          isInitialLoading={isInitialLoading}
           settlementsFetching={addressSettlementsFetching}
           communitiesFetching={addressCommunitiesFetching}
           streetsFetching={streetsFetching}

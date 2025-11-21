@@ -1,87 +1,58 @@
 import { memo } from 'react';
 import dayjs from 'dayjs';
 import {
+  Box,
+  Stack,
+  Button,
+  Select,
+  MenuItem,
+  TextField,
   Accordion,
+  Container,
+  InputLabel,
+  Typography,
+  FormControl,
+  Autocomplete,
   AccordionDetails,
   AccordionSummary,
   Alert as MuiAlert,
-  Autocomplete,
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
 } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 
 import SearchBody from '../../../components/search/SearchBody';
 import SearchPageSkileton from '../../../components/searchPageSkileton/SearchPageSkileton';
-
-const NameField = ({
-  label,
-  name,
-  value,
-  matchType,
-  matchFieldName,
-  onInputChange,
-  onMatchTypeChange,
-}) => (
-  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ flex: 1, minWidth: 230 }}>
-    <TextField label={label} name={name} value={value} onChange={onInputChange} fullWidth />
-    <ToggleButtonGroup
-      size="small"
-      exclusive
-      color="primary"
-      value={matchType}
-      onChange={(_, newValue) => {
-        if (newValue) {
-          onMatchTypeChange(matchFieldName, newValue);
-        }
-      }}
-    >
-      <ToggleButton value="exact" aria-label="Հստակ" title="Հստակ">
-        <CheckCircleOutlineIcon fontSize="small" />
-      </ToggleButton>
-      <ToggleButton value="contains" aria-label="Պարունակում է" title="Պարունակում է">
-        <ManageSearchIcon fontSize="small" />
-      </ToggleButton>
-    </ToggleButtonGroup>
-  </Stack>
-);
+import NameField from './NameField';
+import { usePersons } from '../../../components/context/persons';
 
 const SearchByAddressTab = ({
-  error,
-  persons,
-  isError,
   regions,
   streets,
   onClear,
-  totalCount,
-  changePage,
   onInputChange,
   settlements,
   communities,
-  currentPage,
   filters,
   onSelectChange,
   onSearchSubmit,
   onBirthDateChange,
   onMatchTypeChange,
-  isInitialLoading,
   communitiesFetching,
   settlementsFetching,
   streetsFetching,
 }) => {
+  const {
+    error,
+    persons,
+    isError,
+    changePage,
+    totalCount,
+    currentPage,
+    setSearchParams,
+    isInitialLoading,
+  } = usePersons();
+
   if (isError) {
     return <MuiAlert severity="error">{error.response?.data?.message || error.message}</MuiAlert>;
   }
@@ -269,18 +240,20 @@ const SearchByAddressTab = ({
       {isInitialLoading ? (
         <SearchPageSkileton />
       ) : !persons ? null : (
-        <SearchBody
-          persons={persons}
-          changePage={changePage}
-          totalCount={totalCount}
-          currentPage={currentPage}
-          onAgeChange={() => {}}
-          filterProps={filters}
-          isLoading={isInitialLoading}
-          onInputChange={onInputChange}
-          handleSearchSubmit={onSearchSubmit}
-          hideFilters
-        />
+        <Container>
+          <SearchBody
+            persons={persons}
+            changePage={changePage}
+            totalCount={totalCount}
+            currentPage={currentPage}
+            onAgeChange={() => {}}
+            filterProps={filters}
+            isLoading={isInitialLoading}
+            onInputChange={onInputChange}
+            handleSearchSubmit={onSearchSubmit}
+            hideFilters
+          />
+        </Container>
       )}
     </>
   );
