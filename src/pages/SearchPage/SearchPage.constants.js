@@ -1,22 +1,19 @@
-export const initialFilterProps = {
+export const bprSearchInitialFilters = {
   ssn: '',
   firstName: '',
   lastName: '',
   birthDate: '',
   patronomicName: '',
   documentNumber: '',
-  age: { min: null, max: null },
-  gender: '',
-  region: '',
-  // community: '',
-  // settlement: '',
-  // street: '',
-  // building: '',
-  // apartment: '',
 };
 
-export const initialAddressFilterProps = {
-  ...initialFilterProps,
+export const addressSearchInitialFilters = {
+  firstName: '',
+  lastName: '',
+  birthDate: '',
+  patronomicName: '',
+  age: { min: null, max: null },
+  gender: '',
   firstNameMatchType: 'exact',
   lastNameMatchType: 'exact',
   patronomicNameMatchType: 'exact',
@@ -25,7 +22,9 @@ export const initialAddressFilterProps = {
   communityOption: null,
   residenceOption: null,
   streetOption: null,
+  region: '',
   community: '',
+  settlement: '',
   residence: '',
   street: '',
   building: '',

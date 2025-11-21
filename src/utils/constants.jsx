@@ -334,3 +334,18 @@ export const THEME_MODS = {
   DARK: 'dark',
   LIGHT: 'light',
 };
+
+export const ADDRESS_REGIONS = [
+  { name: 'ԵՐԵՎԱՆ', code: '01' },
+  { name: 'ԱՐԱԳԱԾՈՏՆ', code: '02' },
+  { name: 'ԱՐԱՐԱՏ', code: '03' },
+  { name: 'ԱՐՄԱՎԻՐ', code: '04' },
+  { name: 'ԳԵՂԱՐՔՈՒՆԻՔ', code: '05' },
+  { name: 'ԼՈՌԻ', code: '06' },
+  { name: 'ԿՈՏԱՅՔ', code: '07' },
+  { name: 'ՇԻՐԱԿ', code: '08' },
+  { name: 'ՍՅՈՒՆԻՔ', code: '09' },
+  { name: 'ՎԱՅՈՑ ՁՈՐ', code: '10' },
+  { name: 'ՏԱՎՈՒՇ', code: '11' },
+  { name: 'ԼՂՀ', code: '12' },
+];

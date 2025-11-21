@@ -1,51 +1,17 @@
 import { memo } from 'react';
-import { Stack, Pagination, Divider, Grid, Box } from '@mui/material';
+import { Stack, Pagination, Divider, Box } from '@mui/material';
 
 import SearchRow from './SearchRow';
+import NoResults from '../NoResults/NoResults';
 import { perPageCount } from '../../utils/constants';
 import { countForFilter } from '../../utils/configs';
-import NoResults from '../NoResults/NoResults';
-import SearchAside from './SearchAside';
 
-const AddressSearchBody = ({
-  persons,
-  isLoading,
-  totalCount,
-  changePage,
-  onAgeChange,
-  currentPage,
-  filterProps,
-  onInputChange,
-  handleSearchSubmit,
-  hideFilters = false,
-}) => {
-  const filtersDisabled = !persons || (!areFiltersUsed(filterProps) && !persons?.length);
+const AddressSearchBody = ({ persons, totalCount, changePage, currentPage }) => {
   const showExtended = totalCount >= countForFilter;
 
-  function areFiltersUsed(filters) {
-    return !!filters?.age?.min || !!filters?.age?.max || !!filters?.region || !!filters?.gender;
-  }
-
   return (
-    <Stack direction="row" spacing={1} sx={{ justifyContent: 'center', pt: 2 }}>
-      {!hideFilters && (
-        <>
-          <SearchAside
-            onInputChange={onInputChange}
-            onAgeChange={onAgeChange}
-            handleSearchSubmit={handleSearchSubmit}
-            filterProps={filterProps}
-            showExtended={showExtended}
-            disabled={filtersDisabled}
-            isLoading={isLoading}
-          />
-          <Divider orientation="vertical" variant="middle" flexItem />
-        </>
-      )}
-      <Stack
-        spacing={1}
-        sx={{ width: hideFilters ? '100%' : '80%', px: 2, pb: 4, alignItems: 'center' }}
-      >
+    <Stack direction="row" spacing={1} sx={{ pt: 2 }}>
+      <Stack spacing={1} sx={{ width: '100%', px: 2, pb: 4, alignItems: 'center' }}>
         {!persons?.length ? (
           <Box width="100%">
             <NoResults />

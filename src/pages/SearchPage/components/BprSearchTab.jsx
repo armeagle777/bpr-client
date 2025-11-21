@@ -1,4 +1,5 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
+import dayjs from 'dayjs';
 import { Container, Stack, Alert as MuiAlert } from '@mui/material';
 
 import SearchBody from '../../../components/search/SearchBody';
@@ -6,16 +7,13 @@ import SearchHeader from '../../../components/search/SearchHeader';
 import SavedSearchTag from '../../../components/SavedSearchTag/SavedSearchTag';
 import SearchPageSkileton from '../../../components/searchPageSkileton/SearchPageSkileton';
 import { usePersons } from '../../../components/context/persons';
+import { bprSearchInitialFilters } from '../SearchPage.constants';
+import useLikesData from '../../../hooks/useLikesData';
+import { likeTypesMap } from '../../../utils/constants';
 
-const BprSearchTab = ({
-  likesData,
-  filterProps,
-  onInputChange,
-  handleTagClick,
-  handleSaveButton,
-  handleClearButton,
-  onBirthDateChange,
-}) => {
+const BprSearchTab = () => {
+  const [filterProps, setFilterProps] = useState(bprSearchInitialFilters);
+
   const {
     error,
     persons,
@@ -27,9 +25,40 @@ const BprSearchTab = ({
     isInitialLoading,
   } = usePersons();
 
+  const { onLikeCreate, data: likesData } = useLikesData({
+    likeTypeName: likeTypesMap.bpr.name,
+  });
+
   const handleSearchSubmit = (e) => {
     setSearchParams(filterProps);
     changePage(1);
+  };
+
+  const onInputChange = (event) => {
+    const { name, value } = event.target;
+    setFilterProps({ ...filterProps, [name]: value.trim().toUpperCase() });
+  };
+
+  const handleTagClick = (savedProps) => {
+    if (!savedProps) return;
+    setFilterProps({ ...bprSearchInitialFilters, ...savedProps });
+  };
+
+  const handleSaveButton = () => {
+    onLikeCreate({ likeTypeName: likeTypesMap.bpr.name, fields: filterProps });
+  };
+
+  const handleClearButton = () => {
+    setFilterProps(bprSearchInitialFilters);
+    setSearchParams({});
+    changePage(1);
+  };
+
+  const handleBirthDateChange = (newValue) => {
+    const formattedDate = newValue ? dayjs(newValue).format('DD/MM/YYYY') : '';
+    onInputChange({
+      target: { name: 'birthDate', value: formattedDate },
+    });
   };
 
   if (isError) {
@@ -50,7 +79,7 @@ const BprSearchTab = ({
           onInputChange={onInputChange}
           onClearButton={handleClearButton}
           onSaveButtonClick={handleSaveButton}
-          onBirthDateChange={onBirthDateChange}
+          onBirthDateChange={handleBirthDateChange}
           handleSearchSubmit={handleSearchSubmit}
         />
       </Stack>

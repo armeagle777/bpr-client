@@ -369,23 +369,29 @@ export const getLogTypes = async () => {
   return response.data;
 };
 
-export const getCadastreRegions = async () => {
-  const response = await personsApi.get('/kadastr/options/regions');
+export const getAddressCommunities = async (region) => {
+  const response = await personsApi.get(`/mcs/options/communities?region=${region}`);
   return response.data;
 };
 
-export const getCadastreCommunities = async (regionId) => {
-  const response = await personsApi.get(`/kadastr/options/communities?regionId=${regionId}`);
+export const getAddressSettlements = async ({ region, community }) => {
+  const response = await personsApi.get(
+    `/mcs/options/settlements?region=${region}&community=${community}`
+  );
   return response.data;
 };
 
-export const getCadastreSettlements = async (communityId) => {
-  const response = await personsApi.get(`/kadastr/options/settlements?communityId=${communityId}`);
+export const getAddressResidences = async ({ region, community, settlement }) => {
+  const response = await personsApi.get(
+    `/mcs/options/streets?region=${region}&community=${community}settlement=${settlement}`
+  );
   return response.data;
 };
 
-export const getCadastreStreets = async (settlementId) => {
-  const response = await personsApi.get(`/kadastr/options/streets?settlementId=${settlementId}`);
+export const getAddressStreets = async ({ region, community, settlement, residence }) => {
+  const response = await personsApi.get(
+    `/mcs/options/streets?region=${region}&community=${community}settlement=${settlement}&residence=${residence}`
+  );
   return response.data;
 };
 

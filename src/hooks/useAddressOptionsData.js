@@ -1,17 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { getCadastreSettlements } from '../api/personsApi';
 
-const useCadastreSettlements = ({ communityId }) => {
+import { ADDRESS_REGIONS } from '../utils/constants';
+import { getAddressCommunities } from '../api/personsApi';
+
+const useAddressOptionsData = ({ region, community, settlement, residence }) => {
   const { data, error, isError, isFetching } = useQuery(
-    ['cadastre-settlements', communityId],
-    () => getCadastreSettlements(communityId),
+    ['address-communities'],
+    () => getAddressCommunities(),
     {
       keepPreviousData: true,
-      enabled: !!communityId,
+      enabled: !!region,
     }
   );
 
-  const formatedCommunities = data?.reduce(
+  const formatedRegions = data?.reduce(
     (acc, item, index) => {
       const modifiedName = item?.name === 'Երևան' ? 'ԵՐԵՎԱՆ' : item?.name?.toUpperCase();
       acc.push({ ...item, name: modifiedName });
@@ -19,7 +21,8 @@ const useCadastreSettlements = ({ communityId }) => {
     },
     [{ name: '-ԲԼՈՐԸ-', id: '' }]
   );
-  return { settlements: formatedCommunities, error, isError, isFetching };
+
+  return { regions: ADDRESS_REGIONS };
 };
 
-export default useCadastreSettlements;
+export default useAddressOptionsData;
