@@ -21,7 +21,6 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 
-import SearchBody from '../../../components/search/SearchBody';
 import SearchPageSkileton from '../../../components/searchPageSkileton/SearchPageSkileton';
 import NameField from './NameField';
 import { usePersons } from '../../../components/context/persons';
@@ -29,8 +28,9 @@ import { initialAddressFilterProps } from '../SearchPage.constants';
 import useCadastreSettlements from '../../../hooks/useCadastreSettlements';
 import useCadastreCommunities from '../../../hooks/useCadastreCommunities';
 import useCadastreStreets from '../../../hooks/useCadastreStreets';
+import AddressSearchBody from '../../../components/search/AddressSearchBody';
 
-const SearchByAddressTab = ({ regions }) => {
+const SearchByAddressTab = ({ regions, onAgeChange }) => {
   const [addressFilterProps, setAddressFilterProps] = useState(initialAddressFilterProps);
   const {
     error,
@@ -347,20 +347,17 @@ const SearchByAddressTab = ({ regions }) => {
       {isInitialLoading ? (
         <SearchPageSkileton />
       ) : !persons ? null : (
-        <Container>
-          <SearchBody
-            persons={persons}
-            changePage={changePage}
-            totalCount={totalCount}
-            currentPage={currentPage}
-            onAgeChange={() => {}}
-            filterProps={addressFilterProps}
-            isLoading={isInitialLoading}
-            onInputChange={handleAddressInputChange}
-            handleSearchSubmit={handleAddressSearchSubmit}
-            hideFilters
-          />
-        </Container>
+        <AddressSearchBody
+          persons={persons}
+          changePage={changePage}
+          totalCount={totalCount}
+          currentPage={currentPage}
+          onAgeChange={onAgeChange}
+          filterProps={addressFilterProps}
+          isLoading={isInitialLoading}
+          onInputChange={handleAddressInputChange}
+          handleSearchSubmit={handleAddressSearchSubmit}
+        />
       )}
     </>
   );

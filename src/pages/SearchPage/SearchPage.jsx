@@ -97,7 +97,6 @@ const SearchPage = () => {
         <BprSearchTab
           likesData={likesData}
           filterProps={filterProps}
-          onAgeChange={onAgeChange}
           onInputChange={onInputChange}
           handleTagClick={handleTagClick}
           handleSaveButton={handleSaveButton}
@@ -111,7 +110,7 @@ const SearchPage = () => {
         </CustomTabPanel>
       )}
       <CustomTabPanel value={selectedTab} index={0}>
-        <SearchByAddressTab regions={regions} />
+        <SearchByAddressTab regions={regions} onAgeChange={onAgeChange} />
       </CustomTabPanel>
     </>
   );

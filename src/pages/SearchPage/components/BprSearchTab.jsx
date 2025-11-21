@@ -9,7 +9,6 @@ import { usePersons } from '../../../components/context/persons';
 
 const BprSearchTab = ({
   likesData,
-  onAgeChange,
   filterProps,
   onInputChange,
   handleTagClick,
@@ -73,17 +72,16 @@ const BprSearchTab = ({
       {isInitialLoading ? (
         <SearchPageSkileton />
       ) : !persons ? null : (
-        <SearchBody
-          persons={persons}
-          changePage={changePage}
-          totalCount={totalCount}
-          onAgeChange={onAgeChange}
-          filterProps={filterProps}
-          currentPage={currentPage}
-          isLoading={isInitialLoading}
-          onInputChange={onInputChange}
-          handleSearchSubmit={handleSearchSubmit}
-        />
+        (handleSearchSubmit,
+        (
+          <SearchBody
+            persons={persons}
+            changePage={changePage}
+            totalCount={totalCount}
+            currentPage={currentPage}
+            handleSearchSubmit={handleSearchSubmit}
+          />
+        ))
       )}
     </>
   );
