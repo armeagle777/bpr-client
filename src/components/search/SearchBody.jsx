@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Stack, Pagination, Divider } from '@mui/material';
+import { Stack, Pagination, Divider, Box } from '@mui/material';
 
 import SearchRow from './SearchRow';
 import { perPageCount } from '../../utils/constants';
@@ -13,7 +13,9 @@ const SearchBody = ({ persons, totalCount, changePage, currentPage }) => {
     <Stack direction="row" spacing={1} sx={{ justifyContent: 'center', pt: 2 }}>
       <Stack spacing={1} sx={{ width: '80%', px: 2, pb: 4, alignItems: 'center' }}>
         {!persons?.length ? (
-          <NoResults />
+          <Box sx={{ width: '100%' }}>
+            <NoResults />
+          </Box>
         ) : (
           persons.map((person, index) => (
             <Stack width="100%" key={person.PNum} spacing={1} direction="column">

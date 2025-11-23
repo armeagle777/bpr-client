@@ -61,10 +61,6 @@ const BprSearchTab = () => {
     });
   };
 
-  if (isError) {
-    return <MuiAlert severity="error">{error.response?.data?.message || error.message}</MuiAlert>;
-  }
-
   return (
     <>
       <Stack
@@ -98,7 +94,11 @@ const BprSearchTab = () => {
           </Stack>
         </Container>
       )}
-      {isInitialLoading ? (
+      {error ? (
+        <MuiAlert sx={{ mt: 2 }} severity="error">
+          {error?.response?.data?.message || error.message}
+        </MuiAlert>
+      ) : isInitialLoading ? (
         <SearchPageSkileton />
       ) : !persons ? null : (
         (handleSearchSubmit,
