@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Card, CardContent, CardMedia, Chip, Divider, Stack, Typography } from '@mui/material';
 
-const McsPersonSearchRow = (data) => {
+const McsPersonSearchRow = ({ data }) => {
   const { avv_documents = [], avv_addresses = [] } = data;
   const primaryDocument = avv_documents[0] || {};
   const person = primaryDocument.person || {};
