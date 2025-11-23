@@ -1,5 +1,7 @@
 import { memo } from 'react';
-import { CardMedia, Chip, Stack, Typography } from '@mui/material';
+import { Button, CardMedia, Chip, Stack, Typography } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
+import { useNavigate } from 'react-router-dom';
 
 const McsPersonSearchRow = ({ data = {} }) => {
   const { avv_documents = [], ssn = '' } = data;
@@ -9,6 +11,7 @@ const McsPersonSearchRow = ({ data = {} }) => {
   const photoSrc = photoDocument?.photo
     ? `data:image/jpeg;base64,${photoDocument.photo}`
     : './src/assets/profile.png';
+  const navigate = useNavigate();
 
   const fullName = [person.first_name, person.last_name, person.patr_name]
     .filter(Boolean)
@@ -16,6 +19,12 @@ const McsPersonSearchRow = ({ data = {} }) => {
 
   const issueDate = preferredDocument.passport_data?.issuance_date;
   const validityDate = preferredDocument.passport_data?.validity_date;
+  const sanitizedSsn = ssn?.replace(/\//g, '*');
+
+  const handleNavigate = () => {
+    if (!sanitizedSsn) return;
+    navigate(`/bpr/${sanitizedSsn}`);
+  };
 
   return (
     <Stack direction={{ xs: 'column', md: 'row' }} spacing={3} alignItems="flex-start">
@@ -35,25 +44,43 @@ const McsPersonSearchRow = ({ data = {} }) => {
             {person.birth_date}
           </Typography>
         )}
-        {preferredDocument.doc_type && (
-          <Typography variant="body2" color="text.secondary">
-            <strong>Փաստաթուղթ՝ </strong>
-            {preferredDocument.doc_type}
-          </Typography>
-        )}
-        {preferredDocument.doc_number && (
-          <Typography variant="body2" color="text.secondary">
-            <strong>Սերիա/համար՝ </strong>
-            {preferredDocument.doc_number}
-          </Typography>
-        )}
-        {(issueDate || validityDate) && (
-          <Typography variant="body2" color="text.secondary">
-            <strong>Տրված է՝ </strong>
-            {issueDate || '—'} {' · '} <strong>Վավեր՝ </strong>
-            {validityDate || '—'}
-          </Typography>
-        )}
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={2}
+          alignItems={{ xs: 'flex-start', sm: 'center' }}
+          justifyContent="space-between"
+        >
+          <Stack spacing={0.5}>
+            {preferredDocument.doc_type && (
+              <Typography variant="body2" color="text.secondary">
+                <strong>Փաստաթուղթ՝ </strong>
+                {preferredDocument.doc_type}
+              </Typography>
+            )}
+            {preferredDocument.doc_number && (
+              <Typography variant="body2" color="text.secondary">
+                <strong>Սերիա/համար՝ </strong>
+                {preferredDocument.doc_number}
+              </Typography>
+            )}
+            {(issueDate || validityDate) && (
+              <Typography variant="body2" color="text.secondary">
+                <strong>Տրված է՝ </strong>
+                {issueDate || '—'} {' · '} <strong>Վավեր՝ </strong>
+                {validityDate || '—'}
+              </Typography>
+            )}
+          </Stack>
+          <Button
+            variant="outlined"
+            size="small"
+            endIcon={<InfoIcon />}
+            onClick={handleNavigate}
+            disabled={!sanitizedSsn}
+          >
+            Մանրամասն
+          </Button>
+        </Stack>
       </Stack>
     </Stack>
   );
