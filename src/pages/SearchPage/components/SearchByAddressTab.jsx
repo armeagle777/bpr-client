@@ -169,7 +169,6 @@ const SearchByAddressTab = () => {
   const isSearchDisabled = !hasAddressFilters;
   const hideFilters = false;
   const filtersDisabled = !persons || (!areFiltersUsed(filterProps) && !persons?.length);
-
   return (
     <Stack direction="row" spacing={1} sx={{ pt: 2 }}>
       {!hideFilters && (
@@ -180,7 +179,7 @@ const SearchByAddressTab = () => {
             handleSearchSubmit={handleSearchSubmit}
             filterProps={filterProps}
             disabled={filtersDisabled}
-            // isLoading={isLoading}
+            isLoading={isInitialLoading}
           />
           <Divider orientation="vertical" variant="middle" flexItem />
         </>

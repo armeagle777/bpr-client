@@ -18,7 +18,7 @@ const AddressSearchBody = ({ persons, totalCount, changePage, currentPage }) => 
           </Box>
         ) : (
           persons?.map((person, index) => (
-            <Stack width="100%" key={person.PNum} spacing={1} direction="column">
+            <Stack width="100%" key={person.ssn} spacing={1} direction="column">
               <McsPersonSearchRow data={person} />
               {index < persons?.length - 1 && <Divider />}
             </Stack>
