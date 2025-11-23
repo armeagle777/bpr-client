@@ -5,6 +5,7 @@ import SearchRow from './SearchRow';
 import NoResults from '../NoResults/NoResults';
 import { perPageCount } from '../../utils/constants';
 import { countForFilter } from '../../utils/configs';
+import McsPersonSearchRow from './McsPersonSearchRow';
 
 const AddressSearchBody = ({ persons, totalCount, changePage, currentPage }) => {
   const showExtended = totalCount >= countForFilter;
@@ -17,9 +18,9 @@ const AddressSearchBody = ({ persons, totalCount, changePage, currentPage }) => 
             <NoResults />
           </Box>
         ) : (
-          persons.map((person, index) => (
+          persons?.map((person, index) => (
             <Stack width="100%" key={person.PNum} spacing={1} direction="column">
-              <SearchRow personInfo={person} />
+              <McsPersonSearchRow data={person} />
               {index < persons?.length - 1 && <Divider />}
             </Stack>
           ))
