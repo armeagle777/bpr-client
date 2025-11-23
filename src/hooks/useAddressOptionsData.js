@@ -1,28 +1,51 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { ADDRESS_REGIONS } from '../utils/constants';
-import { getAddressCommunities } from '../api/personsApi';
+import { getAddressCommunities, getAddressResidences, getAddressStreets } from '../api/personsApi';
 
-const useAddressOptionsData = ({ region, community, settlement, residence }) => {
-  const { data, error, isError, isFetching } = useQuery(
-    ['address-communities'],
-    () => getAddressCommunities(),
+const useAddressOptionsData = (filterProps) => {
+  const { region, community, residence } = filterProps || {};
+
+  const { data: communities, isFetching: communitiesFetching } = useQuery(
+    ['address-communities', region],
+    () => getAddressCommunities(region),
     {
       keepPreviousData: true,
       enabled: !!region,
     }
   );
 
-  const formatedRegions = data?.reduce(
-    (acc, item, index) => {
-      const modifiedName = item?.name === 'Երևան' ? 'ԵՐԵՎԱՆ' : item?.name?.toUpperCase();
-      acc.push({ ...item, name: modifiedName });
-      return acc;
-    },
-    [{ name: '-ԲԼՈՐԸ-', id: '' }]
+  const { data: residences, isFetching: residencesFetching } = useQuery(
+    ['address-residences', region, community],
+    () => getAddressResidences({ region, community }),
+    {
+      keepPreviousData: true,
+      enabled: !!region && !!community,
+    }
   );
 
-  return { regions: ADDRESS_REGIONS };
+  const { data: streets, isFetching: streetsFetching } = useQuery(
+    ['address-streets', region, community, residence],
+    () => getAddressStreets({ region, community, residence }),
+    {
+      keepPreviousData: true,
+      enabled: !!region && !!community && (!!residence || region === 'ԵՐԵՎԱՆ'),
+    }
+  );
+
+  const filteredCommunities = communities?.filter((com) => {
+    if (filterProps?.region !== 'ԵՐԵՎԱՆ') return com;
+    return filterProps.addressType === 'LIVING' ? com.name !== 'ԵՐԵՎԱՆ' : com.name === 'ԵՐԵՎԱՆ';
+  });
+  return {
+    regions: ADDRESS_REGIONS,
+    communities: filteredCommunities,
+    residences,
+    streets,
+    communitiesFetching,
+    residencesFetching,
+    streetsFetching,
+  };
 };
 
 export default useAddressOptionsData;

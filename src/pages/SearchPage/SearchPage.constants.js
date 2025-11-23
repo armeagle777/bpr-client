@@ -24,7 +24,6 @@ export const addressSearchInitialFilters = {
   streetOption: null,
   region: '',
   community: '',
-  settlement: '',
   residence: '',
   street: '',
   building: '',

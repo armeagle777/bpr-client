@@ -223,6 +223,11 @@ export const getSearchedPersons = async (searchOptions) => {
   return response.data;
 };
 
+export const searchMcsPersons = async (searchOptions) => {
+  const response = await personsApi.post(`/mcs/persons/search`, searchOptions);
+  return response.data;
+};
+
 export const getQkagDocsBySsn = async (ssn, firstName, lastName) => {
   const response = await personsApi.post(`/persons/${ssn}/qkag`, {
     firstName,
@@ -374,23 +379,16 @@ export const getAddressCommunities = async (region) => {
   return response.data;
 };
 
-export const getAddressSettlements = async ({ region, community }) => {
+export const getAddressResidences = async ({ region, community }) => {
   const response = await personsApi.get(
-    `/mcs/options/settlements?region=${region}&community=${community}`
+    `/mcs/options/residences?region=${region}&community=${community}`
   );
   return response.data;
 };
 
-export const getAddressResidences = async ({ region, community, settlement }) => {
+export const getAddressStreets = async ({ region, community, residence }) => {
   const response = await personsApi.get(
-    `/mcs/options/streets?region=${region}&community=${community}settlement=${settlement}`
-  );
-  return response.data;
-};
-
-export const getAddressStreets = async ({ region, community, settlement, residence }) => {
-  const response = await personsApi.get(
-    `/mcs/options/streets?region=${region}&community=${community}settlement=${settlement}&residence=${residence}`
+    `/mcs/options/streets?region=${region}&community=${community}&residence=${residence}`
   );
   return response.data;
 };

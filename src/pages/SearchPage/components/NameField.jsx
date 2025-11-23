@@ -13,7 +13,7 @@ const NameField = ({
   onInputChange,
   onMatchTypeChange,
 }) => (
-  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ flex: 1, minWidth: 230 }}>
+  <Stack direction={{ xs: 'column', sm: 'row' }} sx={{ flex: 1, minWidth: 230 }}>
     <TextField label={label} name={name} value={value} onChange={onInputChange} fullWidth />
     <ToggleButtonGroup
       size="small"

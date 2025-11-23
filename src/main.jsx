@@ -10,6 +10,7 @@ import FunctionalErrorBoundary from './components/ErrorBundary';
 import './index.css';
 import { PersonsProvider } from './components/context/persons';
 import ThemeProvider from './components/context/ThemeContext';
+import { McsPersonsProvider } from './components/context/mcsPersons';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,13 +32,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthProvider store={store}>
     <QueryClientProvider client={queryClient}>
       <PersonsProvider>
-        <BrowserRouter>
-          <FunctionalErrorBoundary>
-            <ThemeProvider>
-              <App />
-            </ThemeProvider>
-          </FunctionalErrorBoundary>
-        </BrowserRouter>
+        <McsPersonsProvider>
+          <BrowserRouter>
+            <FunctionalErrorBoundary>
+              <ThemeProvider>
+                <App />
+              </ThemeProvider>
+            </FunctionalErrorBoundary>
+          </BrowserRouter>
+        </McsPersonsProvider>
       </PersonsProvider>
     </QueryClientProvider>
   </AuthProvider>

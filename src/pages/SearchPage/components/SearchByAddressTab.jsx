@@ -17,18 +17,21 @@ import {
   AccordionSummary,
   Alert as MuiAlert,
   Divider,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import SearchPageSkileton from '../../../components/searchPageSkileton/SearchPageSkileton';
 import NameField from './NameField';
-import { usePersons } from '../../../components/context/persons';
 import { addressSearchInitialFilters } from '../SearchPage.constants';
 import AddressSearchBody from '../../../components/search/AddressSearchBody';
 import useAddressOptionsData from '../../../hooks/useAddressOptionsData';
 import SearchAside from '../../../components/search/SearchAside';
+import { useMcsPersons } from '../../../components/context/mcsPersons';
 
 const SearchByAddressTab = () => {
   const [filterProps, setFilterProps] = useState(addressSearchInitialFilters);
@@ -41,17 +44,16 @@ const SearchByAddressTab = () => {
     currentPage,
     setSearchParams,
     isInitialLoading,
-  } = usePersons();
+  } = useMcsPersons();
 
   const {
     regions,
     communities,
-    settlements,
     residences,
     streets,
-    streetsFetching,
     communitiesFetching,
-    settlementsFetching,
+    residencesFetching,
+    streetsFetching,
   } = useAddressOptionsData(filterProps);
 
   function areFiltersUsed(filters) {
@@ -130,12 +132,8 @@ const SearchByAddressTab = () => {
       region: rest.region || regionOption?.name || '',
       community: rest.community || communityOption?.name || '',
       residence: rest.residence || residenceOption?.name || '',
-      street: rest.street || streetOption?.name || '',
+      street: rest.street || streetOption || '',
       addressType: rest.addressType || 'LIVING',
-      regionId: regionOption?.regionId || '',
-      communityId: communityOption?.communityId || '',
-      settlementId: residenceOption?.settlementId || '',
-      streetId: streetOption?.streetId || '',
     };
   };
 
@@ -144,7 +142,7 @@ const SearchByAddressTab = () => {
     changePage(1);
   };
 
-  const handleAddressClearButton = () => {
+  const handleClearButton = () => {
     setFilterProps(addressSearchInitialFilters);
     setSearchParams({});
     changePage(1);
@@ -159,10 +157,6 @@ const SearchByAddressTab = () => {
       age: { ...filterProps.age, [ageFilterOptions[name]]: newValue },
     });
   };
-
-  if (isError) {
-    return <MuiAlert severity="error">{error.response?.data?.message || error.message}</MuiAlert>;
-  }
 
   const hasAddressFilters = [
     filterProps.firstName,
@@ -197,7 +191,7 @@ const SearchByAddressTab = () => {
           <Divider orientation="vertical" variant="middle" flexItem />
         </>
       )}
-      <Stack spacing={1}>
+      <Stack spacing={1} sx={{ width: '85%' }}>
         <Stack
           spacing={2}
           sx={{
@@ -209,7 +203,6 @@ const SearchByAddressTab = () => {
           <Box
             sx={{
               width: '100%',
-              maxWidth: 1100,
               p: 3,
               borderRadius: 2,
               bgcolor: 'background.paper',
@@ -270,48 +263,43 @@ const SearchByAddressTab = () => {
                     value={filterProps.addressType}
                     onChange={handleInputChange}
                   >
-                    <MenuItem value="LIVING">Ներկայիս հասցե</MenuItem>
+                    <MenuItem value="LIVING">Գրանցման հասցե</MenuItem>
                     <MenuItem value="BIRTH">Ծննդյան հասցե</MenuItem>
                   </Select>
                 </FormControl>
               </Stack>
 
-              <Accordion disableGutters sx={{ mt: 1 }}>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="address-fields">
-                  <Typography fontWeight={600}>Հասցեի տվյալներ</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Stack spacing={2}>
+              <Stack spacing={2}>
+                <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+                  <Autocomplete
+                    fullWidth
+                    options={regions ?? []}
+                    value={filterProps.regionOption}
+                    onChange={(_, newValue) => handleAddressSelectChange('region', newValue)}
+                    getOptionLabel={(option) => option?.name || ''}
+                    isOptionEqualToValue={(option, value) => option?.regionId === value?.regionId}
+                    renderInput={(params) => <TextField {...params} label="Մարզ" />}
+                  />
+                  <Autocomplete
+                    fullWidth
+                    options={communities ?? []}
+                    value={filterProps.communityOption}
+                    onChange={(_, newValue) => handleAddressSelectChange('community', newValue)}
+                    getOptionLabel={(option) => option?.name || ''}
+                    isOptionEqualToValue={(option, value) =>
+                      option?.communityId === value?.communityId
+                    }
+                    renderInput={(params) => <TextField {...params} label="Համայնք" />}
+                    disabled={!filterProps.regionOption}
+                    loading={communitiesFetching}
+                  />
+                </Stack>
+                {filterProps.addressType !== 'BIRTH' && (
+                  <>
                     <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                       <Autocomplete
                         fullWidth
-                        options={regions ?? []}
-                        value={filterProps.regionOption}
-                        onChange={(_, newValue) => handleAddressSelectChange('region', newValue)}
-                        getOptionLabel={(option) => option?.name || ''}
-                        isOptionEqualToValue={(option, value) =>
-                          option?.regionId === value?.regionId
-                        }
-                        renderInput={(params) => <TextField {...params} label="Մարզ" />}
-                      />
-                      <Autocomplete
-                        fullWidth
-                        options={communities ?? []}
-                        value={filterProps.communityOption}
-                        onChange={(_, newValue) => handleAddressSelectChange('community', newValue)}
-                        getOptionLabel={(option) => option?.name || ''}
-                        isOptionEqualToValue={(option, value) =>
-                          option?.communityId === value?.communityId
-                        }
-                        renderInput={(params) => <TextField {...params} label="Համայնք" />}
-                        disabled={!filterProps.regionOption}
-                        loading={communitiesFetching}
-                      />
-                    </Stack>
-                    <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-                      <Autocomplete
-                        fullWidth
-                        options={settlements ?? []}
+                        options={residences ?? []}
                         value={filterProps.residenceOption}
                         onChange={(_, newValue) => handleAddressSelectChange('residence', newValue)}
                         getOptionLabel={(option) => option?.name || ''}
@@ -319,20 +307,25 @@ const SearchByAddressTab = () => {
                           option?.settlementId === value?.settlementId
                         }
                         renderInput={(params) => <TextField {...params} label="Բնակավայր" />}
-                        disabled={!filterProps.communityOption}
-                        loading={settlementsFetching}
+                        disabled={
+                          !filterProps.communityOption ||
+                          (!!filterProps.regionOption && filterProps.regionOption.name === 'ԵՐԵՎԱՆ')
+                        }
+                        loading={residencesFetching}
                       />
                       <Autocomplete
                         fullWidth
                         options={streets ?? []}
                         value={filterProps.streetOption}
                         onChange={(_, newValue) => handleAddressSelectChange('street', newValue)}
-                        getOptionLabel={(option) => option?.name || ''}
-                        isOptionEqualToValue={(option, value) =>
-                          option?.streetId === value?.streetId
-                        }
+                        getOptionLabel={(option) => option || ''}
+                        isOptionEqualToValue={(option, value) => option === value}
                         renderInput={(params) => <TextField {...params} label="Փողոց" />}
-                        disabled={!filterProps.residenceOption}
+                        disabled={
+                          !filterProps.residenceOption &&
+                          (!filterProps.communityOption ||
+                            filterProps.regionOption.name !== 'ԵՐԵՎԱՆ')
+                        }
                         loading={streetsFetching}
                       />
                     </Stack>
@@ -343,6 +336,23 @@ const SearchByAddressTab = () => {
                         fullWidth
                         value={filterProps.building}
                         onChange={handleInputChange}
+                        InputProps={{
+                          endAdornment: filterProps.building && (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() =>
+                                  handleInputChange({
+                                    target: { name: 'building', value: '' },
+                                  })
+                                }
+                                edge="end"
+                                size="small"
+                              >
+                                <ClearIcon />
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
                       />
                       <TextField
                         label="Բնակարան"
@@ -350,16 +360,33 @@ const SearchByAddressTab = () => {
                         fullWidth
                         value={filterProps.apartment}
                         onChange={handleInputChange}
+                        InputProps={{
+                          endAdornment: filterProps.apartment && (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() =>
+                                  handleInputChange({
+                                    target: { name: 'apartment', value: '' },
+                                  })
+                                }
+                                edge="end"
+                                size="small"
+                              >
+                                <ClearIcon />
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
                       />
                     </Stack>
-                  </Stack>
-                </AccordionDetails>
-              </Accordion>
+                  </>
+                )}
+              </Stack>
               <Stack direction="row" justifyContent="flex-end" spacing={2}>
                 <Button
                   variant="outlined"
                   color="error"
-                  onClick={handleAddressClearButton}
+                  onClick={handleClearButton}
                   disabled={isResetDisabled}
                 >
                   Մաքրել
@@ -375,7 +402,9 @@ const SearchByAddressTab = () => {
             </Stack>
           </Box>
         </Stack>
-        {isInitialLoading ? (
+        {error ? (
+          <MuiAlert severity="error">{error.response?.data?.message || error.message}</MuiAlert>
+        ) : isInitialLoading ? (
           <SearchPageSkileton />
         ) : !persons ? null : (
           <AddressSearchBody
