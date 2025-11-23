@@ -7,14 +7,9 @@ import {
   Select,
   MenuItem,
   TextField,
-  Accordion,
-  Container,
   InputLabel,
-  Typography,
   FormControl,
   Autocomplete,
-  AccordionDetails,
-  AccordionSummary,
   Alert as MuiAlert,
   Divider,
   InputAdornment,
@@ -22,10 +17,9 @@ import {
 } from '@mui/material';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import ClearIcon from '@mui/icons-material/Clear';
 
-import SearchPageSkileton from '../../../components/searchPageSkileton/SearchPageSkileton';
+import AddressSearchSkeleton from '../../../components/search/AddressSearchSkeleton';
 import NameField from './NameField';
 import { addressSearchInitialFilters } from '../SearchPage.constants';
 import AddressSearchBody from '../../../components/search/AddressSearchBody';
@@ -405,7 +399,7 @@ const SearchByAddressTab = () => {
         {error ? (
           <MuiAlert severity="error">{error.response?.data?.message || error.message}</MuiAlert>
         ) : isInitialLoading ? (
-          <SearchPageSkileton />
+          <AddressSearchSkeleton />
         ) : !persons ? null : (
           <AddressSearchBody
             persons={persons}

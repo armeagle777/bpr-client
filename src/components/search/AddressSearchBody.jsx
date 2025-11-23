@@ -1,7 +1,6 @@
 import { memo } from 'react';
 import { Stack, Pagination, Divider, Box } from '@mui/material';
 
-import SearchRow from './SearchRow';
 import NoResults from '../NoResults/NoResults';
 import { perPageCount } from '../../utils/constants';
 import { countForFilter } from '../../utils/configs';
