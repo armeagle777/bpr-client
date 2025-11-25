@@ -18,6 +18,7 @@ export const addressSearchInitialFilters = {
   lastNameMatchType: 'exact',
   patronomicNameMatchType: 'exact',
   addressType: 'LIVING',
+  registrationType: 'EVER',
   regionOption: null,
   communityOption: null,
   residenceOption: null,

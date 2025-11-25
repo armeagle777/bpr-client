@@ -260,6 +260,23 @@ const SearchByAddressTab = () => {
                     <MenuItem value="BIRTH">Ծննդյան հասցե</MenuItem>
                   </Select>
                 </FormControl>
+
+                <FormControl fullWidth>
+                  <InputLabel id="registration-type-label">Գրանցման տարբերակը</InputLabel>
+                  <Select
+                    labelId="registration-type-label"
+                    label="Հասցեի տեսակ"
+                    name="registrationType"
+                    value={filterProps.registrationType}
+                    onChange={handleInputChange}
+                    disabled={filterProps?.addressType !== 'LIVING'}
+                  >
+                    <MenuItem value="EVER" selected>
+                      Երբևէ գրանցված
+                    </MenuItem>
+                    <MenuItem value="CURRENT">Այժմ գրանցված</MenuItem>
+                  </Select>
+                </FormControl>
               </Stack>
 
               <Stack spacing={2}>

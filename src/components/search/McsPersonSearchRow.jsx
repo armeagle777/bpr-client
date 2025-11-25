@@ -3,6 +3,8 @@ import { Button, CardMedia, Chip, Stack, Typography } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import { useNavigate } from 'react-router-dom';
 
+import { bprDocumentTypes } from '../../utils/constants';
+
 const McsPersonSearchRow = ({ data = {} }) => {
   const { avv_documents = [], ssn = '' } = data;
   const preferredDocument = getPreferredDocument(avv_documents);
@@ -54,7 +56,7 @@ const McsPersonSearchRow = ({ data = {} }) => {
             {preferredDocument.doc_type && (
               <Typography variant="body2" color="text.secondary">
                 <strong>Փաստաթուղթ՝ </strong>
-                {preferredDocument.doc_type}
+                {bprDocumentTypes[preferredDocument.doc_type]}
               </Typography>
             )}
             {preferredDocument.doc_number && (
