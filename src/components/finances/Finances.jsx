@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { Box } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 
 import NoResults from "../NoResults/NoResults";
 import FinanceCard from "./components/FinanceCard";
@@ -9,11 +11,14 @@ import FinanceTable from "./components/FinanceTable";
 import TableScileton from "../tableScileton/TableScileton";
 import PageHeaderControls from "./components/PageHeaderControls";
 import useFetchPersonIncomes from "../../hooks/useFetchPersonIncomes";
+import PDFGenerator from "../PDFGenerator/PDFGenerator";
+import FinancesReport from "../pdf-templates/FinancesReport";
 
 const Finances = ({ ssn }) => {
   const [view, setView] = useState(pageViewsMap.TABLE);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const user = useAuthUser();
 
   const {
     data: taxInfo,
@@ -41,6 +46,31 @@ const Finances = ({ ssn }) => {
     );
   }
 
+  const hasResults = Boolean(taxInfo?.length);
+  const userFullName = useMemo(() => {
+    if (!user) {
+      return "";
+    }
+    return [user.firstName, user.lastName].filter(Boolean).join(" ");
+  }, [user]);
+
+  const exportFileName = useMemo(() => {
+    const safeSsn = typeof ssn === "string" ? ssn.replace(/[^\w-]/g, "_") : "report";
+    return `finances_${safeSsn || "report"}.pdf`;
+  }, [ssn]);
+
+  const exportButton = hasResults ? (
+    <PDFGenerator
+      PDFTemplate={FinancesReport}
+      fileName={exportFileName}
+      buttonText="Արտահանել"
+      variant="outlined"
+      Icon={PictureAsPdfIcon}
+      data={{ PNum: ssn, employers: taxInfo }}
+      userFullName={userFullName}
+    />
+  ) : null;
+
   return (
     <Box sx={{ mt: 3 }}>
       <PageHeaderControls
@@ -49,6 +79,7 @@ const Finances = ({ ssn }) => {
         endDate={endDate}
         onChangeView={handleChangeView}
         onDateChange={handleDateChange}
+        actions={exportButton}
       />
 
       {!taxInfo?.length ? (

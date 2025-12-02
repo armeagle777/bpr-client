@@ -202,6 +202,121 @@ export const styles = StyleSheet.create({
   },
 });
 
+export const financesPdfStyles = StyleSheet.create({
+  page: {
+    backgroundColor: "#ffffff",
+    fontFamily: "Arial",
+    fontSize: 10,
+    color: "#1f1f1f",
+    padding: 24,
+  },
+  header: {
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#1f1f1f",
+  },
+  subtitle: {
+    fontSize: 10,
+    color: "#5f6368",
+    marginTop: 4,
+  },
+  meta: {
+    fontSize: 9,
+    color: "#5f6368",
+  },
+  content: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  employerSection: {
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#dfe3eb",
+    borderRadius: 6,
+    padding: 10,
+    marginBottom: 12,
+  },
+  employerHeader: {
+    marginBottom: 4,
+  },
+  employerTitle: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "#1f3a63",
+  },
+  employerMeta: {
+    fontSize: 9,
+    color: "#4f5b70",
+    marginTop: 2,
+  },
+  table: {
+    display: "table",
+    width: "auto",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: "#c9ced6",
+    marginTop: 8,
+  },
+  tableRow: {
+    flexDirection: "row",
+  },
+  cell: {
+    padding: 4,
+    fontSize: 8,
+    borderRightWidth: 1,
+    borderRightColor: "#c9ced6",
+    borderRightStyle: "solid",
+    borderBottomWidth: 1,
+    borderBottomColor: "#c9ced6",
+    borderBottomStyle: "solid",
+  },
+  headerCell: {
+    backgroundColor: "#eceff7",
+    fontWeight: "bold",
+  },
+  labelCell: {
+    width: "30%",
+    fontWeight: "bold",
+    backgroundColor: "#f7f8fb",
+  },
+  valueCell: {
+    minWidth: 45,
+  },
+  valueCellText: {
+    textAlign: "right",
+  },
+  lastCell: {
+    borderRightWidth: 0,
+  },
+  noBottomBorder: {
+    borderBottomWidth: 0,
+  },
+  emptyRow: {
+    fontSize: 9,
+    color: "#6b6b6b",
+    marginTop: 8,
+  },
+  footer: {
+    marginTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#dfe3eb",
+    borderTopStyle: "solid",
+    paddingTop: 6,
+    fontSize: 8,
+    color: "#5f6368",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  emptyState: {
+    fontSize: 10,
+    color: "#777777",
+  },
+});
+
 export const qkagStyles = StyleSheet.create({
   page: {
     backgroundColor: "#f7f7ff",
