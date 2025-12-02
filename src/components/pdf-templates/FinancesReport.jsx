@@ -171,10 +171,6 @@ const FinancesReport = ({ data = {}, userFullName }) => {
             <Text style={styles.emptyState}>Տվյալներ հասանելի չեն</Text>
           )}
         </View>
-        <View style={styles.footer}>
-          <Text>Աղբյուր՝ ԲՊՌ</Text>
-          <Text>Գաղտնիություն ապահովված է իրավական ակտերով</Text>
-        </View>
       </Page>
     </Document>
   );

@@ -345,6 +345,140 @@ export const financesPdfStyles = StyleSheet.create({
   },
 });
 
+export const taxEmployersPdfStyles = StyleSheet.create({
+  page: {
+    backgroundColor: "#f7f7ff",
+    fontFamily: "Arial",
+    fontSize: 10,
+    color: "#6A6A6A",
+  },
+  header: {
+    padding: 10,
+    borderBottom: `1px solid ${COLORS.PRIMARY}`,
+    display: "flex",
+    flexDirection: "column",
+    gap: 4,
+    marginBottom: 10,
+  },
+  headerTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: COLORS.PRIMARY,
+    textTransform: "uppercase",
+    textAlign: "center",
+  },
+  headerMeta: {
+    fontSize: 9,
+    color: "#1f1f1f",
+    textAlign: "center",
+  },
+  container: {
+    padding: "10px",
+    display: "flex",
+    flexDirection: "column",
+    gap: 12,
+  },
+  employerCard: {
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: COLORS.PRIMARY,
+    borderRadius: 6,
+    overflow: "hidden",
+    backgroundColor: "#fff",
+    boxShadow:
+      "0 2px 6px 0 rgba(218, 218, 253, 0.65), 0 2px 6px 0 rgba(206, 206, 238, 0.54)",
+  },
+  employerHeader: {
+    backgroundColor: COLORS.PRIMARY,
+    padding: "8px 10px",
+  },
+  employerName: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  employerMeta: {
+    fontSize: 8,
+    color: "#e4ae4e",
+  },
+  employerBody: {
+    padding: "10px",
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+  },
+  infoRow: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 10,
+  },
+  infoLabel: {
+    fontSize: 9,
+    color: "#1f1f1f",
+  },
+  infoValue: {
+    fontSize: 10,
+    color: "#1f1f1f",
+    fontWeight: "bold",
+  },
+  chipList: {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 6,
+  },
+  chip: {
+    padding: "4px 8px",
+    borderRadius: 4,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#e4ae4e",
+    backgroundColor: "#fff5e1",
+    fontSize: 8,
+    color: "#1f1f1f",
+  },
+  positionsTitle: {
+    fontSize: 10,
+    fontWeight: "bold",
+    color: COLORS.PRIMARY,
+  },
+  positionCard: {
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#dfe3eb",
+    borderRadius: 4,
+    padding: 8,
+    marginTop: 4,
+    backgroundColor: "#fdfdfd",
+  },
+  positionName: {
+    fontSize: 9,
+    fontWeight: "bold",
+    color: "#1f1f1f",
+    marginBottom: 2,
+  },
+  positionDates: {
+    fontSize: 8,
+    color: "#203753",
+  },
+  emptyState: {
+    fontSize: 9,
+    color: "#6b6b6b",
+    fontStyle: "italic",
+  },
+  footer: {
+    marginTop: 10,
+    borderTop: "1px dashed #6A6A6A",
+    paddingTop: 6,
+    fontSize: 8,
+    color: "#1f1f1f",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+});
+
 export const qkagStyles = StyleSheet.create({
   page: {
     backgroundColor: "#f7f7ff",
