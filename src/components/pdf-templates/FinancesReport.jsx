@@ -1,38 +1,35 @@
-import { Document, Font, Page, Text, View } from "@react-pdf/renderer";
+import { Document, Font, Page, Text, View } from '@react-pdf/renderer';
 
-import Arial from "../../assets/Fonts/GHEAGrpalatReg.otf";
-import BoldArial from "../../assets/Fonts/GHEAGpalatBld.otf";
-import { financesPdfStyles } from "./templates.constants";
-import { formatDate } from "./templates.helpers";
+import Arial from '../../assets/Fonts/GHEAGrpalatReg.otf';
+import BoldArial from '../../assets/Fonts/GHEAGpalatBld.otf';
+import { financesPdfStyles } from './templates.constants';
+import { formatDate } from './templates.helpers';
 
 Font.register({
-  family: "Arial",
-  fontStyle: "normal",
-  fontWeight: "normal",
+  family: 'Arial',
+  fontStyle: 'normal',
+  fontWeight: 'normal',
   fonts: [
     {
       src: Arial,
     },
     {
       src: BoldArial,
-      fontWeight: "bold",
+      fontWeight: 'bold',
     },
   ],
 });
 
 const metricsConfig = [
-  { key: "salaryEquivPayments", label: "Աշխ․ հավասարեցված վճարներ" },
-  { key: "civilLowContractPayments", label: "Քաղ. պայմ" },
-  { key: "incomeTax", label: "Եկամտային հարկ" },
-  { key: "socialpayments", label: "Հաշվարկված սոց․ վճարներ" },
-  { key: "socialpaymentspaid", label: "Վճարված սոցվճարներ" },
-  { key: "workinghours", label: "Աշխատաժամեր" },
+  { key: 'salaryEquivPayments', label: 'Աշխատավարձին հավասարեցված վճարներ' },
+  { key: 'civilLowContractPayments', label: 'Քաղպայմանագիր' },
+  { key: 'incomeTax', label: 'Եկամտային հարկ' },
+  { key: 'socialpayments', label: 'Հաշվարկված սոցվճարներ' },
+  { key: 'socialpaymentspaid', label: 'Վճարված սոցվճարներ' },
+  { key: 'workinghours', label: 'Աշխատաժամեր' },
 ];
 
-const initialTotals = metricsConfig.reduce(
-  (acc, metric) => ({ ...acc, [metric.key]: 0 }),
-  {}
-);
+const initialTotals = metricsConfig.reduce((acc, metric) => ({ ...acc, [metric.key]: 0 }), {});
 
 const normalizePeriods = (personInfoPeriods) => {
   const { personInfoPeriod } = { ...personInfoPeriods };
@@ -45,7 +42,7 @@ const normalizePeriods = (personInfoPeriods) => {
 
 const formatValue = (value) => {
   if (value === null || value === undefined) {
-    return "-";
+    return '-';
   }
 
   const numericValue = Number(value);
@@ -53,38 +50,34 @@ const formatValue = (value) => {
     return value.toString();
   }
 
-  return new Intl.NumberFormat("en-US").format(numericValue);
+  return new Intl.NumberFormat('en-US').format(numericValue);
 };
 
 const calculateTotals = (periods = []) =>
-  periods.reduce((acc, { personInfo = {} }) => {
-    metricsConfig.forEach(({ key }) => {
-      const value = Number(personInfo[key]) || 0;
-      acc[key] += value;
-    });
-    return acc;
-  }, { ...initialTotals });
+  periods.reduce(
+    (acc, { personInfo = {} }) => {
+      metricsConfig.forEach(({ key }) => {
+        const value = Number(personInfo[key]) || 0;
+        acc[key] += value;
+      });
+      return acc;
+    },
+    { ...initialTotals }
+  );
 
 const EmployerSection = ({ employer }) => {
   const styles = financesPdfStyles;
-  const {
-    taxpayerid,
-    taxpayerName,
-    legalTypeName,
-    personInfoPeriods,
-  } = employer || {};
+  const { taxpayerid, taxpayerName, legalTypeName, personInfoPeriods } = employer || {};
 
   const periods = normalizePeriods(personInfoPeriods);
   const hasPeriods = periods.length > 0;
-  const displayName = [taxpayerName, legalTypeName].filter(Boolean).join(" ").trim();
+  const displayName = [taxpayerName, legalTypeName].filter(Boolean).join(' ').trim();
   const totals = calculateTotals(periods);
 
   return (
     <View style={styles.employerSection}>
       <View style={styles.employerHeader}>
-        <Text style={styles.employerTitle}>
-          {displayName || "Չսահմանված գործատու"}
-        </Text>
+        <Text style={styles.employerTitle}>{displayName || 'Չսահմանված գործատու'}</Text>
         {taxpayerid && <Text style={styles.employerMeta}>ՀՎՀՀ: {taxpayerid}</Text>}
       </View>
       {hasPeriods ? (
@@ -107,9 +100,9 @@ const EmployerSection = ({ employer }) => {
             ))}
           </View>
           {periods.map(({ date, personInfo = {} }, rowIndex) => (
-            <View key={`${taxpayerid || "tax"}-${date}-${rowIndex}`} style={styles.tableRow}>
+            <View key={`${taxpayerid || 'tax'}-${date}-${rowIndex}`} style={styles.tableRow}>
               <View style={[styles.tableCell, styles.dateCell]}>
-                <Text style={styles.dateText}>{date || "-"}</Text>
+                <Text style={styles.dateText}>{date || '-'}</Text>
               </View>
               {metricsConfig.map((metric, index) => (
                 <View
@@ -126,13 +119,7 @@ const EmployerSection = ({ employer }) => {
             </View>
           ))}
           <View style={[styles.tableRow, styles.totalRow]}>
-            <View
-              style={[
-                styles.tableCell,
-                styles.dateCell,
-                styles.noBottomBorder,
-              ]}
-            >
+            <View style={[styles.tableCell, styles.dateCell, styles.noBottomBorder]}>
               <Text style={[styles.dateText, styles.totalText]}>Ընդամենը</Text>
             </View>
             {metricsConfig.map((metric, index) => (
@@ -164,7 +151,7 @@ const FinancesReport = ({ data = {}, userFullName }) => {
   const { PNum, employers } = data || {};
   const reportData = Array.isArray(employers) ? employers : [];
   const generatedAt = formatDate(new Date());
-  const exporterName = (userFullName || "").trim() || "---";
+  const exporterName = (userFullName || '').trim() || '---';
 
   return (
     <Document>
