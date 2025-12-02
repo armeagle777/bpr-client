@@ -1,24 +1,10 @@
-import { Document, Font, Page, Text, View } from '@react-pdf/renderer';
+import { Document, Page, Text, View } from '@react-pdf/renderer';
 
-import Arial from '../../assets/Fonts/GHEAGrpalatReg.otf';
-import BoldArial from '../../assets/Fonts/GHEAGpalatBld.otf';
 import { financesPdfStyles } from './templates.constants';
 import { formatDate } from './templates.helpers';
+import registerPdfFonts from './registerFonts';
 
-Font.register({
-  family: 'Arial',
-  fontStyle: 'normal',
-  fontWeight: 'normal',
-  fonts: [
-    {
-      src: Arial,
-    },
-    {
-      src: BoldArial,
-      fontWeight: 'bold',
-    },
-  ],
-});
+registerPdfFonts();
 
 const metricsConfig = [
   { key: 'salaryEquivPayments', label: 'Աշխատավարձին հավասարեցված վճարներ' },

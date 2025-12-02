@@ -1,62 +1,41 @@
-import { Document, Font, Page, Text, View } from "@react-pdf/renderer";
+import { Document, Page, Text, View } from '@react-pdf/renderer';
 
-import Arial from "../../assets/Fonts/GHEAGrpalatReg.otf";
-import BoldArial from "../../assets/Fonts/GHEAGpalatBld.otf";
-import BprHeader from "./components/BprHeader";
-import { taxEmployersPdfStyles } from "./templates.constants";
-import { formatDate } from "./templates.helpers";
+import BprHeader from './components/BprHeader';
+import { taxEmployersPdfStyles } from './templates.constants';
+import { formatDate } from './templates.helpers';
+import registerPdfFonts from './registerFonts';
 
-Font.register({
-  family: "Arial",
-  fontStyle: "normal",
-  fontWeight: "normal",
-  fonts: [
-    {
-      src: Arial,
-    },
-    {
-      src: BoldArial,
-      fontWeight: "bold",
-    },
-  ],
-});
+registerPdfFonts();
 
 const formatCurrency = (value, currency) => {
-  if (value === null || value === undefined || value === "") {
-    return "—";
+  if (value === null || value === undefined || value === '') {
+    return '—';
   }
   const number = Number(value);
   const formatted = Number.isNaN(number)
     ? value.toString()
-    : new Intl.NumberFormat("en-US").format(number);
+    : new Intl.NumberFormat('en-US').format(number);
 
   return currency ? `${formatted} ${currency}` : formatted;
 };
 
-const formatPositionDate = (value) => value || "—";
+const formatPositionDate = (value) => value || '—';
 
 const EmployerCard = ({ employer }) => {
   const styles = taxEmployersPdfStyles;
-  const {
-    TP_NAME,
-    TIN,
-    Address,
-    Salary,
-    Net_income,
-    Contract_revenue,
-    PositionInfo,
-  } = employer || {};
+  const { TP_NAME, TIN, Address, Salary, Net_income, Contract_revenue, PositionInfo } =
+    employer || {};
 
   const chipData = [
-    { label: "Աշխատավարձ", data: Salary },
-    { label: "Զուտ եկամուտ", data: Net_income },
-    { label: "Պայմանագրային եկամուտ", data: Contract_revenue },
+    { label: 'Աշխատավարձ', data: Salary },
+    { label: 'Զուտ եկամուտ', data: Net_income },
+    { label: 'Պայմանագրային եկամուտ', data: Contract_revenue },
   ].filter((chip) => chip.data);
 
   return (
     <View style={styles.employerCard}>
       <View style={styles.employerHeader}>
-        <Text style={styles.employerName}>{TP_NAME || "Չսահմանված գործատու"}</Text>
+        <Text style={styles.employerName}>{TP_NAME || 'Չսահմանված գործատու'}</Text>
         {TIN && <Text style={styles.employerMeta}>ՀՎՀՀ: {TIN}</Text>}
       </View>
       <View style={styles.employerBody}>
@@ -82,9 +61,10 @@ const EmployerCard = ({ employer }) => {
           {PositionInfo?.length ? (
             PositionInfo.map((pos, index) => (
               <View key={`${pos.Position}-${index}`} style={styles.positionCard}>
-                <Text style={styles.positionName}>{pos.Position || "Պաշտոն"}</Text>
+                <Text style={styles.positionName}>{pos.Position || 'Պաշտոն'}</Text>
                 <Text style={styles.positionDates}>
-                  Մուտք: {formatPositionDate(pos.Position_Start_Date || pos.Civil_relations_StartDate)}
+                  Մուտք:{' '}
+                  {formatPositionDate(pos.Position_Start_Date || pos.Civil_relations_StartDate)}
                 </Text>
                 <Text style={styles.positionDates}>
                   Ելք: {formatPositionDate(pos.Position_End_Date || pos.Civil_relations_EndDate)}
@@ -104,7 +84,7 @@ const TaxEmployersReport = ({ data = {}, userFullName }) => {
   const styles = taxEmployersPdfStyles;
   const { PNum, employers } = data || {};
   const generatedAt = formatDate(new Date());
-  const exporter = (userFullName || "").trim() || "---";
+  const exporter = (userFullName || '').trim() || '---';
   const employerList = Array.isArray(employers) ? employers : [];
 
   return (
@@ -126,11 +106,6 @@ const TaxEmployersReport = ({ data = {}, userFullName }) => {
           ) : (
             <Text style={styles.emptyState}>Տվյալներ հասանելի չեն</Text>
           )}
-        </View>
-
-        <View style={styles.footer}>
-          <Text>Աղբյուր՝ ԲՊՌ</Text>
-          <Text>Գաղտնիություն ապահովված է իրավական ակտերով</Text>
         </View>
       </Page>
     </Document>

@@ -1,29 +1,15 @@
-import { Page, Text, View, Font, Document } from "@react-pdf/renderer";
+import { Page, Text, View, Document } from "@react-pdf/renderer";
 
 import { styles } from "./templates.constants";
 import BprAddressRow from "./components/BprAddressRow";
 import BprDocumentRow from "./components/BprDocumentRow";
 
-import Arial from "../../assets/Fonts/GHEAGrpalatReg.otf";
-import BoldArial from "../../assets/Fonts/GHEAGpalatBld.otf";
 import { formatBprData, formatDate } from "./templates.helpers";
 import AsideBar from "./components/AsideBar";
 import BprHeader from "./components/BprHeader";
+import registerPdfFonts from "./registerFonts";
 
-Font.register({
-  family: "Arial",
-  fontStyle: "normal",
-  fontWeight: "normal",
-  fonts: [
-    {
-      src: Arial,
-    },
-    {
-      src: BoldArial,
-      fontWeight: "bold",
-    },
-  ],
-});
+registerPdfFonts();
 
 const BPR = ({ data, userFullName }) => {
   const {
