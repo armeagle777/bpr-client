@@ -253,17 +253,23 @@ export const financesPdfStyles = StyleSheet.create({
     marginTop: 2,
   },
   table: {
-    display: "table",
-    width: "auto",
-    borderStyle: "solid",
+    width: "100%",
     borderWidth: 1,
     borderColor: "#c9ced6",
+    borderStyle: "solid",
     marginTop: 8,
+    borderRadius: 4,
+    overflow: "hidden",
   },
   tableRow: {
+    display: "flex",
     flexDirection: "row",
   },
-  cell: {
+  tableHeaderRow: {
+    backgroundColor: "#eceff7",
+  },
+  tableCell: {
+    flex: 1,
     padding: 4,
     fontSize: 8,
     borderRightWidth: 1,
@@ -272,27 +278,35 @@ export const financesPdfStyles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#c9ced6",
     borderBottomStyle: "solid",
+    justifyContent: "center",
   },
-  headerCell: {
-    backgroundColor: "#eceff7",
+  dateCell: {
+    flex: 1.3,
+  },
+  metricCell: {
+    flex: 1,
+  },
+  headerText: {
     fontWeight: "bold",
+    color: "#1f3a63",
   },
-  labelCell: {
-    width: "30%",
-    fontWeight: "bold",
-    backgroundColor: "#f7f8fb",
-  },
-  valueCell: {
-    minWidth: 45,
-  },
-  valueCellText: {
+  cellText: {
     textAlign: "right",
+  },
+  dateText: {
+    textAlign: "left",
   },
   lastCell: {
     borderRightWidth: 0,
   },
   noBottomBorder: {
     borderBottomWidth: 0,
+  },
+  totalRow: {
+    backgroundColor: "#f7f8fb",
+  },
+  totalText: {
+    fontWeight: "bold",
   },
   emptyRow: {
     fontSize: 9,

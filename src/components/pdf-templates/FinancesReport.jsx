@@ -29,6 +29,11 @@ const metricsConfig = [
   { key: "workinghours", label: "Աշխատաժամեր" },
 ];
 
+const initialTotals = metricsConfig.reduce(
+  (acc, metric) => ({ ...acc, [metric.key]: 0 }),
+  {}
+);
+
 const normalizePeriods = (personInfoPeriods) => {
   const { personInfoPeriod } = { ...personInfoPeriods };
   if (!personInfoPeriod) {
@@ -51,6 +56,15 @@ const formatValue = (value) => {
   return new Intl.NumberFormat("en-US").format(numericValue);
 };
 
+const calculateTotals = (periods = []) =>
+  periods.reduce((acc, { personInfo = {} }) => {
+    metricsConfig.forEach(({ key }) => {
+      const value = Number(personInfo[key]) || 0;
+      acc[key] += value;
+    });
+    return acc;
+  }, { ...initialTotals });
+
 const EmployerSection = ({ employer }) => {
   const styles = financesPdfStyles;
   const {
@@ -61,9 +75,9 @@ const EmployerSection = ({ employer }) => {
   } = employer || {};
 
   const periods = normalizePeriods(personInfoPeriods);
-  const dates = periods.map(({ date }) => date);
   const hasPeriods = periods.length > 0;
   const displayName = [taxpayerName, legalTypeName].filter(Boolean).join(" ").trim();
+  const totals = calculateTotals(periods);
 
   return (
     <View style={styles.employerSection}>
@@ -75,52 +89,68 @@ const EmployerSection = ({ employer }) => {
       </View>
       {hasPeriods ? (
         <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={[styles.cell, styles.labelCell, styles.headerCell]}>
-              <Text>...</Text>
+          <View style={[styles.tableRow, styles.tableHeaderRow]}>
+            <View style={[styles.tableCell, styles.dateCell]}>
+              <Text style={[styles.headerText, styles.dateText]}>Ամիս</Text>
             </View>
-            {dates.map((date, index) => (
+            {metricsConfig.map((metric, index) => (
               <View
-                key={`${taxpayerid || "tax"}-${date}-${index}`}
+                key={metric.key}
                 style={[
-                  styles.cell,
-                  styles.headerCell,
-                  styles.valueCell,
-                  index === dates.length - 1 && styles.lastCell,
+                  styles.tableCell,
+                  styles.metricCell,
+                  index === metricsConfig.length - 1 && styles.lastCell,
                 ]}
               >
-                <Text>{date}</Text>
+                <Text style={[styles.headerText, styles.cellText]}>{metric.label}</Text>
               </View>
             ))}
           </View>
-          {metricsConfig.map((metric, metricIndex) => (
-            <View key={metric.key} style={styles.tableRow}>
-              <View
-                style={[
-                  styles.cell,
-                  styles.labelCell,
-                  metricIndex === metricsConfig.length - 1 && styles.noBottomBorder,
-                ]}
-              >
-                <Text>{metric.label}</Text>
+          {periods.map(({ date, personInfo = {} }, rowIndex) => (
+            <View key={`${taxpayerid || "tax"}-${date}-${rowIndex}`} style={styles.tableRow}>
+              <View style={[styles.tableCell, styles.dateCell]}>
+                <Text style={styles.dateText}>{date || "-"}</Text>
               </View>
-              {periods.map(({ personInfo = {} }, valueIndex) => (
+              {metricsConfig.map((metric, index) => (
                 <View
-                  key={`${metric.key}-${valueIndex}`}
+                  key={`${metric.key}-${rowIndex}`}
                   style={[
-                    styles.cell,
-                    styles.valueCell,
-                    valueIndex === periods.length - 1 && styles.lastCell,
-                    metricIndex === metricsConfig.length - 1 && styles.noBottomBorder,
+                    styles.tableCell,
+                    styles.metricCell,
+                    index === metricsConfig.length - 1 && styles.lastCell,
                   ]}
                 >
-                  <Text style={styles.valueCellText}>
-                    {formatValue(personInfo?.[metric.key])}
-                  </Text>
+                  <Text style={styles.cellText}>{formatValue(personInfo?.[metric.key])}</Text>
                 </View>
               ))}
             </View>
           ))}
+          <View style={[styles.tableRow, styles.totalRow]}>
+            <View
+              style={[
+                styles.tableCell,
+                styles.dateCell,
+                styles.noBottomBorder,
+              ]}
+            >
+              <Text style={[styles.dateText, styles.totalText]}>Ընդամենը</Text>
+            </View>
+            {metricsConfig.map((metric, index) => (
+              <View
+                key={`total-${metric.key}`}
+                style={[
+                  styles.tableCell,
+                  styles.metricCell,
+                  styles.noBottomBorder,
+                  index === metricsConfig.length - 1 && styles.lastCell,
+                ]}
+              >
+                <Text style={[styles.cellText, styles.totalText]}>
+                  {formatValue(totals[metric.key])}
+                </Text>
+              </View>
+            ))}
+          </View>
         </View>
       ) : (
         <Text style={styles.emptyRow}>Տվյալներ չեն գտնվել</Text>
