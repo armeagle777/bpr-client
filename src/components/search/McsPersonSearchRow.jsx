@@ -2,7 +2,9 @@ import { memo } from 'react';
 import { Button, CardMedia, Chip, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import { bprDocumentTypes } from '../../utils/constants';
+import { dedupeAddressesByStatusAndCode, getPhotoDocument, getPreferredDocument } from './helpers';
+import AddressRow from './AddressRow';
+import DocumentRow from './DocumentRow';
 
 const McsPersonSearchRow = ({ data = {} }) => {
   const { avv_documents = [], avv_addresses = [], ssn = '' } = data;
@@ -23,7 +25,9 @@ const McsPersonSearchRow = ({ data = {} }) => {
   const issueDate = preferredDocument.passport_data?.issuance_date;
   const validityDate = preferredDocument.passport_data?.validity_date;
   const sanitizedSsn = ssn?.replace(/\//g, '*');
-  const uniqueAddresses = deduplicateAddresses(avv_addresses);
+  const uniqueAddresses = dedupeAddressesByStatusAndCode(avv_addresses || []);
+
+  console.log('uniqueAddresses>>>>', uniqueAddresses);
 
   const handleNavigate = () => {
     if (!sanitizedSsn) return;
@@ -68,11 +72,11 @@ const McsPersonSearchRow = ({ data = {} }) => {
             </Typography>
           )}
         </Stack>
-        {renderDocumentRow({
-          preferredDocument,
-          issueDate,
-          validityDate,
-        })}
+        <DocumentRow
+          preferredDocument={preferredDocument}
+          issueDate={issueDate}
+          validityDate={validityDate}
+        />
         {uniqueAddresses.length > 0 && (
           <Stack spacing={1} mt={1.5}>
             <Typography variant="subtitle2" color="text.secondary">
@@ -90,130 +94,9 @@ const McsPersonSearchRow = ({ data = {} }) => {
           onClick={handleNavigate}
           sx={{ alignSelf: { xs: 'stretch', sm: 'flex-start' }, mt: 1.5 }}
         >
-          Դիտել անձը
+          Դիտել անձի տվյալները
         </Button>
       </Stack>
-    </Stack>
-  );
-};
-
-const getPreferredDocument = (documents = []) => {
-  if (!documents.length) return {};
-  const validDocuments = documents.filter((doc) => doc.doc_status === 'PRIMARY_VALID');
-  const preferredIdCard = validDocuments.find((doc) => doc.doc_type === 'ID_CARD');
-  if (preferredIdCard) return preferredIdCard;
-  if (validDocuments.length) return validDocuments[0];
-  return documents[0];
-};
-
-const getPhotoDocument = (documents = []) => {
-  if (!documents.length) return {};
-  return documents.find((doc) => !!doc.photo) || documents[0];
-};
-
-const deduplicateAddresses = (addresses = []) => {
-  if (!Array.isArray(addresses)) return [];
-  const seen = new Set();
-  return addresses.filter((address = {}) => {
-    const key = JSON.stringify(address || {});
-    if (seen.has(key)) {
-      return false;
-    }
-    seen.add(key);
-    return true;
-  });
-};
-
-const renderDocumentRow = ({ preferredDocument = {}, issueDate, validityDate }) => {
-  const docInfoParts = [
-    preferredDocument.doc_type && {
-      label: 'Փաստաթուղթ՝ ',
-      value: bprDocumentTypes[preferredDocument.doc_type] || preferredDocument.doc_type,
-    },
-    preferredDocument.doc_number && {
-      label: 'Սերիա/համար՝ ',
-      value: preferredDocument.doc_number,
-    },
-    (issueDate || validityDate) && {
-      label: 'Տրված է՝ ',
-      value: `${issueDate || '—'} · Վավեր՝ ${validityDate || '—'}`,
-    },
-  ].filter(Boolean);
-
-  if (!docInfoParts.length) return null;
-
-  return (
-    <Typography variant="body2" color="text.secondary">
-      {docInfoParts.map((part, idx) => (
-        <span key={`${part.label}-${idx}`}>
-          {idx > 0 && ' · '}
-          <strong>{part.label}</strong>
-          {part.value}
-        </span>
-      ))}
-    </Typography>
-  );
-};
-
-const AddressRow = ({ address = {} }) => {
-  const registrationAddress = address.registration_address || {};
-  const raAddress = registrationAddress.ra_address;
-  const fcAddress = registrationAddress.fc_address;
-  const regData = address.registration_data || {};
-  const raLocationParts = raAddress
-    ? [
-        raAddress.region,
-        raAddress.community,
-        raAddress.street,
-        [raAddress.building_type, raAddress.building].filter(Boolean).join(''),
-        raAddress.apartment && `բն. ${raAddress.apartment}`,
-      ].filter(Boolean)
-    : [];
-
-  const fcLocationParts = fcAddress
-    ? [
-        fcAddress.foreign_country?.name || fcAddress.foreign_country?.short_name,
-        fcAddress.foreign_region,
-        fcAddress.foreign_community,
-        fcAddress.foreign_city,
-        fcAddress.foreign_street,
-        fcAddress.foreign_building,
-        fcAddress.foreign_apartment && `բն. ${fcAddress.foreign_apartment}`,
-      ].filter(Boolean)
-    : [];
-
-  const locationParts = raLocationParts.length ? raLocationParts : fcLocationParts;
-
-  const registrationParts = [
-    regData.regist_department && `Բաժին՝ ${regData.regist_department}`,
-    regData.regist_date && `Գրանցվել է՝ ${regData.regist_date}`,
-    regData.regist_status && `Կարգավիճակ՝ ${regData.regist_status}`,
-  ].filter(Boolean);
-
-  const isCurrent = regData.regist_type === 'CURRENT';
-
-  return (
-    <Stack direction={{ xs: 'column', md: 'row' }} spacing={0.75} alignItems={{ md: 'center' }}>
-      <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-        {locationParts.length > 0 && (
-          <Typography variant="body2" color="text.primary">
-            {locationParts.join(', ')}
-          </Typography>
-        )}
-        {regData.regist_type && (
-          <Chip
-            label={regData.regist_type}
-            size="small"
-            color={isCurrent ? 'success' : 'error'}
-            sx={{ fontWeight: 600 }}
-          />
-        )}
-      </Stack>
-      {registrationParts.length > 0 && (
-        <Typography variant="body2" color="text.secondary">
-          {registrationParts.join(' · ')}
-        </Typography>
-      )}
     </Stack>
   );
 };
