@@ -169,6 +169,22 @@ const SearchByAddressTab = () => {
   const isSearchDisabled = !hasAddressFilters;
   const hideFilters = false;
   const filtersDisabled = !persons || (!areFiltersUsed(filterProps) && !persons?.length);
+
+  const isYerevanComSelected =
+    filterProps.regionOption?.name === 'ԵՐԵՎԱՆ' && !!filterProps.communityOption;
+
+  const isGyumriSelected =
+    !!filterProps.regionOption && filterProps.communityOption?.name === 'ԳՅՈՒՄՐԻ';
+
+  const streetDisabled = !filterProps.residenceOption && !isYerevanComSelected && !isGyumriSelected;
+
+  const isSelectedRegionYerevan = filterProps.regionOption?.name === 'ԵՐԵՎԱՆ';
+
+  const isSelectedCommunityGyumri = filterProps.communityOption?.name === 'ԳՅՈՒՄՐԻ';
+
+  const residenceDisabled =
+    !filterProps.communityOption || isSelectedRegionYerevan || isSelectedCommunityGyumri;
+
   return (
     <Stack direction="row" spacing={1} sx={{ pt: 2 }}>
       {!hideFilters && (
@@ -317,10 +333,7 @@ const SearchByAddressTab = () => {
                           option?.settlementId === value?.settlementId
                         }
                         renderInput={(params) => <TextField {...params} label="Բնակավայր" />}
-                        disabled={
-                          !filterProps.communityOption ||
-                          (!!filterProps.regionOption && filterProps.regionOption.name === 'ԵՐԵՎԱՆ')
-                        }
+                        disabled={residenceDisabled}
                         loading={residencesFetching}
                       />
                       <Autocomplete
@@ -331,11 +344,7 @@ const SearchByAddressTab = () => {
                         getOptionLabel={(option) => option || ''}
                         isOptionEqualToValue={(option, value) => option === value}
                         renderInput={(params) => <TextField {...params} label="Փողոց" />}
-                        disabled={
-                          !filterProps.residenceOption &&
-                          (!filterProps.communityOption ||
-                            filterProps.regionOption.name !== 'ԵՐԵՎԱՆ')
-                        }
+                        disabled={streetDisabled}
                         loading={streetsFetching}
                       />
                     </Stack>

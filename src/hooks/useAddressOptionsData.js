@@ -6,30 +6,37 @@ import { getAddressCommunities, getAddressResidences, getAddressStreets } from '
 const useAddressOptionsData = (filterProps) => {
   const { region, community, residence } = filterProps || {};
 
+  const shouldGetCommunities = !!region;
+  const shouldGetResidences =
+    !!region && !!community && region !== 'ԵՐԵՎԱՆ' && community !== 'ԳՅՈՒՄՐԻ';
+  const shouldGetStreets =
+    !!region &&
+    (!!residence || (!!community && region === 'ԵՐԵՎԱՆ') || (!!region && community === 'ԳՅՈՒՄՐԻ'));
+
   const { data: communities, isFetching: communitiesFetching } = useQuery(
-    ['address-communities', region],
+    ['address-communities', { region }],
     () => getAddressCommunities(region),
     {
       keepPreviousData: true,
-      enabled: !!region,
+      enabled: shouldGetCommunities,
     }
   );
 
   const { data: residences, isFetching: residencesFetching } = useQuery(
-    ['address-residences', region, community],
+    ['address-residences', { region, community }],
     () => getAddressResidences({ region, community }),
     {
-      keepPreviousData: true,
-      enabled: !!region && !!community,
+      keepPreviousData: false,
+      enabled: shouldGetResidences,
     }
   );
 
   const { data: streets, isFetching: streetsFetching } = useQuery(
-    ['address-streets', region, community, residence],
+    ['address-streets', { region, community, residence }],
     () => getAddressStreets({ region, community, residence }),
     {
-      keepPreviousData: true,
-      enabled: !!region && !!community && (!!residence || region === 'ԵՐԵՎԱՆ'),
+      keepPreviousData: false,
+      enabled: shouldGetStreets,
     }
   );
 

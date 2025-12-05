@@ -20,6 +20,7 @@ const PageHeaderControls = ({
   startDate,
   onDateChange,
   onChangeView,
+  actions,
 }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -39,21 +40,24 @@ const PageHeaderControls = ({
         >
           Անձի Եկամուտների Տվյալներ
         </Typography>
-        {/* TODO Add start and end dates filters */}
-        {/* Toggle buttons */}
-        <ToggleButtonGroup
-          exclusive
-          size="small"
-          value={view}
-          onChange={onChangeView}
-        >
-          <ToggleButton value={pageViewsMap.TABLE}>
-            <TableChartIcon fontSize="small" />
-          </ToggleButton>
-          <ToggleButton value={pageViewsMap.CARD}>
-            <ViewModuleIcon fontSize="small" />
-          </ToggleButton>
-        </ToggleButtonGroup>
+        <Box display="flex" alignItems="center" sx={{ gap: 2 }}>
+          {actions}
+          {/* TODO Add start and end dates filters */}
+          {/* Toggle buttons */}
+          <ToggleButtonGroup
+            exclusive
+            size="small"
+            value={view}
+            onChange={onChangeView}
+          >
+            <ToggleButton value={pageViewsMap.TABLE}>
+              <TableChartIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton value={pageViewsMap.CARD}>
+              <ViewModuleIcon fontSize="small" />
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
       </Box>
     </LocalizationProvider>
   );
