@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { CardMedia, Chip, Stack, Typography } from '@mui/material';
+import { Button, CardMedia, Chip, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import { bprDocumentTypes } from '../../utils/constants';
@@ -23,6 +23,7 @@ const McsPersonSearchRow = ({ data = {} }) => {
   const issueDate = preferredDocument.passport_data?.issuance_date;
   const validityDate = preferredDocument.passport_data?.validity_date;
   const sanitizedSsn = ssn?.replace(/\//g, '*');
+  const uniqueAddresses = deduplicateAddresses(avv_addresses);
 
   const handleNavigate = () => {
     if (!sanitizedSsn) return;
@@ -31,32 +32,16 @@ const McsPersonSearchRow = ({ data = {} }) => {
 
   const isNavigable = Boolean(sanitizedSsn);
 
-  const handleKeyNavigate = (event) => {
-    if (!isNavigable) return;
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      handleNavigate();
-    }
-  };
-
   return (
     <Stack
       direction={{ xs: 'column', md: 'row' }}
       spacing={3}
       alignItems="flex-start"
-      onClick={isNavigable ? handleNavigate : undefined}
-      onKeyDown={handleKeyNavigate}
-      role={isNavigable ? 'button' : undefined}
-      tabIndex={isNavigable ? 0 : undefined}
       sx={{
-        cursor: isNavigable ? 'pointer' : 'default',
         borderRadius: 1,
-        transition: 'background-color 0.2s ease',
-        '&:hover': isNavigable ? { bgcolor: 'action.hover' } : undefined,
-        '&:focus-visible': isNavigable
-          ? { outline: '2px solid', outlineColor: 'primary.main' }
-          : undefined,
         p: { xs: 1, md: 2 },
+        border: '1px solid',
+        borderColor: 'divider',
       }}
     >
       <CardMedia
@@ -88,13 +73,25 @@ const McsPersonSearchRow = ({ data = {} }) => {
           issueDate,
           validityDate,
         })}
-        {Array.isArray(avv_addresses) && avv_addresses.length > 0 && (
+        {uniqueAddresses.length > 0 && (
           <Stack spacing={1} mt={1.5}>
-            {avv_addresses.map((address, index) => (
+            <Typography variant="subtitle2" color="text.secondary">
+              Գրանցված հասցեներ
+            </Typography>
+            {uniqueAddresses.map((address, index) => (
               <AddressRow key={`address-${index}`} address={address} index={index} />
             ))}
           </Stack>
         )}
+        <Button
+          variant="contained"
+          size="small"
+          disabled={!isNavigable}
+          onClick={handleNavigate}
+          sx={{ alignSelf: { xs: 'stretch', sm: 'flex-start' }, mt: 1.5 }}
+        >
+          Դիտել անձը
+        </Button>
       </Stack>
     </Stack>
   );
@@ -112,6 +109,19 @@ const getPreferredDocument = (documents = []) => {
 const getPhotoDocument = (documents = []) => {
   if (!documents.length) return {};
   return documents.find((doc) => !!doc.photo) || documents[0];
+};
+
+const deduplicateAddresses = (addresses = []) => {
+  if (!Array.isArray(addresses)) return [];
+  const seen = new Set();
+  return addresses.filter((address = {}) => {
+    const key = JSON.stringify(address || {});
+    if (seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
+  });
 };
 
 const renderDocumentRow = ({ preferredDocument = {}, issueDate, validityDate }) => {
@@ -146,15 +156,33 @@ const renderDocumentRow = ({ preferredDocument = {}, issueDate, validityDate }) 
 };
 
 const AddressRow = ({ address = {} }) => {
-  const raAddress = address.registration_address?.ra_address || {};
+  const registrationAddress = address.registration_address || {};
+  const raAddress = registrationAddress.ra_address;
+  const fcAddress = registrationAddress.fc_address;
   const regData = address.registration_data || {};
-  const locationParts = [
-    raAddress.region,
-    raAddress.community,
-    raAddress.street,
-    [raAddress.building_type, raAddress.building].filter(Boolean).join(''),
-    raAddress.apartment && `բն. ${raAddress.apartment}`,
-  ].filter(Boolean);
+  const raLocationParts = raAddress
+    ? [
+        raAddress.region,
+        raAddress.community,
+        raAddress.street,
+        [raAddress.building_type, raAddress.building].filter(Boolean).join(''),
+        raAddress.apartment && `բն. ${raAddress.apartment}`,
+      ].filter(Boolean)
+    : [];
+
+  const fcLocationParts = fcAddress
+    ? [
+        fcAddress.foreign_country?.name || fcAddress.foreign_country?.short_name,
+        fcAddress.foreign_region,
+        fcAddress.foreign_community,
+        fcAddress.foreign_city,
+        fcAddress.foreign_street,
+        fcAddress.foreign_building,
+        fcAddress.foreign_apartment && `բն. ${fcAddress.foreign_apartment}`,
+      ].filter(Boolean)
+    : [];
+
+  const locationParts = raLocationParts.length ? raLocationParts : fcLocationParts;
 
   const registrationParts = [
     regData.regist_department && `Բաժին՝ ${regData.regist_department}`,
