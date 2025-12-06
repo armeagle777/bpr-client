@@ -11,6 +11,7 @@ const AddressRow = ({ address = {} }) => {
   const fcAddress = registrationAddress.fc_address;
   const regData = address.registration_data || {};
   const docNumber = address.residence_document?.doc_number;
+
   const hasResidenceDocument = Boolean(docNumber);
   const {
     data: residenceDocData,
