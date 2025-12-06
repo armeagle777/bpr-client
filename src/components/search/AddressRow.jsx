@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Box, Chip, CircularProgress, Drawer, IconButton, Stack, Typography } from '@mui/material';
+import { Box, Chip, Drawer, IconButton, Stack, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import useFetchResidenceDocument from '../../hooks/useFetchResidenceDocument';
+import ResidenceDocumentDrawerContent from './ResidenceDocumentDrawerContent';
 
 const AddressRow = ({ address = {} }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -11,13 +12,15 @@ const AddressRow = ({ address = {} }) => {
   const fcAddress = registrationAddress.fc_address;
   const regData = address.registration_data || {};
   const docNumber = address.residence_document?.doc_number;
-
   const hasResidenceDocument = Boolean(docNumber);
   const {
     data: residenceDocData,
     isFetching: residenceDocLoading,
     isError: residenceDocError,
-  } = useFetchResidenceDocument(docNumber);
+  } = useFetchResidenceDocument(docNumber, {
+    enabled: isDrawerOpen && hasResidenceDocument,
+    refetchOnWindowFocus: false,
+  });
   const raLocationParts = raAddress
     ? [
         raAddress.region,
@@ -107,7 +110,7 @@ const AddressRow = ({ address = {} }) => {
         )}
       </Stack>
       <Drawer anchor="right" open={isDrawerOpen} onClose={handleCloseDrawer}>
-        <Box sx={{ width: { xs: '100vw', sm: 420 }, p: 2 }}>
+        <Box sx={{ width: { xs: '100vw', sm: 480 }, p: 2 }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Typography variant="h6">Գրանցման փաստաթուղթ</Typography>
             <IconButton edge="end" onClick={handleCloseDrawer} aria-label="Փակել">
@@ -119,29 +122,11 @@ const AddressRow = ({ address = {} }) => {
               Փաստաթուղթ № {docNumber}
             </Typography>
           )}
-          <Box sx={{ mt: 2 }}>
-            {residenceDocLoading && (
-              <Stack alignItems="center" spacing={1}>
-                <CircularProgress size={24} />
-                <Typography variant="body2">Տվյալները բեռնվում են...</Typography>
-              </Stack>
-            )}
-            {!residenceDocLoading && residenceDocError && (
-              <Typography variant="body2" color="error">
-                Տվյալների ստացումը ձախողվեց
-              </Typography>
-            )}
-            {!residenceDocLoading && !residenceDocError && residenceDocData && (
-              <Typography variant="body2" color="text.secondary">
-                Ստացված տվյալները կցուցադրվեն այստեղ
-              </Typography>
-            )}
-            {!residenceDocLoading && !residenceDocError && !residenceDocData && (
-              <Typography variant="body2" color="text.secondary">
-                Տվյալ փաստաթղթի մանրամասները հասանելի չեն
-              </Typography>
-            )}
-          </Box>
+          <ResidenceDocumentDrawerContent
+            data={residenceDocData}
+            isLoading={residenceDocLoading}
+            isError={residenceDocError}
+          />
         </Box>
       </Drawer>
     </>
