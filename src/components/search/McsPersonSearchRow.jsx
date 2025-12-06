@@ -27,8 +27,6 @@ const McsPersonSearchRow = ({ data = {} }) => {
   const sanitizedSsn = ssn?.replace(/\//g, '*');
   const uniqueAddresses = dedupeAddressesByStatusAndCode(avv_addresses || []);
 
-  console.log('uniqueAddresses>>>>', uniqueAddresses);
-
   const handleNavigate = () => {
     if (!sanitizedSsn) return;
     navigate(`/bpr/${sanitizedSsn}`);

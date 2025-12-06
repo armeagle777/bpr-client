@@ -19,7 +19,6 @@ const AddressRow = ({ address = {} }) => {
     isError: residenceDocError,
   } = useFetchResidenceDocument(docNumber, {
     enabled: isDrawerOpen && hasResidenceDocument,
-    refetchOnWindowFocus: false,
   });
   const raLocationParts = raAddress
     ? [

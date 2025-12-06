@@ -1,12 +1,4 @@
-import {
-  Box,
-  Chip,
-  CircularProgress,
-  Divider,
-  Paper,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Chip, CircularProgress, Divider, Paper, Stack, Typography } from '@mui/material';
 
 const InfoRow = ({ label, value }) => {
   if (!value) return null;
@@ -31,7 +23,10 @@ const SectionDetails = ({ sections = [] }) => {
       {sections.map((section, index) => (
         <Paper key={`section-${index}`} variant="outlined" sx={{ p: 1 }}>
           <Stack spacing={0.5}>
-            <InfoRow label="Հարկ" value={`${section.FLOOR_NUMBER || '—'} (${section.FLOOR_TITLE || '—'})`} />
+            <InfoRow
+              label="Հարկ"
+              value={`${section.FLOOR_NUMBER || '—'} (${section.FLOOR_TITLE || '—'})`}
+            />
             <InfoRow label="Մակերես" value={section.AREA ? `${section.AREA} քմ` : null} />
             <InfoRow label="Կառուցման տարի" value={section.CONSTRUCTION_YEAR} />
             <InfoRow label="Կառուցվածքի նյութ" value={section.CONSTRUCTION_MATERIAL} />
