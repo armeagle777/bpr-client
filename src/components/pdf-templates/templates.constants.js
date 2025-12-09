@@ -346,11 +346,11 @@ export const taxEmployersPdfStyles = StyleSheet.create({
   page: {
     backgroundColor: '#f7f7ff',
     fontFamily: 'Arial',
-    // fontSize: 10,
+    fontSize: 10,
     color: '#6A6A6A',
   },
   header: {
-    // padding: 10,
+    padding: 10,
     borderBottom: `1px solid ${COLORS.PRIMARY}`,
     display: 'flex',
     flexDirection: 'column',
@@ -358,8 +358,8 @@ export const taxEmployersPdfStyles = StyleSheet.create({
     marginBottom: 10,
   },
   headerTitle: {
-    // fontSize: 14,
-    // fontWeight: "bold",
+    fontSize: 14,
+    fontWeight: 'bold',
     color: COLORS.PRIMARY,
     textTransform: 'uppercase',
     textAlign: 'center',
@@ -390,7 +390,7 @@ export const taxEmployersPdfStyles = StyleSheet.create({
   },
   employerName: {
     fontSize: 12,
-    // fontWeight: "bold",
+    fontWeight: 'bold',
     color: '#fff',
   },
   employerMeta: {
@@ -436,7 +436,7 @@ export const taxEmployersPdfStyles = StyleSheet.create({
   },
   positionsTitle: {
     fontSize: 10,
-    // fontWeight: "bold",
+    fontWeight: 'bold',
     color: COLORS.PRIMARY,
   },
   positionCard: {
@@ -450,7 +450,7 @@ export const taxEmployersPdfStyles = StyleSheet.create({
   },
   positionName: {
     fontSize: 9,
-    // fontWeight: "bold",
+    fontWeight: 'bold',
     color: '#1f1f1f',
     marginBottom: 2,
   },
@@ -461,7 +461,6 @@ export const taxEmployersPdfStyles = StyleSheet.create({
   emptyState: {
     fontSize: 9,
     color: '#6b6b6b',
-    fontStyle: 'italic',
   },
   footer: {
     marginTop: 10,
