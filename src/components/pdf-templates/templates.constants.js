@@ -340,6 +340,35 @@ export const financesPdfStyles = StyleSheet.create({
     color: '#203753',
     padding: 10,
   },
+  sectionHeading: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: COLORS.PRIMARY,
+    marginBottom: 4,
+  },
+  propertySectionContent: {
+    backgroundColor: '#fff',
+    padding: 10,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 10,
+  },
+  pairCell: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    gap: 4,
+  },
+  infoLabel: {
+    fontSize: 8,
+    color: '#6A6A6A',
+    textAlign: 'left',
+  },
+  infoValue: {
+    fontSize: 10,
+    color: '#203753',
+    fontWeight: 'bold',
+    textAlign: 'left',
+  },
 });
 
 export const businessPdfStyles = StyleSheet.create({
