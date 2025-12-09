@@ -342,6 +342,120 @@ export const financesPdfStyles = StyleSheet.create({
   },
 });
 
+export const businessPdfStyles = StyleSheet.create({
+  page: {
+    backgroundColor: '#f7f7ff',
+    fontFamily: 'Arial',
+    fontSize: 10,
+    color: '#6A6A6A',
+    padding: 20,
+  },
+  header: {
+    padding: 10,
+    borderBottom: `1px solid ${COLORS.PRIMARY}`,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 4,
+    marginBottom: 10,
+  },
+  title: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: COLORS.PRIMARY,
+    textTransform: 'uppercase',
+  },
+  subtitle: {
+    fontSize: 9,
+    color: '#e4ae4e',
+  },
+  meta: {
+    fontSize: 9,
+    color: '#1f1f1f',
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 12,
+    padding: '0 5px 5px',
+  },
+  companyCard: {
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: COLORS.PRIMARY,
+    borderRadius: 6,
+    overflow: 'hidden',
+    boxShadow: '0 2px 6px 0 rgba(218, 218, 253, 0.65), 0 2px 6px 0 rgba(206, 206, 238, 0.54)',
+  },
+  companyHeader: {
+    backgroundColor: COLORS.PRIMARY,
+    color: '#fff',
+    padding: '8px 10px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 2,
+  },
+  companyTitle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  companyMeta: {
+    fontSize: 9,
+    color: '#e4ae4e',
+  },
+  companySubMeta: {
+    fontSize: 8,
+    color: '#f1f1f1',
+  },
+  infoSection: {
+    backgroundColor: '#fff',
+    padding: '10px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+  },
+  sectionTitle: {
+    fontSize: 9,
+    fontWeight: 'bold',
+    color: COLORS.PRIMARY,
+    textTransform: 'uppercase',
+  },
+  infoRows: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 4,
+  },
+  infoRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 8,
+    borderBottomWidth: 0.5,
+    borderBottomStyle: 'solid',
+    borderBottomColor: '#e4ae4e',
+    paddingBottom: 4,
+  },
+  infoLabel: {
+    fontSize: 9,
+    color: '#6A6A6A',
+  },
+  infoValue: {
+    fontSize: 10,
+    color: '#203753',
+    fontWeight: 'bold',
+    textAlign: 'right',
+  },
+  descriptionText: {
+    fontSize: 10,
+    color: '#203753',
+  },
+  emptyState: {
+    fontSize: 10,
+    color: '#203753',
+    padding: 10,
+  },
+});
+
 export const taxEmployersPdfStyles = StyleSheet.create({
   page: {
     backgroundColor: '#f7f7ff',
