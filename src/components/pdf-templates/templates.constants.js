@@ -369,6 +369,24 @@ export const financesPdfStyles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'left',
   },
+  list: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 4,
+  },
+  listItem: {
+    fontSize: 9,
+    color: '#203753',
+  },
+  badge: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#fdecea',
+    color: '#c62828',
+    padding: '2px 6px',
+    borderRadius: 4,
+    fontSize: 8,
+    fontWeight: 'bold',
+  },
 });
 
 export const businessPdfStyles = StyleSheet.create({
