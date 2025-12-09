@@ -1,31 +1,19 @@
-import { useMemo } from "react";
-import { Grid, Alert as MuiAlert, Stack } from "@mui/material";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import useAuthUser from "react-auth-kit/hooks/useAuthUser";
+import { useMemo } from 'react';
+import { Grid, Alert as MuiAlert, Stack } from '@mui/material';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
-import useFetchRoadpoliceData from "../../hooks/useFetchRoadpoliceData";
-import ListScileton from "../listSceleton/ListScileton";
-import LicenseCard from "../LicenseCard/LicenseCard";
-import VehicleCard from "../VehicleCard/VehicleCard";
-import NoResults from "../NoResults/NoResults";
-import PDFGenerator from "../PDFGenerator/PDFGenerator";
-import RoadPoliceReport from "../pdf-templates/RoadPoliceReport";
+import useFetchRoadpoliceData from '../../hooks/useFetchRoadpoliceData';
+import ListScileton from '../listSceleton/ListScileton';
+import LicenseCard from '../LicenseCard/LicenseCard';
+import VehicleCard from '../VehicleCard/VehicleCard';
+import NoResults from '../NoResults/NoResults';
+import PDFGenerator from '../PDFGenerator/PDFGenerator';
+import RoadPoliceReport from '../pdf-templates/RoadPoliceReport';
 
 const RoadPoliceTab = ({ pnum }) => {
   const { data, isLoading, isError, error } = useFetchRoadpoliceData(pnum);
   const user = useAuthUser();
-
-  if (isLoading) {
-    return <ListScileton />;
-  }
-
-  if (isError) {
-    return (
-      <MuiAlert severity="error">
-        {error.response?.data?.message || error.message}
-      </MuiAlert>
-    );
-  }
 
   const license = data?.license || {};
   const vehicles = Array.isArray(data?.vehicles) ? data.vehicles : [];
@@ -35,14 +23,14 @@ const RoadPoliceTab = ({ pnum }) => {
 
   const userFullName = useMemo(() => {
     if (!user) {
-      return "";
+      return '';
     }
-    return [user.firstName, user.lastName].filter(Boolean).join(" ");
+    return [user.firstName, user.lastName].filter(Boolean).join(' ');
   }, [user]);
 
   const exportFileName = useMemo(() => {
-    const safePnum = typeof pnum === "string" ? pnum.replace(/[^\w-]/g, "_") : "report";
-    return `road_police_${safePnum || "report"}.pdf`;
+    const safePnum = typeof pnum === 'string' ? pnum.replace(/[^\w-]/g, '_') : 'report';
+    return `road_police_${safePnum || 'report'}.pdf`;
   }, [pnum]);
 
   const exportButton = hasExportData ? (
@@ -57,6 +45,14 @@ const RoadPoliceTab = ({ pnum }) => {
     />
   ) : null;
 
+  if (isLoading) {
+    return <ListScileton />;
+  }
+
+  if (isError) {
+    return <MuiAlert severity="error">{error.response?.data?.message || error.message}</MuiAlert>;
+  }
+
   return (
     <Stack direction="column" gap={4}>
       {exportButton && (
@@ -68,9 +64,7 @@ const RoadPoliceTab = ({ pnum }) => {
       <Grid container>{showLicense && <LicenseCard license={license} />}</Grid>
       <Grid container spacing={2}>
         {showVehicleCards &&
-          vehicles.map((vehicleInfo, index) => (
-            <VehicleCard key={index} car={vehicleInfo} />
-          ))}
+          vehicles.map((vehicleInfo, index) => <VehicleCard key={index} car={vehicleInfo} />)}
       </Grid>
     </Stack>
   );
