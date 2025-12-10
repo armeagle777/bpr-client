@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import { Paper, Stack, Typography, Chip, Grid } from "@mui/material";
 import {
   Phone as PhoneIcon,
@@ -6,8 +8,11 @@ import {
   Business as BusinessIcon,
   Language as LanguageIcon,
   AssignmentInd as AssignmentIndIcon,
+  PictureAsPdf as PictureAsPdfIcon,
 } from "@mui/icons-material";
 
+import PDFGenerator from "../../../components/PDFGenerator/PDFGenerator";
+import CompanyHeaderReport from "../../../components/pdf-templates/CompanyHeaderReport";
 import { activityCodes } from "../../../utils/industryCodes";
 
 const CompanyHeader = ({ company }) => {
@@ -30,23 +35,59 @@ const CompanyHeader = ({ company }) => {
   } = company || {};
 
   const { addr_descr, mobile, phone, website, email } = address || {};
+  const user = useAuthUser();
+
+  const userFullName = useMemo(() => {
+    if (!user) {
+      return "";
+    }
+    return [user.firstName, user.lastName].filter(Boolean).join(" ");
+  }, [user]);
+
+  const exportFileName = useMemo(() => {
+    const safeTaxId =
+      typeof taxid === "string" ? taxid.replace(/[^\w-]/g, "_") : "report";
+    return `company_${safeTaxId || "report"}.pdf`;
+  }, [taxid]);
+
+  const exportButton = company ? (
+    <PDFGenerator
+      PDFTemplate={CompanyHeaderReport}
+      fileName={exportFileName}
+      buttonText="Արտահանել"
+      variant="outlined"
+      Icon={PictureAsPdfIcon}
+      data={company}
+      userFullName={userFullName}
+    />
+  ) : null;
 
   return (
     <Paper sx={{ p: 3, mb: 3 }}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <BusinessIcon color="primary" />
-            <Typography variant="h5" fontWeight={700}>
-              {name_am} {company_type}
-            </Typography>
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            alignItems={{ xs: "flex-start", sm: "center" }}
+            justifyContent="space-between"
+            spacing={2}
+          >
+            <Stack spacing={0.5}>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <BusinessIcon color="primary" />
+                <Typography variant="h5" fontWeight={700}>
+                  {name_am} {company_type}
+                </Typography>
+              </Stack>
+              <Typography variant="subtitle1" color="text.secondary">
+                {name_en && `| ${name_en}`} {name_ru && `| ${name_ru}`}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Գրանցված {registered}
+              </Typography>
+            </Stack>
+            {exportButton}
           </Stack>
-          <Typography variant="subtitle1" color="text.secondary">
-            {name_en && `| ${name_en}`} {name_ru && `| ${name_ru}`}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            Գրանցված {registered}
-          </Typography>
         </Grid>
 
         {/* Tax ID and Capital */}
