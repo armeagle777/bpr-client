@@ -1,29 +1,33 @@
-import {
-  Box,
-  Card,
-  Grid,
-  Alert,
-  Divider,
-  Typography,
-  CardContent,
-} from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { useMemo } from 'react';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import { Box, Card, Grid, Alert, Divider, Typography, CardContent, Stack } from '@mui/material';
+import { PictureAsPdf as PictureAsPdfIcon } from '@mui/icons-material';
+import { DataGrid } from '@mui/x-data-grid';
 
-import NoResults from "../NoResults/NoResults";
-import DataLoader from "../DataLoader/DataLoader";
-import { columns } from "./TaxObligationsTab.constants";
-import useFetchCompanyObligations from "../../hooks/useFetchCompanyObligations";
+import NoResults from '../NoResults/NoResults';
+import DataLoader from '../DataLoader/DataLoader';
+import PDFGenerator from '../PDFGenerator/PDFGenerator';
+import { columns } from './TaxObligationsTab.constants';
+import useFetchCompanyObligations from '../../hooks/useFetchCompanyObligations';
+import TaxObligationsReport from '../pdf-templates/TaxObligationsReport';
 
 const TaxObligationsTab = ({ tin }) => {
   const { data, isError, error, isFetching } = useFetchCompanyObligations({
     tin,
   });
+  const user = useAuthUser();
 
-  if (isError) {
-    return (
-      <Alert severity="error">{error?.message || "Սխալ է տեղի ունեցել:"}</Alert>
-    );
-  }
+  const userFullName = useMemo(() => {
+    if (!user) {
+      return '';
+    }
+    return [user.firstName, user.lastName].filter(Boolean).join(' ');
+  }, [user]);
+
+  const exportFileName = useMemo(() => {
+    const safeTin = typeof tin === 'string' ? tin.replace(/[^\w-]/g, '_') : 'report';
+    return `tax_obligations_${safeTin || 'report'}.pdf`;
+  }, [tin]);
 
   const { taxInfo, declInfo, taxPayerInfo, singleAccountPayments } = data || {};
   const rowsWithKeys = taxInfo?.taxTypeList?.map((item, index) => ({
@@ -31,19 +35,39 @@ const TaxObligationsTab = ({ tin }) => {
     ...item,
   }));
 
+  const exportButton =
+    data && !isFetching ? (
+      <PDFGenerator
+        PDFTemplate={TaxObligationsReport}
+        fileName={exportFileName}
+        buttonText="Արտահանել"
+        variant="outlined"
+        Icon={PictureAsPdfIcon}
+        data={data}
+        userFullName={userFullName}
+      />
+    ) : null;
+
+  if (isError) {
+    return <Alert severity="error">{error?.message || 'Սխալ է տեղի ունեցել:'}</Alert>;
+  }
+
   return (
     <Box sx={{ p: 2 }}>
       {/* TODO Add startDate, endDate filters */}
       {/* Taxpayer Info */}
-      <Typography
-        variant="h5"
-        color="primary"
-        fontWeight="bold"
-        gutterBottom
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        alignItems={{ xs: 'flex-start', sm: 'center' }}
+        justifyContent="space-between"
+        spacing={2}
         sx={{ mb: 2 }}
       >
-        ՊԵԿ Պարտավորությունների Վերաբերյալ Տեղեկատվություն
-      </Typography>
+        <Typography variant="h5" color="primary" fontWeight="bold" gutterBottom sx={{ mb: 0 }}>
+          ՊԵԿ Պարտավորությունների Վերաբերյալ Տեղեկատվություն
+        </Typography>
+        {exportButton}
+      </Stack>
       {isFetching ? (
         <DataLoader />
       ) : data === null ? (
@@ -106,7 +130,7 @@ const TaxObligationsTab = ({ tin }) => {
               <Typography variant="h6" color="primary" gutterBottom>
                 Հարկերի տեսակներ
               </Typography>
-              <div style={{ height: 500, width: "100%" }}>
+              <div style={{ height: 500, width: '100%' }}>
                 <DataGrid
                   rows={rowsWithKeys}
                   columns={columns}
@@ -127,22 +151,14 @@ const TaxObligationsTab = ({ tin }) => {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="subtitle2">ԱԱՀ</Typography>
-                  <Typography variant="body1">
-                    {declInfo.vatTaxDeclInfo}
-                  </Typography>
+                  <Typography variant="body1">{declInfo.vatTaxDeclInfo}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Typography variant="subtitle2">
-                    Շրջանառության հարկ
-                  </Typography>
-                  <Typography variant="body1">
-                    {declInfo.turnoverTaxDeclInfo}
-                  </Typography>
+                  <Typography variant="subtitle2">Շրջանառության հարկ</Typography>
+                  <Typography variant="body1">{declInfo.turnoverTaxDeclInfo}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Typography variant="subtitle2">
-                    Ընդհանուր շրջանառություն
-                  </Typography>
+                  <Typography variant="subtitle2">Ընդհանուր շրջանառություն</Typography>
                   <Typography variant="body1">
                     {declInfo.totalTurnoverActivitiesDeclInfo}
                   </Typography>
@@ -164,12 +180,10 @@ const TaxObligationsTab = ({ tin }) => {
                 Վճարումներ
               </Typography>
               <Typography variant="body1" gutterBottom>
-                Ընդամենը վճարված՝{" "}
-                {Number(singleAccountPayments.amount).toLocaleString()} ֏
+                Ընդամենը վճարված՝ {Number(singleAccountPayments.amount).toLocaleString()} ֏
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {singleAccountPayments.fromDate} →{" "}
-                {singleAccountPayments.toDate}
+                {singleAccountPayments.fromDate} → {singleAccountPayments.toDate}
               </Typography>
             </CardContent>
           </Card>
