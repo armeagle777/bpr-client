@@ -69,7 +69,7 @@ const RoadPoliceTransactionsTab = ({ pnum }) => {
     <NoResults />
   ) : (
     <Grid item xs={12}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
         <Typography variant="h5" color="primary" fontWeight="bold">
           ՃՈ հաշվառումներ
         </Typography>
