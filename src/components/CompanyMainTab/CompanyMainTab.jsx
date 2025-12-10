@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState } from 'react';
 import {
   Box,
   Fade,
@@ -14,7 +14,7 @@ import {
   MenuItem,
   IconButton,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 import {
   Close as CloseIcon,
   Phone as PhoneIcon,
@@ -25,16 +25,16 @@ import {
   Visibility as VisibilityIcon,
   FileDownload as FileDownloadIcon,
   AssignmentInd as AssignmentIndIcon,
-} from "@mui/icons-material";
+} from '@mui/icons-material';
 
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import useAuthUser from "react-auth-kit/hooks/useAuthUser";
-import useLogs from "../../hooks/useLogs";
-import OwnerRow from "./components/OwnerRow";
-import PdfViewer from "../pdfViewer/PdfViewer";
-import { companyDocumentNames } from "../../utils/constants";
-import PDFGenerator from "../PDFGenerator/PDFGenerator";
-import CompanyMainReport from "../pdf-templates/CompanyMainReport";
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import useLogs from '../../hooks/useLogs';
+import OwnerRow from './components/OwnerRow';
+import PdfViewer from '../pdfViewer/PdfViewer';
+import { companyDocumentNames } from '../../utils/constants';
+import PDFGenerator from '../PDFGenerator/PDFGenerator';
+import CompanyMainReport from '../pdf-templates/CompanyMainReport';
 
 const CompanyMainTab = ({ company }) => {
   const [documentName, setDocumentName] = useState(undefined);
@@ -43,6 +43,12 @@ const CompanyMainTab = ({ company }) => {
 
   const { createLogHandler } = useLogs();
   const user = useAuthUser();
+  const userFullName = useMemo(() => {
+    if (!user) {
+      return '';
+    }
+    return [user.firstName, user.lastName].filter(Boolean).join(' ');
+  }, [user]);
 
   const open = Boolean(anchorEl);
 
@@ -58,13 +64,7 @@ const CompanyMainTab = ({ company }) => {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 
-  const {
-    taxid,
-    executive,
-    docs = {},
-    owners = [],
-    sole_proprietor = {},
-  } = company || {};
+  const { taxid, executive, docs = {}, owners = [], sole_proprietor = {} } = company || {};
 
   const {
     ssn,
@@ -75,7 +75,10 @@ const CompanyMainTab = ({ company }) => {
   } = executive || sole_proprietor || {};
 
   const ownersArray = Array.isArray(owners) ? owners : Object.values(owners);
-
+  const exportFileName = useMemo(() => {
+    const safeTaxId = typeof taxid === 'string' ? taxid.replace(/[^\w-]/g, '_') : 'report';
+    return `company_${safeTaxId || 'report'}.pdf`;
+  }, [taxid]);
   const handleViewDocument = () => {
     setAnchorEl(null);
     setShowDialog(true);
@@ -103,25 +106,17 @@ const CompanyMainTab = ({ company }) => {
       <Paper sx={{ p: 3, mb: 3 }}>
         <Stack direction="row" alignItems="center" spacing={1}>
           <PersonIcon />
-          <Typography variant="h6">
-            {exec_position || "Անհատ Ձեռնարկատեր"}
-          </Typography>
+          <Typography variant="h6">{exec_position || 'Անհատ Ձեռնարկատեր'}</Typography>
         </Stack>
         <Divider sx={{ mb: 2 }} />
         <Typography>{full_name}</Typography>
         <Typography variant="body2">ՀԾՀ: {id_info?.ssn}</Typography>
+        <Typography variant="body2">Անձնագիր: {id_info?.passport_no || ''}</Typography>
+        <Typography variant="body2">Ծննդ․ ա/թ: {id_info?.birth_date || ''}</Typography>
         <Typography variant="body2">
-          Անձնագիր: {id_info?.passport_no || ""}
+          Հեռ: {executiveAddress?.phone || executiveAddress?.mobile || ''}
         </Typography>
-        <Typography variant="body2">
-          Ծննդ․ ա/թ: {id_info?.birth_date || ""}
-        </Typography>
-        <Typography variant="body2">
-          Հեռ: {executiveAddress?.phone || executiveAddress?.mobile || ""}
-        </Typography>
-        <Typography variant="body2">
-          Հասցե: {executiveAddress?.addr_descr || ""}
-        </Typography>
+        <Typography variant="body2">Հասցե: {executiveAddress?.addr_descr || ''}</Typography>
       </Paper>
 
       {/* Owners */}
@@ -132,10 +127,8 @@ const CompanyMainTab = ({ company }) => {
         </Stack>
         <Divider sx={{ mb: 2 }} />
         {ownersArray.length === 0
-          ? "Բաժնետերեր չկան գրանցված"
-          : ownersArray.map((own, index) => (
-              <OwnerRow key={index} ownerInfo={own} />
-            ))}
+          ? 'Բաժնետերեր չկան գրանցված'
+          : ownersArray.map((own, index) => <OwnerRow key={index} ownerInfo={own} />)}
       </Paper>
 
       {/* Documents */}
@@ -148,23 +141,19 @@ const CompanyMainTab = ({ company }) => {
           {Object.keys(docs).map((doc) => (
             <React.Fragment key={doc}>
               <Button
-                startIcon={
-                  companyDocumentNames[doc].icon ||
-                  companyDocumentNames.unknown.icon
-                }
+                startIcon={companyDocumentNames[doc].icon || companyDocumentNames.unknown.icon}
                 id="fade-button"
-                aria-controls={open ? "fade-menu" : undefined}
+                aria-controls={open ? 'fade-menu' : undefined}
                 aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
+                aria-expanded={open ? 'true' : undefined}
                 onClick={(e) => handleClick(e, doc)}
               >
-                {companyDocumentNames[doc].title ||
-                  companyDocumentNames.unknown.title}
+                {companyDocumentNames[doc].title || companyDocumentNames.unknown.title}
               </Button>
               <Menu
                 id="fade-menu"
                 MenuListProps={{
-                  "aria-labelledby": "fade-button",
+                  'aria-labelledby': 'fade-button',
                 }}
                 anchorEl={anchorEl}
                 open={open}
@@ -181,8 +170,8 @@ const CompanyMainTab = ({ company }) => {
                     href={`data:application/pdf;base64,${docs[documentName]}`}
                     download={`${companyDocumentNames[documentName]?.title}.pdf`}
                     style={{
-                      textDecoration: "none",
-                      color: "black",
+                      textDecoration: 'none',
+                      color: 'black',
                     }}
                     onClick={() => {
                       createLogHandler({
@@ -208,7 +197,7 @@ const CompanyMainTab = ({ company }) => {
           onClose={() => setShowDialog(false)}
           TransitionComponent={Transition}
         >
-          <AppBar sx={{ position: "relative" }}>
+          <AppBar sx={{ position: 'relative' }}>
             <Toolbar>
               <IconButton
                 edge="start"
@@ -228,14 +217,3 @@ const CompanyMainTab = ({ company }) => {
 };
 
 export default CompanyMainTab;
-  const userFullName = useMemo(() => {
-    if (!user) {
-      return "";
-    }
-    return [user.firstName, user.lastName].filter(Boolean).join(" ");
-  }, [user]);
-
-  const exportFileName = useMemo(() => {
-    const safeTaxId = typeof taxid === "string" ? taxid.replace(/[^\w-]/g, "_") : "report";
-    return `company_${safeTaxId || "report"}.pdf`;
-  }, [taxid]);
