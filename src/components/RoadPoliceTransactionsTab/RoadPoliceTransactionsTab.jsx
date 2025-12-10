@@ -12,7 +12,6 @@ import {
   AccordionSummary,
   Alert as MuiAlert,
   Tooltip,
-  Button,
 } from "@mui/material";
 import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
@@ -73,8 +72,13 @@ const RoadPoliceTransactionsTab = ({ pnum }) => {
     <NoResults />
   ) : (
     <Grid container spacing={2}>
-      <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
-        {exportButton}
+      <Grid item xs={12}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Typography variant="h5" color="primary" fontWeight="bold">
+            ՃՈ հաշվառումներ
+          </Typography>
+          {exportButton}
+        </Stack>
       </Grid>
       {items.map((tx, idx) => (
         <Grid item xs={12} key={idx}>
