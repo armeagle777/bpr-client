@@ -18,10 +18,6 @@ import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
-import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
-
 import { OwnerCard } from './components';
 import ListScileton from '../listSceleton/ListScileton';
 import { formatAmount } from '../../utils/helperFunctions';
