@@ -14,10 +14,6 @@ const MojCesDebtorTab = ({ psn, tax_id }) => {
   const { data = [], isError, error, isFetching } = useFetchMojCesData({ psn, tax_id });
   const user = useAuthUser();
 
-  if (isError) {
-    return <Alert severity="error">{error?.message || 'Սխալ է տեղի ունեցել:'}</Alert>;
-  }
-
   const hasData = data.length > 0;
 
   const userFullName = useMemo(() => {
@@ -44,6 +40,10 @@ const MojCesDebtorTab = ({ psn, tax_id }) => {
       userFullName={userFullName}
     />
   ) : null;
+
+  if (isError) {
+    return <Alert severity="error">{error?.message || 'Սխալ է տեղի ունեցել:'}</Alert>;
+  }
 
   return (
     <Box display="flex" flexDirection="column" gap={2} mt={2}>
