@@ -3,6 +3,7 @@ import { Document, Page, Text, View } from '@react-pdf/renderer';
 import { financesPdfStyles } from './templates.constants';
 import registerPdfFonts from './registerFonts';
 import { formatDate } from './templates.helpers';
+import { companyDocumentNames } from '../../utils/constants';
 
 registerPdfFonts();
 
@@ -131,9 +132,34 @@ const OwnerCard = ({ ownerInfo = {}, index }) => {
   );
 };
 
+const DocumentsSection = ({ docs = {} }) => {
+  const styles = financesPdfStyles;
+  const documentKeys = Object.keys(docs || {}).filter((docKey) => docs[docKey]);
+
+  if (!documentKeys.length) {
+    return null;
+  }
+
+  const rows = documentKeys.map((docKey) => ({
+    label: companyDocumentNames[docKey]?.title || companyDocumentNames.unknown.title,
+    value: 'Կցված է',
+  }));
+
+  return (
+    <View style={styles.employerSection}>
+      <View style={styles.employerHeader}>
+        <Text style={styles.employerTitle}>Փաստաթղթեր</Text>
+      </View>
+      <View style={styles.propertySectionContent}>
+        <InfoPairsTable rows={rows} />
+      </View>
+    </View>
+  );
+};
+
 const CompanyMainReport = ({ data = {}, userFullName }) => {
   const styles = financesPdfStyles;
-  const { taxid, executive, sole_proprietor, owners } = data || {};
+  const { taxid, executive, sole_proprietor, owners, docs } = data || {};
   const ownersList = Array.isArray(owners) ? owners : Object.values(owners || {});
   const generatedAt = formatDate(new Date());
   const exporterName = (userFullName || '').trim() || '---';
@@ -156,6 +182,7 @@ const CompanyMainReport = ({ data = {}, userFullName }) => {
           ) : (
             <Text style={styles.emptyState}>Բաժնետերերի տվյալներ չկան</Text>
           )}
+          <DocumentsSection docs={docs} />
         </View>
       </Page>
     </Document>
