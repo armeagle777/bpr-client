@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import useFetchSocialPayments from "../../hooks/useFetchSocialPayments";
 import {
   Box,
@@ -15,11 +15,16 @@ import {
   Stack,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import DataLoader from "../DataLoader/DataLoader";
 import NoResults from "../NoResults/NoResults";
+import PDFGenerator from "../PDFGenerator/PDFGenerator";
+import SocialPaymentsReport from "../pdf-templates/SocialPaymentsReport";
 
 const SocialPaymentsTab = ({ ssn }) => {
   const { data, error, isError, isFetching } = useFetchSocialPayments(ssn);
+  const user = useAuthUser();
   const pensionData = data?.pensionData;
   const disabilityRegisterData = data?.disabilityRegisterData;
   const pyunikRegisterData = data?.pyunikRegisterData;
@@ -34,8 +39,42 @@ const SocialPaymentsTab = ({ ssn }) => {
     );
   }
 
+  const hasData = Boolean(
+    (Array.isArray(pensionData) && pensionData.length) || disabilityRegisterData || pyunikRegisterData
+  );
+
+  const userFullName = useMemo(() => {
+    if (!user) {
+      return "";
+    }
+    return [user.firstName, user.lastName].filter(Boolean).join(" ");
+  }, [user]);
+
+  const exportFileName = useMemo(() => {
+    const safeSsn = typeof ssn === "string" ? ssn.replace(/[^\w-]/g, "_") : "report";
+    return `social_payments_${safeSsn || "report"}.pdf`;
+  }, [ssn]);
+
+  const exportButton = hasData ? (
+    <PDFGenerator
+      PDFTemplate={SocialPaymentsReport}
+      fileName={exportFileName}
+      buttonText="Արտահանել"
+      variant="outlined"
+      Icon={PictureAsPdfIcon}
+      data={{ ssn, pensionData, disabilityRegisterData, pyunikRegisterData }}
+      userFullName={userFullName}
+    />
+  ) : null;
+
   return (
     <Stack direction="column" gap={4}>
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Typography variant="h5" color="primary" fontWeight="bold">
+          Սոցիալական վճարումներ
+        </Typography>
+        {exportButton}
+      </Stack>
       {!pensionData?.length &&
         !disabilityRegisterData &&
         !pyunikRegisterData && <NoResults />}
