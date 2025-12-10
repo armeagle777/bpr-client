@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Box,
   Fade,
@@ -27,10 +27,14 @@ import {
   AssignmentInd as AssignmentIndIcon,
 } from "@mui/icons-material";
 
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 import useLogs from "../../hooks/useLogs";
 import OwnerRow from "./components/OwnerRow";
 import PdfViewer from "../pdfViewer/PdfViewer";
 import { companyDocumentNames } from "../../utils/constants";
+import PDFGenerator from "../PDFGenerator/PDFGenerator";
+import CompanyMainReport from "../pdf-templates/CompanyMainReport";
 
 const CompanyMainTab = ({ company }) => {
   const [documentName, setDocumentName] = useState(undefined);
@@ -38,6 +42,7 @@ const CompanyMainTab = ({ company }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const { createLogHandler } = useLogs();
+  const user = useAuthUser();
 
   const open = Boolean(anchorEl);
 
@@ -78,6 +83,22 @@ const CompanyMainTab = ({ company }) => {
 
   return (
     <Box p={3}>
+      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
+        <Typography variant="h5" color="primary" fontWeight="bold">
+          Ընկերության տվյալներ
+        </Typography>
+        {ownersArray.length > 0 && (
+          <PDFGenerator
+            PDFTemplate={CompanyMainReport}
+            fileName={exportFileName}
+            buttonText="Արտահանել"
+            variant="outlined"
+            Icon={PictureAsPdfIcon}
+            data={company}
+            userFullName={userFullName}
+          />
+        )}
+      </Stack>
       {/* Executive */}
       <Paper sx={{ p: 3, mb: 3 }}>
         <Stack direction="row" alignItems="center" spacing={1}>
@@ -207,3 +228,14 @@ const CompanyMainTab = ({ company }) => {
 };
 
 export default CompanyMainTab;
+  const userFullName = useMemo(() => {
+    if (!user) {
+      return "";
+    }
+    return [user.firstName, user.lastName].filter(Boolean).join(" ");
+  }, [user]);
+
+  const exportFileName = useMemo(() => {
+    const safeTaxId = typeof taxid === "string" ? taxid.replace(/[^\w-]/g, "_") : "report";
+    return `company_${safeTaxId || "report"}.pdf`;
+  }, [taxid]);
