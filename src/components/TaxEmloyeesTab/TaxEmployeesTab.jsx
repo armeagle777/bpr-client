@@ -90,7 +90,7 @@ const TaxEmloyeesTab = ({ taxId }) => {
         }}
       >
         <Typography variant="h5" color="primary" fontWeight="bold">
-          Կազմակերպության Աշխատակիցների Վերաբերյալ Տեղեկատվություն
+          Աշխատակիցների Վերաբերյալ Տեղեկատվություն
         </Typography>
 
         <Stack
