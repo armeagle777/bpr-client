@@ -87,12 +87,12 @@ const PensionSection = ({ pensionData }) => {
           person.Pension.map((item, index) => (
             <InfoPairsTable
               key={`pension-${index}`}
-              rows=[
+              rows={[
                 { label: 'Տեսակ', value: item?.type },
                 { label: 'Հիմք', value: item?.law },
                 { label: 'Ամսական գումար', value: item?.sum ? `${item.sum} ֏` : '' },
                 { label: 'Սկիզբ', value: item?.assign_date },
-              ]
+              ]}
             />
           ))
         ) : (
@@ -159,7 +159,9 @@ const SocialPaymentsReport = ({ data = {}, userFullName }) => {
   const generatedAt = formatDate(new Date());
   const exporterName = (userFullName || '').trim() || '---';
   const hasData = Boolean(
-    (Array.isArray(pensionData) && pensionData.length) || disabilityRegisterData || pyunikRegisterData
+    (Array.isArray(pensionData) && pensionData.length) ||
+      disabilityRegisterData ||
+      pyunikRegisterData
   );
 
   return (
