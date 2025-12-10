@@ -6,39 +6,66 @@ import { formatDate } from './templates.helpers';
 
 registerPdfFonts();
 
-const weaponColumns = [
-  { key: 'ZHAMAR', title: 'Հերթ. համար' },
-  { key: 'ZANUN_NAME', title: 'Անունը' },
-  { key: 'ZTYPE_NAME', title: 'Տեսակը' },
-  { key: 'HASCE', title: 'Հասցե' },
-  { key: 'PASSPORT', title: 'Փաստաթուղթ' },
-  { key: 'TTYPE_NAME', title: 'Թույլտվության տ/կ' },
-  { key: 'TDATE', title: 'Թույլտվության ա/թ' },
-  { key: 'ZPATK1_NAME', title: 'Պատկանում է' },
-  { key: 'GRANC_NAME', title: 'Գրանցված է' },
-  { key: 'TBAJIN', title: 'Բաժինը' },
-  { key: 'AZG', title: 'ԱԱՀ' },
-  { key: 'BDATE', title: 'Ծննդ. ա/թ' },
-  { key: 'SSN', title: 'ՀԾՀ / ՀՎՀՀ' },
-  { key: 'KALIBR', title: 'Տ/չ' },
-];
+const chunkPairs = (items = [], size = 2) => {
+  const result = [];
+  for (let i = 0; i < items.length; i += size) {
+    const chunk = items.slice(i, i + size);
+    while (chunk.length < size) {
+      chunk.push(null);
+    }
+    result.push(chunk);
+  }
+  return result;
+};
+
+const InfoPairsTable = ({ rows = [] }) => {
+  const styles = financesPdfStyles;
+  const normalizedRows = rows
+    .filter((row) => row && row.label)
+    .map((row) => ({
+      ...row,
+      value:
+        row.value === 0 || row.value === '0'
+          ? '0'
+          : row.value === null || row.value === undefined || row.value === ''
+          ? '---'
+          : row.value,
+    }));
+
+  if (!normalizedRows.length) {
+    return null;
+  }
+
+  return (
+    <View style={styles.table}>
+      {chunkPairs(normalizedRows).map((pairRow, rowIndex) => (
+        <View key={`pair-row-${rowIndex}`} style={styles.tableRow}>
+          {pairRow.map((pair, cellIndex) => (
+            <View
+              key={`pair-cell-${rowIndex}-${cellIndex}`}
+              style={[styles.tableCell, styles.metricCell, styles.pairCell]}
+            >
+              {pair ? (
+                <>
+                  <Text style={styles.infoLabel}>{pair.label}</Text>
+                  <Text style={styles.infoValue}>{pair.value}</Text>
+                </>
+              ) : null}
+            </View>
+          ))}
+        </View>
+      ))}
+    </View>
+  );
+};
 
 const formatAddress = (row = {}) =>
   [row.HASCE, row.ABNAK, row.APOXOC, row.ASHENQ, row.ABNAKARAN]
     .filter(Boolean)
     .join(', ');
 
-const formatOwner = (row = {}) => [row.ANUN, row.AZG, row.HAYR].filter(Boolean).join(' ');
-
-const formatCellValue = (row, key) => {
-  if (key === 'HASCE') {
-    return formatAddress(row);
-  }
-  if (key === 'AZG') {
-    return formatOwner(row);
-  }
-  return row?.[key] || '---';
-};
+const formatOwnerFullName = (row = {}) =>
+  [row.ANUN, row.AZG, row.HAYR].filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
 
 const WeaponsReport = ({ data = {}, userFullName }) => {
   const styles = financesPdfStyles;
@@ -59,38 +86,55 @@ const WeaponsReport = ({ data = {}, userFullName }) => {
         </View>
         <View style={styles.content}>
           {rows.length ? (
-            <View style={styles.table}>
-              <View style={[styles.tableRow, styles.tableHeaderRow]}>
-                {weaponColumns.map((col, index) => (
-                  <View
-                    key={col.key}
-                    style={[
-                      styles.tableCell,
-                      styles.metricCell,
-                      index === weaponColumns.length - 1 && styles.lastCell,
-                    ]}
-                  >
-                    <Text style={[styles.headerText, styles.cellText]}>{col.title}</Text>
+            rows.map((weapon, index) => {
+              const generalRows = [
+                { label: 'Հերթական համար', value: weapon?.ZHAMAR },
+                { label: 'Զենքի անվանում', value: weapon?.ZANUN_NAME },
+                { label: 'Տեսակ', value: weapon?.ZTYPE_NAME },
+                { label: 'Տ/չ', value: weapon?.KALIBR },
+                { label: 'Պատկանում է', value: weapon?.ZPATK1_NAME },
+              ];
+
+              const permitRows = [
+                { label: 'Թույլտվության տ/կ', value: weapon?.TTYPE_NAME },
+                { label: 'Թույլտվության ա/թ', value: weapon?.TDATE },
+                { label: 'Գրանցված է', value: weapon?.GRANC_NAME },
+                { label: 'Բաժինը', value: weapon?.TBAJIN },
+              ];
+
+              const ownerRows = [
+                { label: 'ԱԱՀ', value: formatOwnerFullName(weapon) },
+                { label: 'Փաստաթուղթ', value: weapon?.PASSPORT },
+                { label: 'Ծննդ. ա/թ', value: weapon?.BDATE },
+                { label: 'ՀԾՀ / ՀՎՀՀ', value: weapon?.SSN },
+              ];
+
+              const addressRows = [{ label: 'Հասցե', value: formatAddress(weapon) }];
+
+              return (
+                <View key={`weapon-${index}`} style={styles.employerSection}>
+                  <View style={styles.employerHeader}>
+                    <Text style={styles.employerTitle}>Զենք #{weapon?.ZHAMAR || index + 1}</Text>
+                    {weapon?.ZANUN_NAME && (
+                      <Text style={styles.employerMeta}>{weapon.ZANUN_NAME}</Text>
+                    )}
                   </View>
-                ))}
-              </View>
-              {rows.map((weapon, rowIndex) => (
-                <View key={`weapon-${rowIndex}`} style={styles.tableRow}>
-                  {weaponColumns.map((col, colIndex) => (
-                    <View
-                      key={`${col.key}-${rowIndex}`}
-                      style={[
-                        styles.tableCell,
-                        styles.metricCell,
-                        colIndex === weaponColumns.length - 1 && styles.lastCell,
-                      ]}
-                    >
-                      <Text style={styles.cellText}>{formatCellValue(weapon, col.key)}</Text>
-                    </View>
-                  ))}
+                  <View style={styles.propertySectionContent}>
+                    <Text style={styles.sectionHeading}>Ընդհանուր տվյալներ</Text>
+                    <InfoPairsTable rows={generalRows} />
+
+                    <Text style={styles.sectionHeading}>Թույլտվություն</Text>
+                    <InfoPairsTable rows={permitRows} />
+
+                    <Text style={styles.sectionHeading}>Սեփականատեր / գրանցվող անձ</Text>
+                    <InfoPairsTable rows={ownerRows} />
+
+                    <Text style={styles.sectionHeading}>Հասցե</Text>
+                    <InfoPairsTable rows={addressRows} />
+                  </View>
                 </View>
-              ))}
-            </View>
+              );
+            })
           ) : (
             <Text style={styles.emptyState}>Տվյալներ հասանելի չեն</Text>
           )}
