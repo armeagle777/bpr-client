@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   Card,
   Grid,
@@ -11,18 +12,23 @@ import {
   AccordionSummary,
   Alert as MuiAlert,
   Tooltip,
+  Button,
 } from "@mui/material";
 import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import useAuthUser from "react-auth-kit/hooks/useAuthUser";
 
 import { OwnerCard } from "./components";
 import ListScileton from "../listSceleton/ListScileton";
 import { formatAmount } from "../../utils/helperFunctions";
 import useFetchRoadPoliceTransactions from "../../hooks/useFetchRoadPoliceTransactions";
 import NoResults from "../NoResults/NoResults";
+import PDFGenerator from "../PDFGenerator/PDFGenerator";
+import RoadPoliceTransactionsReport from "../pdf-templates/RoadPoliceTransactionsReport";
 
 const RoadPoliceTransactionsTab = ({ pnum }) => {
-  const { data, error, isError, isFetching } =
-    useFetchRoadPoliceTransactions(pnum);
+  const { data, error, isError, isFetching } = useFetchRoadPoliceTransactions(pnum);
+  const user = useAuthUser();
 
   if (isFetching) {
     return <ListScileton />;
@@ -36,11 +42,41 @@ const RoadPoliceTransactionsTab = ({ pnum }) => {
     );
   }
 
-  return !data?.items?.length ? (
+  const items = Array.isArray(data?.items) ? data.items : [];
+  const hasData = items.length > 0;
+
+  const userFullName = useMemo(() => {
+    if (!user) {
+      return "";
+    }
+    return [user.firstName, user.lastName].filter(Boolean).join(" ");
+  }, [user]);
+
+  const exportFileName = useMemo(() => {
+    const safePnum = typeof pnum === "string" ? pnum.replace(/[^\w-]/g, "_") : "report";
+    return `road_police_transactions_${safePnum || "report"}.pdf`;
+  }, [pnum]);
+
+  const exportButton = hasData ? (
+    <PDFGenerator
+      PDFTemplate={RoadPoliceTransactionsReport}
+      fileName={exportFileName}
+      buttonText="Արտահանել"
+      variant="outlined"
+      Icon={PictureAsPdfIcon}
+      data={{ PNum: pnum, transactions: data }}
+      userFullName={userFullName}
+    />
+  ) : null;
+
+  return !hasData ? (
     <NoResults />
   ) : (
     <Grid container spacing={2}>
-      {data?.items?.map((tx, idx) => (
+      <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
+        {exportButton}
+      </Grid>
+      {items.map((tx, idx) => (
         <Grid item xs={12} key={idx}>
           <Card sx={{ borderRadius: 3, boxShadow: 3 }}>
             <CardContent>

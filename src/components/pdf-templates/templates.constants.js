@@ -394,6 +394,22 @@ export const financesPdfStyles = StyleSheet.create({
     textTransform: 'uppercase',
     marginBottom: 4,
   },
+  chipList: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 4,
+  },
+  chip: {
+    borderRadius: 4,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#e4ae4e',
+    padding: '2px 6px',
+    fontSize: 8,
+    color: '#203753',
+    backgroundColor: '#fff',
+  },
 });
 
 export const businessPdfStyles = StyleSheet.create({
