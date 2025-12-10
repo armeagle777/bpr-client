@@ -387,6 +387,13 @@ export const financesPdfStyles = StyleSheet.create({
     fontSize: 8,
     fontWeight: 'bold',
   },
+  tableTitle: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: COLORS.PRIMARY,
+    textTransform: 'uppercase',
+    marginBottom: 4,
+  },
 });
 
 export const businessPdfStyles = StyleSheet.create({
