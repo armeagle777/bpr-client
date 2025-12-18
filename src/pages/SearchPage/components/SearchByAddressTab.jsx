@@ -165,8 +165,17 @@ const SearchByAddressTab = () => {
     filterProps.apartment,
   ].some(Boolean);
 
+  const hasAnyName = Boolean(
+    filterProps.firstName || filterProps.lastName || filterProps.patronomicName
+  );
+
+  const hasRegionAndCommunity = Boolean(filterProps.region && filterProps.community);
+  const streetRequiredButMissing = !hasAnyName && !filterProps.streetOption;
+  const buildingRequiredButMissing = !hasAnyName && !filterProps.building;
+
   const isResetDisabled = !hasAddressFilters;
-  const isSearchDisabled = !hasAddressFilters;
+  const isSearchDisabled =
+    !hasRegionAndCommunity || streetRequiredButMissing || buildingRequiredButMissing;
   const hideFilters = false;
   const filtersDisabled = !persons || (!areFiltersUsed(filterProps) && !persons?.length);
 
@@ -304,7 +313,7 @@ const SearchByAddressTab = () => {
                     onChange={(_, newValue) => handleAddressSelectChange('region', newValue)}
                     getOptionLabel={(option) => option?.name || ''}
                     isOptionEqualToValue={(option, value) => option?.regionId === value?.regionId}
-                    renderInput={(params) => <TextField {...params} label="Մարզ" />}
+                    renderInput={(params) => <TextField {...params} label="Մարզ" required />}
                   />
                   <Autocomplete
                     fullWidth
@@ -315,7 +324,7 @@ const SearchByAddressTab = () => {
                     isOptionEqualToValue={(option, value) =>
                       option?.communityId === value?.communityId
                     }
-                    renderInput={(params) => <TextField {...params} label="Համայնք" />}
+                    renderInput={(params) => <TextField {...params} label="Համայնք" required />}
                     disabled={!filterProps.regionOption}
                     loading={communitiesFetching}
                   />
