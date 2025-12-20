@@ -1,5 +1,11 @@
+import StickyNotesBoard from '../components/sticky-notes/StickyNotesBoard';
+
 const Home = () => {
-    return <div>Home</div>;
+  return (
+    <div>
+      <StickyNotesBoard />
+    </div>
+  );
 };
 
 export default Home;

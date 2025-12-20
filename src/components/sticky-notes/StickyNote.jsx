@@ -11,13 +11,23 @@ import {
   Tooltip,
   Divider,
 } from '@mui/material';
-import { Edit, Save, Delete, Palette, DragIndicator } from '@mui/icons-material';
+import {
+  Edit,
+  Save,
+  Delete,
+  Palette,
+  DragIndicator,
+  Minimize,
+  UnfoldMore,
+} from '@mui/icons-material';
 import colors from './colors';
 
 const StickyNote = ({ note, onUpdate, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(note.text);
   const [anchorEl, setAnchorEl] = useState(null);
+  const isFolded = note.folded ?? false;
+  const foldedSize = 56;
 
   const handleEditToggle = () => {
     if (isEditing) {
@@ -47,82 +57,122 @@ const StickyNote = ({ note, onUpdate, onDelete }) => {
     return new Date(timestamp).toLocaleString();
   };
 
+  const toggleFold = () => {
+    if (isEditing) {
+      onUpdate({ ...note, text, updatedAt: Date.now() });
+      setIsEditing(false);
+    }
+    onUpdate({ ...note, folded: !isFolded, updatedAt: Date.now() });
+  };
+
   return (
     <>
       <Rnd
-        size={{ width: note.w, height: note.h }}
+        size={{ width: isFolded ? foldedSize : note.w, height: isFolded ? foldedSize : note.h }}
         position={{ x: note.x, y: note.y }}
         onDragStop={handleDragStop}
         onResizeStop={handleResizeStop}
-        minWidth={180}
-        minHeight={140}
-        dragHandleClassName="drag-handle"
+        minWidth={isFolded ? foldedSize : 180}
+        minHeight={isFolded ? foldedSize : 140}
+        dragHandleClassName={isFolded ? undefined : 'drag-handle'}
         disableDragging={isEditing}
-        enableResizing={!isEditing}
+        enableResizing={!isEditing && !isFolded}
         bounds="parent"
       >
-        <Paper
-          elevation={3}
-          sx={{
-            width: '100%',
-            height: '100%',
-            backgroundColor: colors[note.color],
-            borderRadius: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            overflow: 'hidden',
-            '&:hover': {
-              elevation: 6,
-            },
-          }}
-        >
-          <Box
-            className="drag-handle"
-            sx={{ display: 'flex', alignItems: 'center', p: 1, cursor: 'move' }}
+        {isFolded ? (
+          <Paper
+            elevation={3}
+            onClick={toggleFold}
+            sx={{
+              width: '100%',
+              height: '100%',
+              backgroundColor: colors[note.color],
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              transition: 'transform 0.2s ease',
+              '&:hover': {
+                transform: 'scale(1.05)',
+              },
+            }}
           >
-            <DragIndicator sx={{ mr: 1 }} />
-            <Box sx={{ flexGrow: 1 }} />
-            <Tooltip title={isEditing ? 'Save' : 'Edit'}>
-              <IconButton size="small" onClick={handleEditToggle}>
-                {isEditing ? <Save /> : <Edit />}
+            <Tooltip title="Expand note">
+              <IconButton size="small" sx={{ color: '#fff' }}>
+                <UnfoldMore />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Color">
-              <IconButton size="small" onClick={(e) => setAnchorEl(e.currentTarget)}>
-                <Palette />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Delete">
-              <IconButton size="small" onClick={handleDelete}>
-                <Delete />
-              </IconButton>
-            </Tooltip>
-          </Box>
-          <Divider />
-          <Box sx={{ flexGrow: 1, p: 1, overflow: 'auto' }}>
-            {isEditing ? (
-              <TextField
-                fullWidth
-                multiline
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                variant="standard"
-                InputProps={{ disableUnderline: true }}
-                sx={{ backgroundColor: 'transparent' }}
-              />
-            ) : (
-              <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
-                {note.text}
+          </Paper>
+        ) : (
+          <Paper
+            elevation={3}
+            sx={{
+              width: '100%',
+              height: '100%',
+              backgroundColor: colors[note.color],
+              borderRadius: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              overflow: 'hidden',
+              '&:hover': {
+                elevation: 6,
+              },
+            }}
+          >
+            <Box
+              className="drag-handle"
+              sx={{ display: 'flex', alignItems: 'center', p: 1, cursor: 'move' }}
+            >
+              <DragIndicator sx={{ mr: 1 }} />
+              <Box sx={{ flexGrow: 1 }} />
+              <Tooltip title={isEditing ? 'Save' : 'Edit'}>
+                <IconButton size="small" onClick={handleEditToggle}>
+                  {isEditing ? <Save /> : <Edit />}
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Color">
+                <IconButton size="small" onClick={(e) => setAnchorEl(e.currentTarget)}>
+                  <Palette />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Fold">
+                <IconButton size="small" onClick={toggleFold}>
+                  <Minimize />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Delete">
+                <IconButton size="small" onClick={handleDelete}>
+                  <Delete />
+                </IconButton>
+              </Tooltip>
+            </Box>
+            <Divider />
+            <Box sx={{ flexGrow: 1, p: 1, overflow: 'auto' }}>
+              {isEditing ? (
+                <TextField
+                  fullWidth
+                  multiline
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                  variant="standard"
+                  InputProps={{ disableUnderline: true }}
+                  sx={{ backgroundColor: 'transparent' }}
+                />
+              ) : (
+                <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
+                  {note.text}
+                </Typography>
+              )}
+            </Box>
+            <Divider />
+            <Box sx={{ p: 0.5, textAlign: 'right' }}>
+              <Typography variant="caption" color="textSecondary">
+                {formatTime(note.updatedAt)}
               </Typography>
-            )}
-          </Box>
-          <Divider />
-          <Box sx={{ p: 0.5, textAlign: 'right' }}>
-            <Typography variant="caption" color="textSecondary">
-              {formatTime(note.updatedAt)}
-            </Typography>
-          </Box>
-        </Paper>
+            </Box>
+          </Paper>
+        )}
       </Rnd>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
         {Object.entries(colors).map(([key, value]) => (
