@@ -406,6 +406,28 @@ export const filterLogsData = async (filters, page) => {
   return response.data;
 };
 
+export const createNote = async (body) => {
+  const response = await personsApi.post(`/notes`, body);
+  return response.data;
+};
+
+export const getNotes = async ({ pnum, taxId }) => {
+  const response = await personsApi.get(
+    `/notes?${pnum ? `pnum=${pnum}` : ''}${taxId ? `&taxId=${taxId}` : ''}`
+  );
+  return response.data;
+};
+
+export const updateNote = async (id, noteData) => {
+  const response = await personsApi.put(`/notes/${id}`, noteData);
+  return response.data;
+};
+
+export const deleteNote = async (id) => {
+  const response = await personsApi.delete(`/notes/${id}`);
+  return response.data;
+};
+
 export const getExcelFile = async (filters) => {
   const mimeType = FILE_MIME_TYPES.EXCEL;
 

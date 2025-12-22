@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Rnd } from 'react-rnd';
 import {
-  Paper,
   Box,
-  IconButton,
   Menu,
-  MenuItem,
-  TextField,
-  Typography,
+  Paper,
   Tooltip,
   Divider,
+  MenuItem,
+  TextField,
+  IconButton,
+  Typography,
 } from '@mui/material';
 import {
   Edit,
   Save,
   Delete,
   Palette,
-  DragIndicator,
   Minimize,
   UnfoldMore,
+  DragIndicator,
 } from '@mui/icons-material';
 import colors from './colors';
 
@@ -126,22 +126,22 @@ const StickyNote = ({ note, onUpdate, onDelete }) => {
             >
               <DragIndicator sx={{ mr: 1 }} />
               <Box sx={{ flexGrow: 1 }} />
-              <Tooltip title={isEditing ? 'Save' : 'Edit'}>
+              <Tooltip title={isEditing ? 'Պահպանել' : 'Խմբագրել'}>
                 <IconButton size="small" onClick={handleEditToggle}>
                   {isEditing ? <Save /> : <Edit />}
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Color">
+              <Tooltip title="Գույնը">
                 <IconButton size="small" onClick={(e) => setAnchorEl(e.currentTarget)}>
                   <Palette />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Fold">
+              <Tooltip title="Ծածկել">
                 <IconButton size="small" onClick={toggleFold}>
                   <Minimize />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Delete">
+              <Tooltip title="Հեռացնել">
                 <IconButton size="small" onClick={handleDelete}>
                   <Delete />
                 </IconButton>

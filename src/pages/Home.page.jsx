@@ -1,4 +1,4 @@
-import StickyNotesBoard from '../components/sticky-notes/StickyNotesBoard';
+import StickyNotesBoard from '../components/StickyNotesBoard/StickyNotesBoard';
 
 const Home = () => {
   return (

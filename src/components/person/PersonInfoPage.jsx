@@ -40,6 +40,7 @@ import SocialPaymentsTab from '../SocialPaymentsTab/SocialPaymentsTab';
 import MojCivilBeneficiaryTab from '../MojCivilBeneficiaryTab/MojCivilBeneficiaryTab';
 import RoadPoliceViolationsTab from '../RoadPoliceViolationsTab/RoadPoliceViolationsTab';
 import RoadPoliceTransactionsTab from '../RoadPoliceTransactionsTab/RoadPoliceTransactionsTab';
+import StickyNotesBoard from '../StickyNotesBoard/StickyNotesBoard';
 
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
@@ -108,294 +109,291 @@ const PersonInfoPage = ({ personInfo }) => {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item xs={10}>
-          <Container>
-            <Box>
-              <Stack
-                direction="row"
-                sx={{
-                  pt: 4,
-                }}
-                justifyContent="space-between"
-                alignItems="center"
+        <Grid item xs={2}>
+          <StickyNotesBoard />
+        </Grid>
+        <Grid item xs={8}>
+          {/* <Container> */}
+          <Box>
+            <Stack
+              direction="row"
+              sx={{
+                pt: 4,
+              }}
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Button
+                onClick={() => navigate(-1)}
+                variant="contained"
+                startIcon={<ArrowBackIosIcon />}
               >
-                <Button
-                  onClick={() => navigate(-1)}
-                  variant="contained"
-                  startIcon={<ArrowBackIosIcon />}
-                >
-                  Վերադառնալ
-                </Button>
-                {userHasPermission(
-                  [permissionsMap.BPR.uid, permissionsMap.ADMIN.uid],
-                  user.permissions
-                ) && (
-                  <PDFGenerator
-                    PDFTemplate={BPR}
-                    fileName={`bpr_${firstName}_${lastName}.pdf`}
-                    buttonText="Արտահանել"
-                    variant="outlined"
-                    Icon={PictureAsPdfIcon}
-                    data={{
-                      addresses,
-                      documents,
-                      PNum,
-                      IsDead,
-                      DeathDate,
-                      Citizenship_StoppedDate,
-                    }}
-                    userFullName={`${user.firstName} ${user.lastName}`}
-                  />
-                )}
-              </Stack>
-              <Stack direction="row" sx={{ mt: 2 }}>
-                <Box
-                  sx={{
-                    width: '20%',
-                    minWidth: 200,
-                    maxWidth: 300,
-                    padding: 2,
-                  }}
-                >
-                  <PhotoSlider images={images} />
-                </Box>
-                <Stack direction="row" sx={{ width: '70%', padding: 2 }}>
-                  <Stack spacing={2} justifyContent="left" sx={{ width: '50%' }}>
-                    <PersonalInfoRow
-                      width={35}
-                      label="ԱՆՈՒՆ"
-                      text={`${firstName} | ${firstNameEng ? firstNameEng : ''}`}
-                    />
-                    <PersonalInfoRow
-                      width={35}
-                      label="ԱԶԳԱՆՈՒՆ"
-                      text={`${lastName} | ${lastNameEng ? lastNameEng : ''}`}
-                    />
-                    <PersonalInfoRow
-                      width={35}
-                      label="ՀԱՅՐԱՆՈՒՆ"
-                      text={`${middleName ? middleName : ''} | ${
-                        middleNameEng ? middleNameEng : ''
-                      }`}
-                    />
-                    <PersonalInfoRow width={35} label="ԾՆՆԴՅԱՆ ա/թ" text={birthDate} />
-                    <PersonalInfoRow
-                      width={35}
-                      label="ՀԾՀ"
-                      text={sanitizedPNum || Certificate_Number || ''}
-                    />
-                    <PersonalInfoRow width={35} label="ԱԶԳՈՒԹՅՈՒՆ" text={NationalityName} />
-                    <PersonalInfoRow width={35} label="ՍԵՌԸ" text={gender} />
-                    {IsDead && <PersonalInfoRow width={40} label="Մահացել է" text={DeathDate} />}
-                  </Stack>
-                  <Stack spacing={2} justifyContent="left" sx={{ width: '50%' }}>
-                    <PersonalInfoRow
-                      width={40}
-                      label="ԵՐԿԻՐ"
-                      text={
-                        Foreign_Country
-                          ? formatCountryName(Foreign_Country.CountryName)
-                          : 'ՀԱՅԱՍՏԱՆ'
-                      }
-                    />
-                    <PersonalInfoRow width={40} label="ՄԱՐԶ" text={Region || Foreign_Region} />
-                    <PersonalInfoRow
-                      width={40}
-                      label="ՀԱՄԱՅՆՔ"
-                      text={Community ? `${Community}/${Residence}` : Foreign_Community}
-                    />
-                    <PersonalInfoRow width={40} label="ՓՈՂՈՑ" text={Street || Foreign_Address} />
-                    <PersonalInfoRow
-                      width={40}
-                      label="ՏՈՒՆ"
-                      text={
-                        Building && `${Building_Type} ${Building}, ${Apartment ? Apartment : ''}`
-                      }
-                    />
-                    <PersonalInfoRow
-                      width={40}
-                      label="ԾՆՆԴԱՎԱՅՐ"
-                      text={`${birthCountry}/${birthRegion ? ` \ ${birthRegion}` : ''}`}
-                    />
-                    <PersonalInfoRow width={40} label="ՔԱՂԱՔԱՑԻՈՒԹՅՈՒՆ" text={allCitizenships} />
-                    {Citizenship_StoppedDate && (
-                      <PersonalInfoRow
-                        width={40}
-                        label="Քաղ․ հրաժարվելու ա/թ"
-                        text={Citizenship_StoppedDate}
-                      />
-                    )}
-                  </Stack>
-                </Stack>
-                {isJpk && (
-                  <Box
-                    sx={{
-                      width: '5%',
-                    }}
-                  >
-                    <Chip size="medium" color="warning" label="ԺՊԿ" />
-                  </Box>
-                )}
-              </Stack>
-            </Box>
-            <Box sx={{ pb: 3 }}>
+                Վերադառնալ
+              </Button>
               {userHasPermission(
                 [permissionsMap.BPR.uid, permissionsMap.ADMIN.uid],
                 user.permissions
               ) && (
-                <TabPanel value={value} index={index++}>
-                  <Documents documents={documents} addresses={addresses} />
-                </TabPanel>
+                <PDFGenerator
+                  PDFTemplate={BPR}
+                  fileName={`bpr_${firstName}_${lastName}.pdf`}
+                  buttonText="Արտահանել"
+                  variant="outlined"
+                  Icon={PictureAsPdfIcon}
+                  data={{
+                    addresses,
+                    documents,
+                    PNum,
+                    IsDead,
+                    DeathDate,
+                    Citizenship_StoppedDate,
+                  }}
+                  userFullName={`${user.firstName} ${user.lastName}`}
+                />
               )}
-              {userHasPermission(
-                [
-                  permissionsMap.TAX.uid,
-                  permissionsMap.ADMIN.uid,
-                  permissionsMap.TAX_PERSON_ALL_INCOMES.uid,
-                ],
-                user.permissions
-              ) && (
-                <TabPanel value={value} index={index++}>
-                  <Finances ssn={sanitizedPNum || Certificate_Number} />
-                </TabPanel>
-              )}
-              {userHasPermission(
-                [
-                  permissionsMap.TAX.uid,
-                  permissionsMap.ADMIN.uid,
-                  permissionsMap.TAX_PERSON_ALL_EMPLOYERS.uid,
-                ],
-                user.permissions
-              ) && (
-                <TabPanel value={value} index={index++}>
-                  <TaxEmployersTab ssn={sanitizedPNum || Certificate_Number} />
-                </TabPanel>
-              )}
-              {userHasPermission(
-                [permissionsMap.ZAQS.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                <TabPanel value={value} index={index++}>
-                  <Family
-                    ssn={sanitizedPNum || Certificate_Number}
-                    firstName={firstName}
-                    lastName={lastName}
+            </Stack>
+            <Stack direction="row" sx={{ mt: 2 }}>
+              <Box
+                sx={{
+                  width: '20%',
+                  minWidth: 200,
+                  maxWidth: 300,
+                  padding: 2,
+                }}
+              >
+                <PhotoSlider images={images} />
+              </Box>
+              <Stack direction="row" sx={{ width: '70%', padding: 2 }}>
+                <Stack spacing={2} justifyContent="left" sx={{ width: '50%' }}>
+                  <PersonalInfoRow
+                    width={35}
+                    label="ԱՆՈՒՆ"
+                    text={`${firstName} | ${firstNameEng ? firstNameEng : ''}`}
                   />
-                </TabPanel>
+                  <PersonalInfoRow
+                    width={35}
+                    label="ԱԶԳԱՆՈՒՆ"
+                    text={`${lastName} | ${lastNameEng ? lastNameEng : ''}`}
+                  />
+                  <PersonalInfoRow
+                    width={35}
+                    label="ՀԱՅՐԱՆՈՒՆ"
+                    text={`${middleName ? middleName : ''} | ${middleNameEng ? middleNameEng : ''}`}
+                  />
+                  <PersonalInfoRow width={35} label="ԾՆՆԴՅԱՆ ա/թ" text={birthDate} />
+                  <PersonalInfoRow
+                    width={35}
+                    label="ՀԾՀ"
+                    text={sanitizedPNum || Certificate_Number || ''}
+                  />
+                  <PersonalInfoRow width={35} label="ԱԶԳՈՒԹՅՈՒՆ" text={NationalityName} />
+                  <PersonalInfoRow width={35} label="ՍԵՌԸ" text={gender} />
+                  {IsDead && <PersonalInfoRow width={40} label="Մահացել է" text={DeathDate} />}
+                </Stack>
+                <Stack spacing={2} justifyContent="left" sx={{ width: '50%' }}>
+                  <PersonalInfoRow
+                    width={40}
+                    label="ԵՐԿԻՐ"
+                    text={
+                      Foreign_Country ? formatCountryName(Foreign_Country.CountryName) : 'ՀԱՅԱՍՏԱՆ'
+                    }
+                  />
+                  <PersonalInfoRow width={40} label="ՄԱՐԶ" text={Region || Foreign_Region} />
+                  <PersonalInfoRow
+                    width={40}
+                    label="ՀԱՄԱՅՆՔ"
+                    text={Community ? `${Community}/${Residence}` : Foreign_Community}
+                  />
+                  <PersonalInfoRow width={40} label="ՓՈՂՈՑ" text={Street || Foreign_Address} />
+                  <PersonalInfoRow
+                    width={40}
+                    label="ՏՈՒՆ"
+                    text={Building && `${Building_Type} ${Building}, ${Apartment ? Apartment : ''}`}
+                  />
+                  <PersonalInfoRow
+                    width={40}
+                    label="ԾՆՆԴԱՎԱՅՐ"
+                    text={`${birthCountry}/${birthRegion ? ` \ ${birthRegion}` : ''}`}
+                  />
+                  <PersonalInfoRow width={40} label="ՔԱՂԱՔԱՑԻՈՒԹՅՈՒՆ" text={allCitizenships} />
+                  {Citizenship_StoppedDate && (
+                    <PersonalInfoRow
+                      width={40}
+                      label="Քաղ․ հրաժարվելու ա/թ"
+                      text={Citizenship_StoppedDate}
+                    />
+                  )}
+                </Stack>
+              </Stack>
+              {isJpk && (
+                <Box
+                  sx={{
+                    width: '5%',
+                  }}
+                >
+                  <Chip size="medium" color="warning" label="ԺՊԿ" />
+                </Box>
               )}
-              {userHasPermission(
-                [permissionsMap.PETREGISTER.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
+            </Stack>
+          </Box>
+          <Box sx={{ pb: 3 }}>
+            {userHasPermission(
+              [permissionsMap.BPR.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <Documents documents={documents} addresses={addresses} />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [
+                permissionsMap.TAX.uid,
+                permissionsMap.ADMIN.uid,
+                permissionsMap.TAX_PERSON_ALL_INCOMES.uid,
+              ],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <Finances ssn={sanitizedPNum || Certificate_Number} />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [
+                permissionsMap.TAX.uid,
+                permissionsMap.ADMIN.uid,
+                permissionsMap.TAX_PERSON_ALL_EMPLOYERS.uid,
+              ],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <TaxEmployersTab ssn={sanitizedPNum || Certificate_Number} />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [permissionsMap.ZAQS.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <Family
+                  ssn={sanitizedPNum || Certificate_Number}
+                  firstName={firstName}
+                  lastName={lastName}
+                />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [permissionsMap.PETREGISTER.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <BusinessTab ssn={sanitizedPNum || Certificate_Number} />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [permissionsMap.KADASTR.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <Kadastr ssn={sanitizedPNum || Certificate_Number} />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [permissionsMap.POLICE.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <PoliceTab pnum={sanitizedPNum} />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [permissionsMap.WP.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <WpTab pnum={sanitizedPNum} />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [permissionsMap.ROADPOLICE.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <RoadPoliceTab pnum={sanitizedPNum} />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [permissionsMap.WEAPON.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <WeaponsTab ssn={sanitizedPNum} />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [permissionsMap.ROADPOLICE_TRANSACTIONS.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <RoadPoliceTransactionsTab pnum={sanitizedPNum} />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [permissionsMap.ROADPOLICE_VIOLATIONS.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <RoadPoliceViolationsTab pnum={sanitizedPNum} />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [permissionsMap.MTA_PROPERTY_TAXES.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <PropertyTaxesTab identificatorNumber={sanitizedPNum} />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [permissionsMap.MOJ_CES.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <MojCesDebtorTab psn={sanitizedPNum} />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [permissionsMap.MLSA.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <TabPanel value={value} index={index++}>
+                <SocialPaymentsTab ssn={sanitizedPNum} />
+              </TabPanel>
+            )}
+            {userHasPermission(
+              [permissionsMap.MOJ_CIVIL.uid, permissionsMap.ADMIN.uid],
+              user.permissions
+            ) && (
+              <>
                 <TabPanel value={value} index={index++}>
-                  <BusinessTab ssn={sanitizedPNum || Certificate_Number} />
+                  <MojCivilCasesTab psn={sanitizedPNum} />
                 </TabPanel>
-              )}
-              {userHasPermission(
-                [permissionsMap.KADASTR.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
                 <TabPanel value={value} index={index++}>
-                  <Kadastr ssn={sanitizedPNum || Certificate_Number} />
+                  <MojCivilBeneficiaryTab psn={sanitizedPNum} />
                 </TabPanel>
-              )}
-              {userHasPermission(
-                [permissionsMap.POLICE.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                <TabPanel value={value} index={index++}>
-                  <PoliceTab pnum={sanitizedPNum} />
-                </TabPanel>
-              )}
-              {userHasPermission(
-                [permissionsMap.WP.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                <TabPanel value={value} index={index++}>
-                  <WpTab pnum={sanitizedPNum} />
-                </TabPanel>
-              )}
-              {userHasPermission(
-                [permissionsMap.ROADPOLICE.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                <TabPanel value={value} index={index++}>
-                  <RoadPoliceTab pnum={sanitizedPNum} />
-                </TabPanel>
-              )}
-              {userHasPermission(
-                [permissionsMap.WEAPON.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                <TabPanel value={value} index={index++}>
-                  <WeaponsTab ssn={sanitizedPNum} />
-                </TabPanel>
-              )}
-              {userHasPermission(
-                [permissionsMap.ROADPOLICE_TRANSACTIONS.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                <TabPanel value={value} index={index++}>
-                  <RoadPoliceTransactionsTab pnum={sanitizedPNum} />
-                </TabPanel>
-              )}
-              {userHasPermission(
-                [permissionsMap.ROADPOLICE_VIOLATIONS.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                <TabPanel value={value} index={index++}>
-                  <RoadPoliceViolationsTab pnum={sanitizedPNum} />
-                </TabPanel>
-              )}
-              {userHasPermission(
-                [permissionsMap.MTA_PROPERTY_TAXES.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                <TabPanel value={value} index={index++}>
-                  <PropertyTaxesTab identificatorNumber={sanitizedPNum} />
-                </TabPanel>
-              )}
-              {userHasPermission(
-                [permissionsMap.MOJ_CES.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                <TabPanel value={value} index={index++}>
-                  <MojCesDebtorTab psn={sanitizedPNum} />
-                </TabPanel>
-              )}
-              {userHasPermission(
-                [permissionsMap.MLSA.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                <TabPanel value={value} index={index++}>
-                  <SocialPaymentsTab ssn={sanitizedPNum} />
-                </TabPanel>
-              )}
-              {userHasPermission(
-                [permissionsMap.MOJ_CIVIL.uid, permissionsMap.ADMIN.uid],
-                user.permissions
-              ) && (
-                <>
-                  <TabPanel value={value} index={index++}>
-                    <MojCivilCasesTab psn={sanitizedPNum} />
-                  </TabPanel>
-                  <TabPanel value={value} index={index++}>
-                    <MojCivilBeneficiaryTab psn={sanitizedPNum} />
-                  </TabPanel>
-                </>
-              )}
-            </Box>
+              </>
+            )}
+          </Box>
 
-            <SpeedDialButton
-              uid={PNum}
-              PDFTemplate={BPR}
-              data={personInfo}
-              text={likeToggleText}
-              onLikeToggle={onLikeToggle}
-              fileName={`bpr_${firstName}_${lastName}.pdf`}
-              userFullName={`${user.firstName} ${user.lastName}`}
-            />
-          </Container>
+          <SpeedDialButton
+            uid={PNum}
+            PDFTemplate={BPR}
+            data={personInfo}
+            text={likeToggleText}
+            onLikeToggle={onLikeToggle}
+            fileName={`bpr_${firstName}_${lastName}.pdf`}
+            userFullName={`${user.firstName} ${user.lastName}`}
+          />
+          {/* </Container> */}
         </Grid>
         <Grid item xs={2}>
           <Box
