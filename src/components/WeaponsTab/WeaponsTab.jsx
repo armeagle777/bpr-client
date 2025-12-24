@@ -1,10 +1,15 @@
-import { Alert as MuiAlert, Typography } from '@mui/material';
+import { useMemo } from 'react';
+import { Alert as MuiAlert, Stack, Typography } from '@mui/material';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
 import useFetchWeaponsData from '../../hooks/useFetchWeaponsData.js';
 import ListScileton from '../listSceleton/ListScileton';
 import MuiTable from '../MuiTable/MuiTable.jsx';
 
 import NoResults from '../NoResults/NoResults.jsx';
+import PDFGenerator from '../PDFGenerator/PDFGenerator';
+import WeaponsReport from '../pdf-templates/WeaponsReport';
 
 const WeaponsTab = ({ ssn, tax_id }) => {
   const {
@@ -17,6 +22,7 @@ const WeaponsTab = ({ ssn, tax_id }) => {
     ssn,
     tax_id,
   });
+  const user = useAuthUser();
 
   if (isError) {
     return <MuiAlert severity="error">{error.response?.data?.message || error.message}</MuiAlert>;
@@ -51,11 +57,41 @@ const WeaponsTab = ({ ssn, tax_id }) => {
     { title: 'Տ/չ', key: 'KALIBR' },
   ];
 
+  const hasData = data?.length > 0;
+
+  const userFullName = useMemo(() => {
+    if (!user) {
+      return '';
+    }
+    return [user.firstName, user.lastName].filter(Boolean).join(' ');
+  }, [user]);
+
+  const exportFileName = useMemo(() => {
+    const baseId = ssn || tax_id;
+    const safeId = typeof baseId === 'string' ? baseId.replace(/[^\w-]/g, '_') : 'report';
+    return `weapons_${safeId || 'report'}.pdf`;
+  }, [ssn, tax_id]);
+
+  const exportButton = hasData ? (
+    <PDFGenerator
+      PDFTemplate={WeaponsReport}
+      fileName={exportFileName}
+      buttonText="Արտահանել"
+      variant="outlined"
+      Icon={PictureAsPdfIcon}
+      data={{ PNum: ssn, taxId: tax_id, weapons: data }}
+      userFullName={userFullName}
+    />
+  ) : null;
+
   return (
     <>
-      <Typography variant="h5" color="primary" fontWeight="bold" gutterBottom sx={{ mb: 2 }}>
-        Հաշվառված Զենքերի Վերաբերյալ Տեղեկատվություն
-      </Typography>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+        <Typography variant="h5" color="primary" fontWeight="bold" gutterBottom>
+          Հաշվառված Զենքերի Վերաբերյալ Տեղեկատվություն
+        </Typography>
+        {exportButton}
+      </Stack>
       {isFetching ? (
         <ListScileton />
       ) : !data?.length ? (

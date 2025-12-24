@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { Box, Tab, Tabs, Typography } from '@mui/material';
+import { useMemo, useState } from 'react';
+import { Box, Stack, Tab, Tabs, Typography } from '@mui/material';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
 import DataLoader from '../DataLoader/DataLoader';
 import PhysicalVehicleCard from './components/PhysicalVehicleCard';
@@ -8,12 +10,21 @@ import LegalPropertyCard from './components/LegalPropertyCard';
 import useTerritorialMinPropertyTaxesData from '../../hooks/useTerritorialMinPropertyTaxesData';
 import LegalVehicleCard from './components/LegalVehicleCard';
 import NoResults from '../NoResults/NoResults';
+import PDFGenerator from '../PDFGenerator/PDFGenerator';
+import PropertyTaxesReport from '../pdf-templates/PropertyTaxesReport';
 
 const PropertyTaxesTab = ({ identificatorNumber, personType = 'PHYSICAL' }) => {
   const [serviceType, setServiceType] = useState('REAL_ESTATE');
+  const user = useAuthUser();
 
-  const { data, isFetching, error } = useTerritorialMinPropertyTaxesData({
-    serviceType,
+  const realEstateQuery = useTerritorialMinPropertyTaxesData({
+    serviceType: 'REAL_ESTATE',
+    identificator: identificatorNumber,
+    personType,
+  });
+
+  const vehiclesQuery = useTerritorialMinPropertyTaxesData({
+    serviceType: 'VEHICLES',
     identificator: identificatorNumber,
     personType,
   });
@@ -21,11 +32,53 @@ const PropertyTaxesTab = ({ identificatorNumber, personType = 'PHYSICAL' }) => {
   const handleTabChange = (e, newValue) => {
     setServiceType(newValue);
   };
+
+  const isFetching =
+    serviceType === 'REAL_ESTATE' ? realEstateQuery.isFetching : vehiclesQuery.isFetching;
+  const error = serviceType === 'REAL_ESTATE' ? realEstateQuery.error : vehiclesQuery.error;
+  const data = serviceType === 'REAL_ESTATE' ? realEstateQuery.data : vehiclesQuery.data;
+  const hasAnyData = Boolean((realEstateQuery.data || []).length || (vehiclesQuery.data || []).length);
+
+  const userFullName = useMemo(() => {
+    if (!user) {
+      return '';
+    }
+    return [user.firstName, user.lastName].filter(Boolean).join(' ');
+  }, [user]);
+
+  const exportFileName = useMemo(() => {
+    const safeId =
+      typeof identificatorNumber === 'string'
+        ? identificatorNumber.replace(/[^\w-]/g, '_')
+        : 'report';
+    return `property_taxes_${safeId || 'report'}.pdf`;
+  }, [identificatorNumber]);
+
+  const exportButton = hasAnyData ? (
+    <PDFGenerator
+      PDFTemplate={PropertyTaxesReport}
+      fileName={exportFileName}
+      buttonText="Արտահանել"
+      variant="outlined"
+      Icon={PictureAsPdfIcon}
+      data={{
+        identificator: identificatorNumber,
+        personType,
+        realEstate: realEstateQuery.data || [],
+        vehicles: vehiclesQuery.data || [],
+      }}
+      userFullName={userFullName}
+    />
+  ) : null;
+
   return (
     <Box>
-      <Typography variant="h5" color="primary" fontWeight="bold" gutterBottom sx={{ mb: 2 }}>
-        Գույքահարկի Վճարների Վերաբերյալ Տեղեկատվություն
-      </Typography>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+        <Typography variant="h5" color="primary" fontWeight="bold" gutterBottom>
+          Գույքահարկի Վճարների Վերաբերյալ Տեղեկատվություն
+        </Typography>
+        {exportButton}
+      </Stack>
       {/* Tabs */}
       <Tabs
         textColor="primary"
