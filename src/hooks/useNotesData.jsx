@@ -1,11 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getNotes, createNote, deleteNote, updateNote, clearAllNotes } from '../api/personsApi';
-import { useState } from 'react';
 import { message } from 'antd';
-
+import { v4 } from 'uuid';
 const useNotesData = ({ pnum, taxId }) => {
   const queryClient = useQueryClient();
-  const [draftNote, setDraftNote] = useState(null);
 
   const { isLoading, isError, error, data, isFetching } = useQuery(
     ['notes', { pnum, taxId }],
@@ -15,6 +13,19 @@ const useNotesData = ({ pnum, taxId }) => {
       enabled: !!pnum || !!taxId,
     }
   );
+
+  const draftNote = {
+    color: 'yellow',
+    x: 24,
+    y: data ? 24 + data.length * 50 : 24,
+    w: 200,
+    h: 150,
+    folded: false,
+    pnum,
+    taxId,
+    isDraft: true,
+    uuid: v4(),
+  };
 
   const updateNoteMutation = useMutation(
     ({ id, noteData }) => {
@@ -88,12 +99,28 @@ const useNotesData = ({ pnum, taxId }) => {
   });
 
   const createNoteMutation = useMutation((noteData) => createNote(noteData), {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(['notes', { pnum, taxId }]);
-      message.success('Հաջողությամբ կատարվել է');
+    onMutate: async (newNoteData) => {
+      // Cancel outgoing fetches for this note
+      await queryClient.cancelQueries({ queryKey: ['notes', { pnum, taxId }] });
+
+      // Snapshot previous value
+      const previousNotes = queryClient.getQueryData(['notes', { pnum, taxId }]);
+      // const updatedNote = previousNotes?.find((note) => note.id === id);
+      queryClient.setQueryData(['notes', { pnum, taxId }], (old) => {
+        if (!old) return old;
+        console.log('old', old);
+        old.push(newNoteData);
+        return old;
+      });
+      return previousNotes;
     },
     onError: (error, variables, context, mutation) => {
       message.error('Ինչ-որ բան այնպես չէ');
+    },
+    // 3️⃣ After success or error → re-sync
+    onSettled: (data, error, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['notes', { pnum, taxId }] });
+      queryClient.invalidateQueries({ queryKey: ['notes'] });
     },
   });
 
@@ -101,26 +128,12 @@ const useNotesData = ({ pnum, taxId }) => {
     deleteNoteMutation.mutate(id);
   };
 
-  const handleNoteCreate = (noteData) => {
-    createNoteMutation.mutate(noteData);
+  const handleNoteCreate = () => {
+    createNoteMutation.mutate(draftNote);
   };
 
   const handleNoteUpdate = (id, noteData) => {
     updateNoteMutation.mutate({ id, noteData });
-  };
-
-  const handleAddDraftNote = () => {
-    const newNote = {
-      color: 'yellow',
-      x: 24,
-      y: data ? 24 + data.length * 50 : 24,
-      w: 200,
-      h: 150,
-      folded: false,
-      // pnum,
-      // taxId,
-    };
-    setDraftNote(newNote);
   };
 
   const handleClearAllNotes = () => {
@@ -134,7 +147,6 @@ const useNotesData = ({ pnum, taxId }) => {
     isLoading,
     isFetching,
     draftNote,
-    handleAddDraftNote,
     handleNoteDelete,
     handleNoteCreate,
     handleNoteUpdate,

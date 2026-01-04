@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { Add } from '@mui/icons-material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+
 import StickyNote from './StickyNote';
 import useNotesData from '../../hooks/useNotesData';
 
@@ -16,28 +17,14 @@ const StickyNotesBoard = ({ pnum, taxId }) => {
     handleNoteDelete,
     handleNoteCreate,
     handleNoteUpdate,
-    handleAddDraftNote,
     handleClearAllNotes,
   } = useNotesData({ pnum, taxId });
 
-  const addNote = () => {
-    const newNote = {
-      color: 'yellow',
-      x: 24,
-      y: data ? 24 + data.length * 50 : 24,
-      w: 200,
-      h: 150,
-      folded: false,
-      pnum,
-      taxId,
-    };
-    handleNoteCreate(newNote);
-  };
-  const mixedData = [...(data ?? []), ...(draftNote ? [draftNote] : [])];
   const clearAll = () => {
     handleClearAllNotes();
     setClearDialogOpen(false);
   };
+
   if (!taxId && !pnum) return null;
   return (
     <Box
@@ -49,12 +36,7 @@ const StickyNotesBoard = ({ pnum, taxId }) => {
       }}
     >
       <Box sx={{ mb: 2 }}>
-        <Button
-          disabled={!!draftNote}
-          variant="contained"
-          startIcon={<Add />}
-          onClick={handleAddDraftNote}
-        >
+        <Button variant="contained" startIcon={<Add />} onClick={handleNoteCreate}>
           New Note
         </Button>
         {data?.length > 0 && (
@@ -63,14 +45,16 @@ const StickyNotesBoard = ({ pnum, taxId }) => {
           </Button>
         )}
       </Box>
-      {mixedData?.map((note, index) => (
-        <StickyNote
-          note={note}
-          key={(note.id || 0) + index}
-          onUpdate={handleNoteUpdate}
-          onDelete={handleNoteDelete}
-        />
-      ))}
+      {data?.map((note, index) => {
+        return (
+          <StickyNote
+            note={note}
+            key={note.id || note.uuid}
+            onUpdate={handleNoteUpdate}
+            onDelete={handleNoteDelete}
+          />
+        );
+      })}
       <Dialog open={clearDialogOpen} onClose={() => setClearDialogOpen(false)}>
         <DialogTitle>Հեռացնել բոլոր գրառումները</DialogTitle>
         <DialogContent>Հոմոզվա՞ծ եք, որ ցանկանում եք հեռացնել բոլոր գրառումները</DialogContent>
