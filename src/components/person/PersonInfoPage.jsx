@@ -110,7 +110,7 @@ const PersonInfoPage = ({ personInfo }) => {
     <>
       <Grid container spacing={2}>
         <Grid item xs={2}>
-          <StickyNotesBoard />
+          <StickyNotesBoard pnum={sanitizedPNum} />
         </Grid>
         <Grid item xs={8}>
           {/* <Container> */}

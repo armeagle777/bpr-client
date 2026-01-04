@@ -12,29 +12,33 @@ const StickyNotesBoard = ({ pnum, taxId }) => {
     isError,
     isLoading,
     isFetching,
+    draftNote,
     handleNoteDelete,
     handleNoteCreate,
     handleNoteUpdate,
+    handleAddDraftNote,
+    handleClearAllNotes,
   } = useNotesData({ pnum, taxId });
 
   const addNote = () => {
     const newNote = {
       color: 'yellow',
       x: 24,
-      y: 24 + notes.length * 50,
+      y: data ? 24 + data.length * 50 : 24,
       w: 200,
       h: 150,
       folded: false,
+      pnum,
+      taxId,
     };
-    setNotes([...notes, newNote]);
+    handleNoteCreate(newNote);
   };
-
+  const mixedData = [...(data ?? []), ...(draftNote ? [draftNote] : [])];
   const clearAll = () => {
-    setNotes([]);
+    handleClearAllNotes();
     setClearDialogOpen(false);
   };
   if (!taxId && !pnum) return null;
-
   return (
     <Box
       sx={{
@@ -44,20 +48,25 @@ const StickyNotesBoard = ({ pnum, taxId }) => {
         p: 2,
       }}
     >
-      {/* <Box sx={{ mb: 2 }}>
-        <Button variant="contained" startIcon={<Add />} onClick={addNote}>
+      <Box sx={{ mb: 2 }}>
+        <Button
+          disabled={!!draftNote}
+          variant="contained"
+          startIcon={<Add />}
+          onClick={handleAddDraftNote}
+        >
           New Note
         </Button>
-        {notes.length > 0 && (
+        {data?.length > 0 && (
           <Button variant="outlined" sx={{ ml: 2 }} onClick={() => setClearDialogOpen(true)}>
             Clear All
           </Button>
         )}
-      </Box> */}
-      {data?.map((note) => (
+      </Box>
+      {mixedData?.map((note, index) => (
         <StickyNote
           note={note}
-          key={note.id}
+          key={(note.id || 0) + index}
           onUpdate={handleNoteUpdate}
           onDelete={handleNoteDelete}
         />

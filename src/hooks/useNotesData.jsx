@@ -1,8 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getNotes, createNote, deleteNote, updateNote } from '../api/personsApi';
+import { getNotes, createNote, deleteNote, updateNote, clearAllNotes } from '../api/personsApi';
+import { useState } from 'react';
+import { message } from 'antd';
 
 const useNotesData = ({ pnum, taxId }) => {
   const queryClient = useQueryClient();
+  const [draftNote, setDraftNote] = useState(null);
 
   const { isLoading, isError, error, data, isFetching } = useQuery(
     ['notes', { pnum, taxId }],
@@ -13,15 +16,66 @@ const useNotesData = ({ pnum, taxId }) => {
     }
   );
 
-  const updateNoteMutation = useMutation(({ id, noteData }) => updateNote(id, noteData), {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(['notes', { id }]);
-      message.success('Հաջողությամբ կատարվել է');
+  const updateNoteMutation = useMutation(
+    ({ id, noteData }) => {
+      updateNote(id, noteData);
     },
-    onError: (error, variables, context, mutation) => {
-      message.error('Ինչ-որ բան այնպես չէ');
+    {
+      onMutate: async (updatedNoteData) => {
+        const { id, noteData } = updatedNoteData;
+
+        // Cancel outgoing fetches for this note
+        await queryClient.cancelQueries({ queryKey: ['notes', id] });
+
+        // Snapshot previous value
+        const previousNotes = queryClient.getQueryData(['notes', { pnum, taxId }]);
+        const updatedNote = previousNotes?.find((note) => note.id === id);
+        queryClient.setQueryData(['notes', { pnum, taxId }], (old) => {
+          if (!old) return old;
+          return old.map((note) => {
+            return note.id === updatedNote.id ? { ...note, ...noteData } : note;
+          });
+        });
+        return previousNotes;
+      },
+      onError: (error, variables, context, mutation) => {
+        message.error('Ինչ-որ բան այնպես չէ');
+      },
+      // 3️⃣ After success or error → re-sync
+      onSettled: (data, error, variables) => {
+        queryClient.invalidateQueries({ queryKey: ['notes', { pnum, taxId }] });
+        queryClient.invalidateQueries({ queryKey: ['notes'] });
+      },
+    }
+  );
+
+  const clearAllNotesMutation = useMutation(
+    () => {
+      clearAllNotes({ pnum, taxId });
     },
-  });
+    {
+      onMutate: async () => {
+        // Cancel outgoing fetches for this note
+        await queryClient.cancelQueries({ queryKey: ['notes', { pnum, taxId }] });
+
+        // Snapshot previous value
+        // const previousNotes = queryClient.getQueryData(['notes', { pnum, taxId }]);
+        queryClient.setQueryData(['notes', { pnum, taxId }], (old) => {
+          if (!old) return old;
+          return [];
+        });
+        return [];
+      },
+      onError: (error, variables, context, mutation) => {
+        message.error('Ինչ-որ բան այնպես չէ');
+      },
+      // 3️⃣ After success or error → re-sync
+      onSettled: (data, error, variables) => {
+        queryClient.invalidateQueries({ queryKey: ['notes', { pnum, taxId }] });
+        queryClient.invalidateQueries({ queryKey: ['notes'] });
+      },
+    }
+  );
 
   const deleteNoteMutation = useMutation((id) => deleteNote(id), {
     onSuccess: (data) => {
@@ -51,8 +105,26 @@ const useNotesData = ({ pnum, taxId }) => {
     createNoteMutation.mutate(noteData);
   };
 
-  const handleNoteUpdate = (id, notedata) => {
-    updateNoteMutation.mutate({ id, notedata });
+  const handleNoteUpdate = (id, noteData) => {
+    updateNoteMutation.mutate({ id, noteData });
+  };
+
+  const handleAddDraftNote = () => {
+    const newNote = {
+      color: 'yellow',
+      x: 24,
+      y: data ? 24 + data.length * 50 : 24,
+      w: 200,
+      h: 150,
+      folded: false,
+      // pnum,
+      // taxId,
+    };
+    setDraftNote(newNote);
+  };
+
+  const handleClearAllNotes = () => {
+    clearAllNotesMutation.mutate();
   };
 
   return {
@@ -61,9 +133,12 @@ const useNotesData = ({ pnum, taxId }) => {
     isError,
     isLoading,
     isFetching,
+    draftNote,
+    handleAddDraftNote,
     handleNoteDelete,
     handleNoteCreate,
     handleNoteUpdate,
+    handleClearAllNotes,
   };
 };
 

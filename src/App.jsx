@@ -58,7 +58,6 @@ function App() {
             </RequirePermission>
           }
         />
-        <Route path="home" element={<Home />} />
         <Route
           path="bpr/:ssn"
           element={

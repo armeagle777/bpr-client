@@ -428,6 +428,11 @@ export const deleteNote = async (id) => {
   return response.data;
 };
 
+export const clearAllNotes = async ({ pnum, taxId }) => {
+  const response = await personsApi.post(`/notes/delete-all`, { pnum, taxId });
+  return response.data;
+};
+
 export const getExcelFile = async (filters) => {
   const mimeType = FILE_MIME_TYPES.EXCEL;
 

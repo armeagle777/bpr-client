@@ -28,16 +28,15 @@ const StickyNote = ({ note, onUpdate, onDelete }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const isFolded = note.folded ?? false;
   const foldedSize = 56;
-
   const handleEditToggle = () => {
     if (isEditing) {
-      onUpdate({ ...note, text, updatedAt: Date.now() });
+      onUpdate(note.id, { ...note, text, updatedAt: Date.now() });
     }
     setIsEditing(!isEditing);
   };
 
   const handleColorChange = (color) => {
-    onUpdate({ ...note, color, updatedAt: Date.now() });
+    onUpdate(note.id, { ...note, color, updatedAt: Date.now() });
     setAnchorEl(null);
   };
 
@@ -46,11 +45,17 @@ const StickyNote = ({ note, onUpdate, onDelete }) => {
   };
 
   const handleDragStop = (e, d) => {
-    onUpdate({ ...note, x: d.x, y: d.y });
+    onUpdate(note.id, { ...note, x: d.x, y: d.y });
   };
 
   const handleResizeStop = (e, direction, ref, delta, position) => {
-    onUpdate({ ...note, w: ref.offsetWidth, h: ref.offsetHeight, x: position.x, y: position.y });
+    onUpdate(note.id, {
+      ...note,
+      w: ref.offsetWidth,
+      h: ref.offsetHeight,
+      x: position.x,
+      y: position.y,
+    });
   };
 
   const formatTime = (timestamp) => {
@@ -59,10 +64,10 @@ const StickyNote = ({ note, onUpdate, onDelete }) => {
 
   const toggleFold = () => {
     if (isEditing) {
-      onUpdate({ ...note, text, updatedAt: Date.now() });
+      onUpdate(note.id, { ...note, text, updatedAt: Date.now() });
       setIsEditing(false);
     }
-    onUpdate({ ...note, folded: !isFolded, updatedAt: Date.now() });
+    onUpdate(note.id, { ...note, folded: !isFolded, updatedAt: Date.now() });
   };
 
   return (
