@@ -1,13 +1,16 @@
-import * as React from "react";
-import SpeedDial from "@mui/material/SpeedDial";
-import SpeedDialIcon from "@mui/material/SpeedDialIcon";
-import SpeedDialAction from "@mui/material/SpeedDialAction";
-import SaveIcon from "@mui/icons-material/Save";
-import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import {
+  Save as SaveIcon,
+  EventNote as EventNoteIcon,
+  PictureAsPdf as PictureAsPdfIcon,
+} from '@mui/icons-material';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 
 const SpeedDialButton = ({
   onLikeToggle,
+  handleNoteCreate,
   uid,
   text,
   fileName,
@@ -18,17 +21,22 @@ const SpeedDialButton = ({
   const actions = [
     {
       icon: <SaveIcon />,
-      name: "Պահպանել",
+      name: 'Պահպանել',
       onClick: () => onLikeToggle({ uid, text }),
     },
     {
-      name: "Արտահանել",
+      icon: <EventNoteIcon />,
+      name: 'Ստեղծել նշում',
+      onClick: () => handleNoteCreate(),
+    },
+    {
+      name: 'Արտահանել',
       icon: (
         <PDFDownloadLink
           document={<PDFTemplate data={data} userFullName={userFullName} />}
           fileName={fileName}
         >
-          {({ loading }) => (loading ? "Loading..." : <PictureAsPdfIcon />)}
+          {({ loading }) => (loading ? 'Loading...' : <PictureAsPdfIcon />)}
         </PDFDownloadLink>
       ),
       onClick: () => {},
@@ -36,8 +44,8 @@ const SpeedDialButton = ({
   ];
   return (
     <SpeedDial
-      ariaLabel="SpeedDial basic example"
-      sx={{ position: "fixed", bottom: 90, right: 100 }}
+      ariaLabel="Person Page SpeedDial"
+      sx={{ position: 'fixed', bottom: 90, right: 100 }}
       icon={<SpeedDialIcon />}
     >
       {actions.map((action) => (

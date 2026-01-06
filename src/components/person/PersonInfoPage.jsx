@@ -41,6 +41,7 @@ import MojCivilBeneficiaryTab from '../MojCivilBeneficiaryTab/MojCivilBeneficiar
 import RoadPoliceViolationsTab from '../RoadPoliceViolationsTab/RoadPoliceViolationsTab';
 import RoadPoliceTransactionsTab from '../RoadPoliceTransactionsTab/RoadPoliceTransactionsTab';
 import StickyNotesBoard from '../StickyNotesBoard/StickyNotesBoard';
+import useNotesData from '../../hooks/useNotesData';
 
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
@@ -85,6 +86,8 @@ const PersonInfoPage = ({ personInfo }) => {
   } = formatPersonData(personInfo);
   const sanitizedPNum = PNum?.replace(/\//g, '*');
 
+  const { handleNoteCreate } = useNotesData({ pnum: sanitizedPNum, taxId: undefined });
+
   const user = useAuthUser();
 
   const images = filterImageSrcs(documents, gender, birthDate);
@@ -109,8 +112,12 @@ const PersonInfoPage = ({ personInfo }) => {
   return (
     <>
       <Grid container spacing={2}>
+        z
         <Grid item xs={2}>
-          <StickyNotesBoard pnum={sanitizedPNum} />
+          {userHasPermission(
+            [permissionsMap.NOTES.uid, permissionsMap.ADMIN.uid],
+            user.permissions
+          ) && <StickyNotesBoard pnum={sanitizedPNum} />}
         </Grid>
         <Grid item xs={8}>
           {/* <Container> */}
@@ -390,6 +397,7 @@ const PersonInfoPage = ({ personInfo }) => {
             data={personInfo}
             text={likeToggleText}
             onLikeToggle={onLikeToggle}
+            handleNoteCreate={handleNoteCreate}
             fileName={`bpr_${firstName}_${lastName}.pdf`}
             userFullName={`${user.firstName} ${user.lastName}`}
           />

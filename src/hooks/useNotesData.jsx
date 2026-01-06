@@ -146,7 +146,6 @@ const useNotesData = ({ pnum, taxId }) => {
     isError,
     isLoading,
     isFetching,
-    draftNote,
     handleNoteDelete,
     handleNoteCreate,
     handleNoteUpdate,

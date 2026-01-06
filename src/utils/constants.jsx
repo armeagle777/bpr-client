@@ -278,6 +278,11 @@ export const permissionsMap = {
     name: 'HR',
     description: 'ՄՌԿ',
   },
+  NOTES: {
+    uid: '7777',
+    name: 'NOTES',
+    description: 'Ավելացնել նշումներ',
+  },
 };
 
 export const likeTypesMap = {

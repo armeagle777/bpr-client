@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Add } from '@mui/icons-material';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
 import StickyNote from './StickyNote';
@@ -13,7 +12,6 @@ const StickyNotesBoard = ({ pnum, taxId }) => {
     isError,
     isLoading,
     isFetching,
-    draftNote,
     handleNoteDelete,
     handleNoteCreate,
     handleNoteUpdate,
@@ -36,9 +34,6 @@ const StickyNotesBoard = ({ pnum, taxId }) => {
       }}
     >
       <Box sx={{ mb: 2 }}>
-        <Button variant="contained" startIcon={<Add />} onClick={handleNoteCreate}>
-          New Note
-        </Button>
         {data?.length > 0 && (
           <Button variant="outlined" sx={{ ml: 2 }} onClick={() => setClearDialogOpen(true)}>
             Clear All
