@@ -5,6 +5,8 @@ export const bprSearchInitialFilters = {
   birthDate: '',
   patronomicName: '',
   documentNumber: '',
+  age: { min: null, max: null },
+  gender: '',
 };
 
 export const addressSearchInitialFilters = {
