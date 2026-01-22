@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getEscsTestamentData } from '../api/personsApi';
 
 const useTestamentsData = (ssn) => {
-  const { isLoading, isError, error, data } = useQuery(
+  const { isLoading, isError, error, data, isFetching } = useQuery(
     ['escs-testaments', { ssn }],
     () => getEscsTestamentData(ssn),
     {
@@ -15,6 +15,7 @@ const useTestamentsData = (ssn) => {
     error,
     isError,
     isLoading,
+    isFetching,
     data,
   };
 };
