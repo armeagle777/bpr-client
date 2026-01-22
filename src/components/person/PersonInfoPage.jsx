@@ -384,6 +384,14 @@ const PersonInfoPage = ({ personInfo }) => {
                   </TabPanel>
                 </>
               )}
+              {userHasPermission(
+                [permissionsMap.ESCS.uid, permissionsMap.ADMIN.uid],
+                user.permissions
+              ) && (
+                <TabPanel value={value} index={index++}>
+                  <MojCivilBeneficiaryTab ssn={sanitizedPNum} />
+                </TabPanel>
+              )}
             </Box>
 
             <SpeedDialButton
@@ -505,6 +513,10 @@ const PersonInfoPage = ({ personInfo }) => {
                   key="civil-beneficiary"
                 />,
               ]}
+              {userHasPermission(
+                [permissionsMap.ESCS.uid, permissionsMap.ADMIN.uid],
+                user.permissions
+              ) && <Tab label="Կտակի տվյալներ" aria-label="escs-ktak" key="escs-ktak" />}
             </Tabs>
           </Box>
         </Grid>

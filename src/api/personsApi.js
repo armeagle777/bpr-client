@@ -393,6 +393,11 @@ export const getAddressStreets = async ({ region, community, residence }) => {
   return response.data;
 };
 
+export const getEscsTestamentData = async (ssn) => {
+  const response = await personsApi.get(`/escs/testaments/${ssn}`);
+  return response.data;
+};
+
 export const searchPersonByImage = async (imageBase64) => {
   const response = await personsApi.post('/ic/persons/by-image', { imageBase64 });
   return response.data;

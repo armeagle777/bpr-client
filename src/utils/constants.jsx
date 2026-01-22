@@ -228,6 +228,11 @@ export const permissionsMap = {
     name: 'Սեփականության վկայական',
     description: 'Կադաստր ըստ սեփ. վկայականի',
   },
+  ESCS: {
+    uid: '8000',
+    name: 'ԿԳՄՍ որոնում',
+    description: 'Որոնում ԿԳՄՍ տվյալների շտեմարանում',
+  },
   ASYLUM: {
     uid: '20000',
     name: 'Փախստականներ',
