@@ -40,6 +40,7 @@ import SocialPaymentsTab from '../SocialPaymentsTab/SocialPaymentsTab';
 import MojCivilBeneficiaryTab from '../MojCivilBeneficiaryTab/MojCivilBeneficiaryTab';
 import RoadPoliceViolationsTab from '../RoadPoliceViolationsTab/RoadPoliceViolationsTab';
 import RoadPoliceTransactionsTab from '../RoadPoliceTransactionsTab/RoadPoliceTransactionsTab';
+import EscsTestamentTab from '../EscsTestamentTab/EscsTestamentTab';
 
 const PersonInfoPage = ({ personInfo }) => {
   const [value, setValue] = useState(0);
@@ -389,7 +390,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 user.permissions
               ) && (
                 <TabPanel value={value} index={index++}>
-                  <MojCivilBeneficiaryTab ssn={sanitizedPNum} />
+                  <EscsTestamentTab ssn={sanitizedPNum} />
                 </TabPanel>
               )}
             </Box>
