@@ -69,8 +69,8 @@ const EscsTestamentTab = ({ ssn }) => {
   const institutions = institutionsFromUniversity.length
     ? institutionsFromUniversity
     : Object.values(derivedInstitution).some(hasValue)
-    ? [derivedInstitution]
-    : [];
+      ? [derivedInstitution]
+      : [];
 
   const scores = Array.isArray(data?.scores?.total) ? data.scores.total : [];
   const lingoScore = data?.lingoScore || null;
@@ -358,7 +358,9 @@ const EscsTestamentTab = ({ ssn }) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Typography variant="body2">Քրոնիկ հիվանդություններ</Typography>
-              <Typography variant="body2">{formatValue(characteristics.chronic_diseases)}</Typography>
+              <Typography variant="body2">
+                {formatValue(characteristics.chronic_diseases)}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={6}>
               <Typography variant="body2">Հոգեկան հիվանդություններ</Typography>
