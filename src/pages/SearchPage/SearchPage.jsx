@@ -1,6 +1,7 @@
-import { memo, useState } from 'react';
+import { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Tab, Tabs } from '@mui/material';
+import { useSearchParams } from 'react-router-dom';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
 import BprSearchTab from './components/BprSearchTab';
@@ -17,18 +18,32 @@ CustomTabPanel.propTypes = {
 };
 
 const SearchPage = () => {
-  const [selectedTab, setSelectedTab] = useState(0);
-
   const user = useAuthUser();
-
-  const handleTabsChange = (_, newValue) => {
-    setSelectedTab(newValue);
-  };
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const showSearchByImageTab = userHasPermission(
     [permissionsMap.SEARCH_PERSON_BY_IMAGE.uid, permissionsMap.ADMIN.uid],
     user.permissions
   );
+
+  const availableTabs = showSearchByImageTab ? ['address', 'image', 'bpr'] : ['address', 'bpr'];
+  const tabFromUrl = searchParams.get('tab');
+  const selectedTabKey = availableTabs.includes(tabFromUrl) ? tabFromUrl : availableTabs[0];
+  const selectedTab = availableTabs.indexOf(selectedTabKey);
+
+  useEffect(() => {
+    if (tabFromUrl === selectedTabKey) return;
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set('tab', selectedTabKey);
+    setSearchParams(nextSearchParams, { replace: true });
+  }, [searchParams, selectedTabKey, setSearchParams, tabFromUrl]);
+
+  const handleTabsChange = (_, newValue) => {
+    const nextTabKey = availableTabs[newValue];
+    const nextSearchParams = new URLSearchParams(searchParams);
+    nextSearchParams.set('tab', nextTabKey);
+    setSearchParams(nextSearchParams, { replace: true });
+  };
 
   return (
     <>

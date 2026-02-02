@@ -1,5 +1,5 @@
 import { memo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import {
   ArrowBackIos as ArrowBackIosIcon,
@@ -90,6 +90,17 @@ const PersonInfoPage = ({ personInfo }) => {
   const images = filterImageSrcs(documents, gender, birthDate);
 
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const fromTab = searchParams.get('fromTab');
+  const canGoBackToSearchTab = ['address', 'image', 'bpr'].includes(fromTab);
+
+  const handleBackClick = () => {
+    if (canGoBackToSearchTab) {
+      navigate(`/?tab=${fromTab}`);
+      return;
+    }
+    navigate(-1);
+  };
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -121,7 +132,7 @@ const PersonInfoPage = ({ personInfo }) => {
                 alignItems="center"
               >
                 <Button
-                  onClick={() => navigate(-1)}
+                  onClick={handleBackClick}
                   variant="contained"
                   startIcon={<ArrowBackIosIcon />}
                 >
