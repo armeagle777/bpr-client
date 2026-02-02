@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Button, CardMedia, Chip, Stack, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 import { dedupeAddressesByStatusAndCode, getPhotoDocument, getPreferredDocument } from './helpers';
 import AddressRow from './AddressRow';
@@ -15,6 +16,7 @@ const McsPersonSearchRow = ({ data = {} }) => {
   const photoSrc = photoDocument?.photo
     ? `data:image/jpeg;base64,${photoDocument.photo}`
     : noImageSrc;
+  const navigate = useNavigate();
 
   const fullName = [person.first_name, person.last_name, person.patr_name]
     .filter(Boolean)
@@ -27,7 +29,7 @@ const McsPersonSearchRow = ({ data = {} }) => {
 
   const handleNavigate = () => {
     if (!sanitizedSsn) return;
-    window.open(`/bpr/${sanitizedSsn}?fromTab=address`, '_blank', 'noopener,noreferrer');
+    navigate(`/bpr/${sanitizedSsn}?fromTab=address`);
   };
 
   const isNavigable = Boolean(sanitizedSsn);
