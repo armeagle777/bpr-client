@@ -3,12 +3,14 @@ import useFetchMcsPersons from '../../hooks/useFetchMcsPersons';
 
 import { perPageCount } from '../../utils/constants';
 import { countForFilter } from '../../utils/configs';
+import { addressSearchInitialFilters } from '../../pages/SearchPage/SearchPage.constants';
 
 const McsPersonsContext = createContext(null);
 
 export const McsPersonsProvider = ({ children }) => {
   const [searchParams, setSearchParams] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
+  const [addressFilters, setAddressFilters] = useState(addressSearchInitialFilters);
 
   const {
     data: persons,
@@ -42,6 +44,8 @@ export const McsPersonsProvider = ({ children }) => {
         currentPage,
         changePage,
         totalCount: persons?.length,
+        addressFilters,
+        setAddressFilters,
         isError,
         error,
       }}
