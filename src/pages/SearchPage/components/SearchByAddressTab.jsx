@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import dayjs from 'dayjs';
 import {
   Box,
@@ -28,7 +28,6 @@ import SearchAside from '../../../components/search/SearchAside';
 import { useMcsPersons } from '../../../components/context/mcsPersons';
 
 const SearchByAddressTab = () => {
-  const [filterProps, setFilterProps] = useState(addressSearchInitialFilters);
   const {
     error,
     persons,
@@ -38,7 +37,11 @@ const SearchByAddressTab = () => {
     currentPage,
     setSearchParams,
     isInitialLoading,
+    addressFilters,
+    setAddressFilters,
   } = useMcsPersons();
+  const filterProps = addressFilters;
+  const setFilterProps = setAddressFilters;
 
   const {
     regions,

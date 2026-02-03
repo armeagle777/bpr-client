@@ -29,7 +29,7 @@ const McsPersonSearchRow = ({ data = {} }) => {
 
   const handleNavigate = () => {
     if (!sanitizedSsn) return;
-    navigate(`/bpr/${sanitizedSsn}`);
+    navigate(`/bpr/${sanitizedSsn}?fromTab=address`);
   };
 
   const isNavigable = Boolean(sanitizedSsn);

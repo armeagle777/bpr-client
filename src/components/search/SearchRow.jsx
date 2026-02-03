@@ -42,7 +42,7 @@ const SearchRow = ({ personInfo }) => {
 
   const noImageSrc = './src/assets/profile.png';
   const infoClickHandler = () => {
-    navigate(`/bpr/${sanitizedPNum}`);
+    navigate(`/bpr/${sanitizedPNum}?fromTab=bpr`);
   };
 
   const isJpk = isPersonJpk(documents);

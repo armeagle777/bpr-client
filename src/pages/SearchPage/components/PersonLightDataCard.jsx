@@ -114,7 +114,11 @@ const PersonLightDataCard = ({ data }) => {
         <CardActions
           sx={{ position: 'absolute', bottom: 8, right: 0, transform: 'translateX(-50%)' }}
         >
-          <Button variant="contained" size="small" onClick={() => navigate(`/bpr/${psn}`)}>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => navigate(`/bpr/${psn}?fromTab=image`)}
+          >
             Տեսնել մանրամասն
           </Button>
         </CardActions>
